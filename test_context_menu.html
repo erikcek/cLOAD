@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+</head>
+<body>
+
+		<div id="xxx">
+
+		lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum 
+	<div id="yyy">
+		ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+	</div>
+
+	</div>
+
+	<script type="text/javascript">
+
+
+    function myFunction(e){
+    	try{
+        		document.body.removeChild(document.getElementById("tasks"));
+        	}
+        	catch(err) {
+			}
+
+            document.body.innerHTML += '<ul id="tasks"><li class="task" data-id="3">f</li><li class="task" data-id="3">List1</li><li class="task" data-id="3">List1</li><li class="task" data-id="3">List1</li></ul>';
+            document.getElementById("tasks").style.position = "absolute";
+            document.getElementById("tasks").style.left = e.clientX + "px";
+            document.getElementById("tasks").style.top =  e.clientY + "px";
+            e.preventDefault();
+    }
+
+    function myFunction2(e){
+    	try{
+        		document.body.removeChild(document.getElementById("tasks"));
+        	}
+        	catch(err) {
+			}
+
+            document.body.innerHTML += '<ul id="tasks"><li class="task" data-id="3">gggg</li><li class="task" data-id="3">gggg</li><li class="task" data-id="3">gggg</li><li class="task" data-id="3">gggg</li></ul>';
+            document.getElementById("tasks").style.position = "absolute";
+            document.getElementById("tasks").style.left = e.clientX + "px";
+            document.getElementById("tasks").style.top =  e.clientY + "px";
+            e.preventDefault();
+    }
+
+    document.getElementById("xxx").oncontextmenu = function(e){
+    	try{
+        		document.body.removeChild(document.getElementById("tasks"));
+        	}
+        	catch(err) {
+			}
+
+            document.body.innerHTML += '<ul id="tasks"><li class="task" data-id="3">gggg</li><li class="task" data-id="3">gggg</li><li class="task" data-id="3">gggg</li><li class="task" data-id="3">gggg</li></ul>';
+            document.getElementById("tasks").style.position = "absolute";
+            document.getElementById("tasks").style.left = e.clientX + "px";
+            document.getElementById("tasks").style.top =  e.clientY + "px";
+            e.preventDefault();
+    
+    }
+
+    document.getElementById("yyy").oncontextmenu = function(e){
+    	try{
+        		document.body.removeChild(document.getElementById("tasks"));
+        	}
+        	catch(err) {
+			}
+
+            document.body.innerHTML += '<ul id="tasks"><li class="task" data-id="3">gggg</li><li class="task" data-id="3">gggg</li><li class="task" data-id="3">ffff</li><li class="task" data-id="3">ffff</li></ul>';
+            document.getElementById("tasks").style.position = "absolute";
+            document.getElementById("tasks").style.left = e.clientX + "px";
+            document.getElementById("tasks").style.top =  e.clientY + "px";
+            e.stopPropagation();
+            e.preventDefault();
+    
+    }
+
+</script>
+	
+
+	
+</body>
+</html>

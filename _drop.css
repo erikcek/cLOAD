@@ -1,0 +1,230 @@
+body{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	margin: 0;
+	font-family: sans-serif;
+	background-color: #f2f2f2;
+}
+
+/* --- ŠTÝLY PRE LOGIN --- */ 
+
+#login{
+	background: no-repeat fixed url("login.jpeg");	
+	background-size: cover;
+	height: 100vh;
+} 
+
+#log{
+	margin-left: 30%;
+	width: 40%;
+}
+
+#login img {
+	width: 80%;
+	margin-left: 10%;
+	margin-top: 15%;
+}
+
+.fa-ban{
+	color: #FF4A5A;
+}
+
+input{
+	width: 100%;
+	margin-top: 30px;
+	font-size: 17px;
+	border: none;
+	border-bottom: #535075 solid 2px;
+}
+
+input, #logbut{
+	font-size: 17px;
+	background-color: transparent;
+	border-radius: 5px;
+	border-bottom: #535075 solid 2px;
+	padding: 5px;
+}
+
+#logbut{
+	margin-left: 30%;
+	width: 40%;
+	margin-top: 35px; 
+}
+
+#logbut:hover{
+	background-color:#535075;
+	color: white; 
+}
+
+#error_log{
+	font-size: 12px;
+	display: none;
+}
+
+@media (max-width: 1000px){
+	#login{
+		background: url("login.jpeg") center;
+		background-size: cover;
+	}
+}
+
+@media (max-width: 800px){
+	#log{
+		margin-left: 10%;
+		width: 80%;
+	}
+}
+
+/* --- ŠTÝLY PRE DROP NAVIGACIU --- */ 
+
+nav #left li,
+nav #right li{
+	display: inline-block;
+	margin: 4px 10px;
+}
+
+nav{
+	width: 100%;
+	box-shadow: 0px 2px 3px #c2c2c2;
+	height: 60px;
+	background-color: #Fff;
+	position: fixed;
+	display: none;
+}
+
+#left{
+	float: left;
+	color: #535075;
+}
+
+#right{
+	float: right;
+	margin-right: 5%;
+}
+
+#left li:hover{
+	text-shadow:5px 5px 5px #aaa;
+}
+
+.newFile,
+.logOut{
+	font-size: 17px;
+	background-color: transparent;
+	border-radius: 3px;
+	border: #535075 solid 2px;
+	padding: 5px 10px;
+}
+
+.newFile {
+	background-color: #535075;
+	color: white;
+}
+
+.newFile:hover{
+	background-color: transparent;
+	color: black;	
+}
+
+.logOut:hover{
+	background-color: #535075;
+	color: white;	
+}
+
+/* --- ŠTÝLY PRE DROP --- */
+#main_div {
+	width: 70%;
+	clear: both;
+	padding-top: 75px;
+	text-align: left;
+	margin-left: 15%;
+	display: none;
+}
+
+h2{
+	color: #999;
+	font-size: 15px;
+}
+
+/* --- DIRECTORY --- */
+
+.fa-folder-open{
+	font-size: 20px;
+	color: #aaa;	
+}
+
+.span_dirsectory{
+	background-color: white;
+	text-align: center;
+	padding: 1%;
+	display: inline-block;
+	margin: 1%;
+	width: 15%;
+	box-shadow: 0px 4px 5px #c2c2c2;
+}
+
+.dirName{
+	text-align: center;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	height: 20px;
+}
+
+/* --- FILES ---*/
+
+.span_file {
+	background-color: white;
+	text-align: center;
+	padding: 1%;
+	display: inline-block;
+	margin: 1%;
+	width: 15%;
+	box-shadow: 0px 4px 5px #c2c2c2;
+}
+
+.span_dirsectory:hover,
+.span_file:hover{
+	box-shadow: 0px 6px 8px #c2c2c2;	
+}
+
+.fileName{
+	text-align: center;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	height: 20px;
+	display:block;
+}
+
+.fa-file-zip-o,
+.fa-file-code-o,
+.fa-file-pdf-o,
+.fa-file-sound-o,
+.fa-file-image-o,
+.fa-file-audio-o,
+.fa-film,
+.fa-code,
+.fa-film,
+.fa-music,
+.fa-image{
+	font-size: 3em;
+	text-align:center;
+	color: #aaa;
+	display: block;
+}
+
+#mp4_player {
+	display: none;
+}
+
+#upload_file{
+	display: none;
+}
+
+#input {
+	display: none;
+}
+
+

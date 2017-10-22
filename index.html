@@ -1,0 +1,731 @@
+    
+<!doctype html>
+<html lang="sk">
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
+<script src="https://use.fontawesome.com/c411ed4f95.js"></script>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<link rel="stylesheet" type="text/css" href="drop.css">
+<meta charset="utf-8">
+<title>Static website</title>
+</head>
+<body>
+
+  <nav>
+      <ul id="left">
+        <li onclick="show_uploader()"><button class="newFile"> <i class="fa fa-plus-square-o" aria-hidden="true"></i> New File </button></li>
+        <li onclick="back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> BACK</li>
+        <li onclick="forth()"> FORWARD <i class="fa fa-arrow-right" aria-hidden="true"></i></li>
+      </ul>
+      <ul id="right">
+        <li><i class="fa fa-user" aria-hidden="true"></i><span id="nav_userName">Katka Golenyová</span></li>
+        <li onclick="logout()"><button class="logOut" >LogOut</button></li>
+      </ul>
+  </nav>
+
+
+
+  <div id="main_div">
+
+        <section id="okno">
+          <div id="medzera"></div>
+          <div id="oznam">
+            <h1 id="h1_oznam" >New directory</h1>
+            <span id="vklad_container">
+              <input type="text" id="vklad" placeholder="Zadaj meno priečinka">
+            </span>
+            <ul id="tlacidla">
+              <li><buttom class="newFile okno" id="action" >Submit</buttom></li>
+              <li><buttom onclick="hide_window()" class="logOut okno " id="close">Close</buttom></li>
+            </ul>
+          </div>
+<!--
+          <div id="upload_file">
+            <h1 id="h1_oznam" >New directory</h1>
+            <input type="file" id="FileBox" multiple>
+            <ul id="tlacidla">
+              <li><button id="UploadButton">Upload</button></li>
+              <li><buttom onclick="hide_window()" class="logOut okno " id="close">Close</buttom></li>
+            </ul>
+          </div>
+-->
+        </section> 
+
+<!--
+      <div id="input">
+        <p id="input_error_log"></p>
+        <input type="text" id="input_area" autofocus>
+        <button onclick="mkdir()">Submit</button>
+      </div>
+-->
+      <div id="directories"></div>
+      <div id="files"></div>
+      <div id="not_fully_uploaded_files"></div>
+
+  </div>
+
+
+
+<div id="mp4_player">
+  <video controls id="mp4_video">
+    
+  </video>
+</div>
+
+  <section id="login">
+    <div id="log">
+      <img src="pdw.png">
+      <input type="text" id="login_name" placeholder="Name">
+      <input type="password" id="login_password" placeholder="Password">
+      <p id="error_log"><i class="fa fa-ban" aria-hidden="true"></i><span></span></p>
+      <button onclick="sub()" id="logbut">LogIn</button>
+    </div>
+  </section>
+
+  <ul id="context_menu">
+    <li onclick="logout()">logout</li>
+  </ul>
+
+<script type="text/javascript">
+  var socket = io()
+  var actualPath = ""
+  var lastPath = new Array()
+
+  const main_div = document.getElementById("main_div")
+  const login_div =  document.getElementById("login")
+  const nav_div = document.getElementsByTagName("nav")[0]
+  const directories_div = document.getElementById("directories")
+  const files_div = document.getElementById("files")
+  const not_fully_uploaded_files = document.getElementById("not_fully_uploaded_files");
+  const login_name = document.getElementById("login_name")
+  const login_password = document.getElementById("login_password")
+
+  var SelectedFile 
+  var uploadPath
+  var FilesForTransfer = []
+
+  document.addEventListener("contextmenu", function(e){   //vlastne contextove menu zobrazene pri kliku lavym t na stranke
+    document.getElementById("context_menu").innerHTML = "<li onClick='mkdir_create_name()'>Make directory</li><li onClick='reload_f()'>reoald</li>"; 
+    document.getElementById("context_menu").style.display = "block";
+    document.getElementById("context_menu").style.position = "absolute";
+    document.getElementById("context_menu").style.left =  set_x_contextmenu_position(e.clientX) + "px";
+    document.getElementById("context_menu").style.top =   set_y_contextmenu_position(e.clientY) + "px";
+    e.preventDefault();
+    console.log("inside global");
+  })
+
+  document.onclick = function(){
+    document.getElementById("context_menu").style.display = "none";
+  }
+
+
+/*
+  window.addEventListener("load", Ready); 
+ 
+    function Ready(){ 
+        if(window.File && window.FileReader){ //These are the relevant HTML5 objects that we are going to use 
+            document.getElementById('UploadButton').addEventListener('click', StartUpload);  
+            document.getElementById('FileBox').addEventListener('change', FileChosen);
+        }
+        else
+        {
+            document.getElementById('UploadArea').innerHTML = "Your Browser Doesn't Support The File API Please Update Your Browser";
+        }
+    }
+*/
+    function FileChosen(evnt) {
+      FilesForTransfer = []
+      //document.getElementById('UploadArea').innerHTML = ""
+      for( var i = 0; i < evnt.target.files.length; i++ ){
+        console.log(evnt.target.files[i])
+        FilesForTransfer[i] = evnt.target.files[i]
+        
+        var Content = "<br><span id='NameArea'>Uploading " + evnt.target.files[i].name + "</span>";
+        Content += '<div id="ProgressContainer"><div id="ProgressBar' + evnt.target.files[i].name + '"></div></div><span id="percent' + evnt.target.files[i].name + '">0%</span>';
+        Content += "<span id='Uploaded" + evnt.target.files[i].name + "'> - <span id='MB" +  evnt.target.files[i].name +"'>0</span>/" + Math.round(evnt.target.files[i].size / 1048576) + "MB</span>";
+        //document.getElementById('UploadArea').innerHTML += Content;
+        
+      }
+      console.log(FilesForTransfer)
+      SelectedFile = evnt.target.files[0];
+      uploadPath = actualPath
+    }
+
+    function StartUpload(){
+      if(FilesForTransfer.length != 0)
+      {
+          FReader = new FileReader();
+          Name = SelectedFile.name;
+          FReader.onload = function(evnt){
+              socket.emit('Upload', { 'Name' : Name, Data : evnt.target.result,"userName": readCookie("name"), "userToken":readCookie("token") });
+          }
+          socket.emit('Start', { 'Name' : Name, 'Size' : SelectedFile.size, "userName": readCookie("name"), "userToken":readCookie("token"), "path": uploadPath });
+          document.getElementById("okno").style.display = "none";
+      }
+      else
+      {
+          document.getElementById("h1_oznam").innerHTML = "Vyberte prosím súbory.";
+      }
+    }
+
+    socket.on('MoreData', function (data){
+        socket.emit("lsfiles", [actualPath, readCookie("name"), readCookie("token") ] );
+        UpdateBar(data['Percent']);
+        var Place = data['Place'] * 524288 //524288; //The Next Blocks Starting Position
+        var NewFile; //The Variable that will hold the new Block of Data
+
+        NewFile = SelectedFile.slice(Place, Place + Math.min( 5242880/*524288*/, (SelectedFile.size-Place)));
+
+        FReader.readAsBinaryString(NewFile);
+        
+    });
+
+    socket.on("done", () => {
+      UpdateBar("100")
+      FilesForTransfer.shift();
+      if(FilesForTransfer.length > 0){
+        SelectedFile = FilesForTransfer[0]
+        StartUpload()
+      }
+      else {
+        socket.emit("lsfiles", [actualPath, readCookie("name"), readCookie("token") ])
+      }
+    })
+
+
+
+
+
+  socket.on("checkLoged", () => {
+    if(readCookie("name") != null && readCookie("token") != null){
+      console.log("inside")
+      socket.emit("tryLogin", [readCookie("name"), readCookie("token")])
+    }
+
+  })
+
+  socket.on("loged", x => {
+    if(x[0]){
+      console.log(x)
+      document.cookie = "name=" + x[1]
+      document.cookie = "token=" + x[2]
+      console.log(document.cookie)
+      nav_div.style.display = "block"
+      main_div.style.display = "block"
+      login_div.style.display = "none"
+      document.getElementById("nav_userName").innerHTML = " " + x[1]
+      socket.emit("lsdir", [actualPath, readCookie("name"), readCookie("token") ])
+      socket.emit("lsfiles", [actualPath, readCookie("name"), readCookie("token") ])  
+    }
+    if(!x[0]){
+      var error_log = document.getElementById("error_log").getElementsByTagName("span")[0]
+      error_log.innerHTML = "Chyba pri prihlasovaní."
+      error_log.parentElement.style.display = "block"
+      login_name.value = ""
+      login_password.value = ""
+    }
+  })
+
+
+  socket.on("dirs", dirs=> {
+  	directories_div.innerHTML = ""   // vymaze obsah maindivu pred tym ako nacita nove priecinky a subory
+    if(dirs.length != 0) {
+      directories_div.innerHTML += "<h2>Directories</h2>" 
+ 
+    	dirs.forEach( dir => {
+        directories_div.innerHTML +=  '<span oncontextmenu="dir_contextmenu(event)" class="span_dirsectory" onClick="reloadFiles(this)"><p class="dirName unclickable"><i class="fa fa-folder-open unclickable" aria-hidden="true"></i>  <span>' + dir + '</span></p></span>'
+          //* dir context menu služi na vytvorenie menu pri lavom kliknuti pre priecinky
+    	})
+    }
+  })
+
+
+  socket.on("files", files => {
+  	files_div.innerHTML = ""
+    if(files.length != 0) {
+      files_div.innerHTML += "<h2>Files</h2>"
+    
+      files.forEach(file => {
+        console.log("3") 
+        files_div.innerHTML += '<span onClick="getFile(event)" oncontextmenu="file_contextmenu(event)" class="span_file"><i class="fa fa-file-image-o unclickable" aria-hidden="true"></i><p class="fileName unclickable">' + file + '</p></span>'
+	     })
+    }
+  })
+
+  socket.on("not_fully_uploaded_files", (data) => {
+    console.log(data)
+    not_fully_uploaded_files.innerHTML = ""
+    if(data) {
+      not_fully_uploaded_files.innerHTML += "<h2>Not fully uploaded files</h2>"
+        data[0].forEach(file => {
+          console.log("filllle: "+ file)
+          // old file lader
+          //files_div.innerHTML += '<span class="span_dirsectory"><p onClick="getFile(this)" class="directory">' + file + '</p></span>'
+          not_fully_uploaded_files.innerHTML += '<span oncontextmenu="not_fully_uploaded_contextmenu(event)" style="background-color: green;" class="span_file"><i class="fa fa-file-image-o unclickable" aria-hidden="true"></i><p class="fileName unclickable">' + file + '</p></span>'
+         })
+    } 
+  })
+
+  socket.on("fileAction", data => {
+    var x = prepare_for_URL(data["path"])
+    console.log(data["fileEnding"])
+    if(data["fileEnding"] == "mp4"){
+      console.log("inside fileAction")
+      set_mp4_okno();
+      document.getElementById("h1_oznam").innerHTML += "<video width='100%' controls id='mp4_video'><source src='." + prepare_for_URL(data["path"]) + "' type='video/mp4'></video>";
+      document.getElementById("mp4_video").load();
+      show_window();
+     // document.getElementById("main_div").style.display = "none"
+      //document.getElementById("login").style.display = "none"
+      //document.getElementById("mp4_video").innerHTML = "<source src='." + prepare_for_URL(data["path"]) + "' type='video/mp4'>"
+      //document.getElementById("mp4_player").style.display = "block"
+      //document.getElementById("mp4_video").load()
+    }
+    else {
+      set_download_okno(data["path"]);
+      show_window();
+    }
+    
+  })
+
+    socket.on("dir_created", data => {
+      if(data){
+        socket.emit("lsdir", [actualPath , readCookie("name"), readCookie("token") ]);
+        socket.emit("lsfiles", [actualPath , readCookie("name"), readCookie("token") ]);
+        //document.getElementById("input").style.display = "none";
+        //document.getElementById("input_error_log").innerHTML = "";
+      }
+      else {
+        document.getElementById("input_error_log").innerHTML = "Priečinok už existuje";
+      }
+    })
+
+    socket.on("dir_deleted", () => {
+      socket.emit("lsdir", [actualPath , readCookie("name"), readCookie("token") ]);
+      socket.emit("lsfiles", [actualPath , readCookie("name"), readCookie("token") ]);
+    })
+
+    socket.on("rename_done", data => {
+      if (data) {
+        socket.emit("lsdir", [actualPath , readCookie("name"), readCookie("token") ]);
+        socket.emit("lsfiles", [actualPath , readCookie("name"), readCookie("token") ]);
+        hide_window();
+      }
+      
+      else {
+        document.getElementById("h1_oznam").innerHTML = "Názov už existuje";
+        document.getElementById("action").style.display = "none";
+      }
+      
+    })
+
+
+
+
+
+
+  function reloadFiles(e){
+  	socket.emit("lsdir", [actualPath + "/" + e.getElementsByTagName('span')[0].innerHTML, readCookie("name"), readCookie("token") ])
+  	socket.emit("lsfiles", [actualPath + "/" +e.getElementsByTagName('span')[0].innerHTML, readCookie("name"), readCookie("token") ])
+  	actualPath += "/" + e.getElementsByTagName('span')[0].innerHTML 
+    lastPath = []
+  }
+
+  function getFile(e){
+    console.log(e.target.getElementsByTagName("p")[0].innerHTML);
+    socket.emit("getFile", {"fileName": e.target.getElementsByTagName("p")[0].innerHTML, "path": actualPath,"userName": readCookie("name"), "userToken": readCookie("token")})
+
+   // console.log(window.location.href += actualPath + "/" + e.innerHTML)
+   // window.location.href += "erik/" + e.innerHTML;
+  }
+
+  function back(){
+    if (actualPath != ""){
+      lastPath.push(actualPath)
+      if(Object.keys(lastPath).length > 5){
+        lastPath.shift()
+      }
+    }
+
+  	var sliced_path = actualPath.split("/")
+  	actualPath = sliced_path.slice(0,-1).join("/")
+    console.log(sliced_path[sliced_path.length - 1])
+    if(sliced_path[sliced_path.lenght - 1] != undefined){  
+      lastPath.push(sliced_path[sliced_path.lenght - 1])
+    }
+  	socket.emit("lsdir", [actualPath, readCookie("name"), readCookie("token") ])
+  	socket.emit("lsfiles", [actualPath,  readCookie("name"), readCookie("token") ])
+  }
+
+  function forth(){
+    console.log(actualPath)
+    console.log(lastPath)
+    console.log(Object.keys(lastPath).length)
+    if (lastPath[Object.keys(lastPath).length - 1] != undefined){
+      actualPath = lastPath[Object.keys(lastPath).length - 1]
+      lastPath.pop()
+      socket.emit("lsdir", [actualPath, readCookie("name"), readCookie("token") ])
+      socket.emit("lsfiles", [actualPath,  readCookie("name"), readCookie("token") ])
+    }
+    console.log(actualPath)
+    console.log(lastPath)
+
+  }
+
+  function act(){
+    console.log(actualPath)
+    console.log(lastPath)
+    console.log(document.cookie)
+  }
+
+  function sub(){
+    if(login_name.value != "" && login_password.value != ""){
+      socket.emit("login", [login_name.value, login_password.value])
+    }
+
+  }
+
+  function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+  }
+
+  function delete_cookie(name) {
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
+
+  function logout(){
+    main_div.style.display = "none"
+    nav_div.style.display = "none"
+    clearContent()
+    document.getElementById("error_log").innerHTML = "Logged out!"
+    login_div.style.display = "block"
+    delete_cookie("name")
+    delete_cookie("token")
+    socket.emit("logout", {"user_name": readCookie("name"), "token": readCookie("token")});
+  }
+
+  function clearContent(){
+    directories_div.innerHTML = ""
+    files_div.innerHTML = ""
+  }
+
+  function update(event){
+    SelectedFile =document.getElementById("FileUpload").files[0]
+
+  }
+
+  document.getElementById("main_div").addEventListener("drop", function(e){
+    e.preventDefault();
+    console.log("dropped");
+
+  })
+
+  function upload(){
+    var freader = new FileReader()
+    console.log(actualPath)
+    freader.onload = function(e){
+      socket.emit("upload_file", [e.target.result, actualPath])
+    }
+    freader.readAsArrayBuffer(SelectedFile)
+
+  }
+
+  function UpdateBar(percent){
+    /*
+        document.getElementById('ProgressBar' + SelectedFile.name).style.width = percent + '%';
+        document.getElementById('percent' + SelectedFile.name).innerHTML = (Math.round(percent*100)/100) + '%';
+        var MBDone = Math.round(((percent/100.0) * SelectedFile.size) / 1048576);
+        document.getElementById('MB' + SelectedFile.name).innerHTML = MBDone;
+    */
+    }
+
+  function dir_contextmenu(e){
+    // nacita sa do <ul id="context_menu"> li-čka, zobrazí sa na stránke a jeho absolútna pozicia sa určí na miesto kde ukazovalala myška
+    document.getElementById("context_menu").innerHTML = "<li onclick='remove_control(\"" + e.target.getElementsByTagName("span")[0].innerHTML + "\")'>Remove direcotry</li><li onclick='rename_dir_control(\"" + e.target.getElementsByTagName("span")[0].innerHTML + "\")'>Rename directory</li>";
+    document.getElementById("context_menu").style.display = "block";
+    document.getElementById("context_menu").style.position = "absolute";
+    document.getElementById("context_menu").style.left = set_x_contextmenu_position(e.clientX)+ "px";
+    document.getElementById("context_menu").style.top =  set_y_contextmenu_position(e.clientY) + "px";
+    e.preventDefault(); // zakaze defaultne vyskakovacie menu browseru
+    e.stopPropagation(); // nastaví aby sa nezobrazovalo contextove menu nadradeneho elementu
+
+  }
+
+  function file_contextmenu(e) {
+    //contextove menu specificke pre suvory
+    console.log(e.target.getElementsByTagName("p")[0].innerHTML)
+    document.getElementById("context_menu").innerHTML = "<li onclick='remove_control(\"" + e.target.getElementsByTagName("p")[0].innerHTML + "\")'>Remove file</li>" + "<li onclick='rename_file_control(\"" +e.target.getElementsByTagName("p")[0].innerHTML + "\")'>Rename file</li>";
+    document.getElementById("context_menu").style.display = "block";
+    document.getElementById("context_menu").style.position = "absolute";
+    document.getElementById("context_menu").style.left = set_x_contextmenu_position(e.clientX) + "px";
+    document.getElementById("context_menu").style.top = set_y_contextmenu_position(e.clientY) + "px";
+    e.preventDefault(); // zakaze defaultne vyskakovacie menu browseru
+    e.stopPropagation(); // nastaví aby sa nezobrazovalo contextove menu nadradeneho elementu
+
+  }
+
+  function not_fully_uploaded_contextmenu(e) {
+    //contextove menu specificke pre suvory
+    console.log(e)//.target.getElementsByTagName("p")[0].innerHTML)
+    document.getElementById("context_menu").innerHTML = "<li onclick='remove_not_fully_uploaded_control(\"" + e.target.getElementsByTagName("p")[0].innerHTML + "\")'>Remove file</li>"// + "<li onclick='rename_file_control(\"" +e.target.getElementsByTagName("p")[0].innerHTML + "\")'>Rename file</li>";
+    document.getElementById("context_menu").style.display = "block";
+    document.getElementById("context_menu").style.position = "absolute";
+    document.getElementById("context_menu").style.left = set_x_contextmenu_position(e.clientX) + "px";
+    document.getElementById("context_menu").style.top = set_y_contextmenu_position(e.clientY) + "px";
+    e.preventDefault(); // zakaze defaultne vyskakovacie menu browseru
+    e.stopPropagation(); // nastaví aby sa nezobrazovalo contextove menu nadradeneho elementu
+
+  }
+
+  function show_uploader() {
+    // zobrazi vyskakovacie okno pre vyber suborov na nahraie
+    set_upload_okno();
+    document.getElementById("action").setAttribute("onclick", "StartUpload()");
+    show_window();
+  }
+ 
+  //funkcia v contextovom menu pre vytvorenie noveho priecinku
+  function mkdir_create_name(){
+    //zobrazi vysakovacie okno pre vytvorenie adresara
+    set_directory_okno();
+    show_window();
+    document.getElementById("action").setAttribute("onclick", "mkdir()");
+  }
+
+  function mkdir(){
+    //vytvori adresar s menom ake bolo vlozene do vykakovaceho okna (viď vyššie)
+    socket.emit("mkdir", {"dir_name": document.getElementById("vklad").value, "path": actualPath, "user_name": readCookie("name"),"token": readCookie("token")}); 
+    document.getElementById("vklad").value = "";
+    hide_window();
+  }
+
+  function remove_control(name){
+    //zobrazi vykakovacie okno s ano nie hlaskov
+    set_yes_no_onko(name);
+    set_yes_no_message("Naozaj si prajete vymazať '" + name +"' ?");
+    show_window();
+    document.getElementById("action").setAttribute("onclick", "remove('"+ name +"', false)");
+  }
+
+  function remove_not_fully_uploaded_control(name) {
+    remove_control(name);
+    document.getElementById("action").setAttribute("onclick", "remove('"+ name +"', true)");
+  }
+
+
+  function remove(name, bool){
+    //vymaze vybrany subor
+    if(bool) {  //ak sa vymazáva súbor ktory'sa aj uploaduje
+      if(FilesForTransfer.length > 1) {  //ak je ich viac začne sa stahovať další
+        FilesForTransfer.shift();
+        SelectedFile = FilesForTransfer[0]
+        StartUpload()
+      }
+      else {          //ak je len jeden tak sa resetuje file reader (neviem ako lepšie zastaviť upload)
+        FReader = new FileReader();
+      }
+      socket.emit("rm", {"name": name, "path": actualPath,"not_fully_uploaded": true ,"user_name": readCookie("name"), "token": readCookie("token")});
+    }
+    else {
+      socket.emit("rm", {"name": name, "path": actualPath,"not_fully_uploaded": false ,"user_name": readCookie("name"), "token": readCookie("token")});
+    }
+    //socket.emit("rmdir", {"dir_name": name, "path": actualPath, "user_name": readCookie("name"), "token": readCookie("token")});
+    hide_window();
+
+  }
+
+  function hide_window() {
+    //skryje vysakovacie okno
+    document.getElementById("okno").style.display = "none";
+  }
+
+  function show_window() {
+    document.getElementById("okno").style.display = "block";
+  }
+
+  function set_directory_okno() {
+    set_default_okno();
+    //nastavý vykakovacie okno pre potreby vytvorenia priecinka
+    set_text_vklad();
+    document.getElementById("h1_oznam").innerHTML = "Nový priečinok";
+    document.getElementById("vklad").style.display = "block";
+    document.getElementById("action").innerHTML = "Vytvotiť";
+    document.getElementById("action").style.display = "block";
+    document.getElementById("close").innerHTML = "Close";
+    //document.getElementById("upload_file").style.display = "none";
+    document.getElementById("oznam").style.display = "block";
+
+  }
+
+  function set_rename_okno() {
+    set_default_okno();
+    set_text_vklad();
+    document.getElementById("h1_oznam").innerHTML = "Nový názov";
+    document.getElementById("vklad").style.display = "block";
+    document.getElementById("action").innerHTML = "Premenovať";
+    document.getElementById("action").style.display = "block";
+    document.getElementById("close").innerHTML = "Close";
+    //document.getElementById("upload_file").style.display = "none";
+    document.getElementById("oznam").style.display = "block"; 
+  }
+
+  function set_download_okno(file_path) {
+    set_yes_no_onko();
+    set_yes_no_message("Pre stiahnutie kliknite na link</br><a onclick='hide_window()' href='" + file_path + "' download> Download </a>");
+    document.getElementById("action").style.display = "none";
+  }
+
+  function set_mp4_okno() {
+    set_yes_no_onko();
+    set_yes_no_message("");
+    document.getElementById("action").style.display = "none";
+  }
+
+  function set_yes_no_onko(name) {
+    set_default_okno();
+    //nastavý vykakovacie okno pre potreby vymazania suboru alebo priecinka
+    set_text_vklad();
+    document.getElementById("h1_oznam").innerHTML = "Naozaj si prajete vymazať " + name + " ?";
+    document.getElementById("vklad").style.display = "none";
+    document.getElementById("action").innerHTML = "Áno";
+    document.getElementById("action").style.display = "block";
+    document.getElementById("close").iunerHTML = "Nie";
+    //document.getElementById("upload_file").style.display = "none";
+    document.getElementById("oznam").style.display = "block";
+
+  }
+
+  function set_yes_no_message(msg) {
+    document.getElementById("h1_oznam").innerHTML = msg;
+  }
+
+  function set_upload_okno() {
+    set_default_okno();
+    //nastavi vykakovacie okno pre potreby zacania nahravania subory
+    document.getElementById("h1_oznam").innerHTML = "Nahrajte súbory";
+    set_file_vklad();
+    document.getElementById("FileBox").style.display = "blcok";
+    document.getElementById("FileBox").defaultValue = "C:\fakepath\2016-11-15-16-31-27275-221885-5abp6zl0iaxbq0bmf516.tar"
+    document.getElementById("action").style.display = "block";
+    document.getElementById("action").innerHTML = "Upload";
+    document.getElementById("close").innerHTML = "Close";
+  }
+
+  function set_default_okno() {
+    document.getElementById("okno").innerHTML = '<div id="medzera"></div><div id="oznam"><h1 id="h1_oznam" >New directory</h1><span id="vklad_container"><input type="text" id="vklad" placeholder="Zadaj meno priečinka"></span><ul id="tlacidla"><li><buttom class="newFile okno" id="action" >Submit</buttom></li><li><buttom onclick="hide_window()" class="logOut okno " id="close">Close</buttom></li></ul>'
+  }
+  
+  function set_file_vklad() {
+    //nastavi input element vo vykakovacom okno na potreby nahatia suboru
+    document.getElementById("vklad_container").innerHTML = '<input onchange="FileChosen(event)" type="file" id="FileBox" multiple>';
+  }
+
+  function set_text_vklad() {
+    //nastavi input element vo vykakovacom okno na potreby nahatia textu
+    document.getElementById("vklad_container").innerHTML = '<input type="text" id="vklad" placeholder="Zadaj meno priečinka">';
+  }
+
+  function reload_f() {
+    //nanovo nacita subory
+    socket.emit("lsfiles",  [actualPath, readCookie("name"), readCookie("token") ] );
+  }
+
+  function prepare_for_URL(msg) {
+    //formatuje text na použitie v URL
+    msg = encodeURIComponent(msg);
+    msg = msg.replace("'", "%27");
+    msg = msg.replace("(", "%28");
+    msg = msg.replace(")", "%29");
+    msg = msg.replace("*", "%2A");
+    msg = msg.replace("!", "%21");
+    msg = msg.replace("~", "%7E");
+    msg = msg.replace("-", "%2D");
+    return msg;
+  }
+
+  function set_x_contextmenu_position(x) {
+    //nastavi spravne zobrazenie contextoveho okna aj pri zobrazeni kontextoveho okna pri boku obrazovky
+    var x;
+    var context_menu = document.getElementById("context_menu");
+    if(x + context_menu.offsetWidth > window.innerWidth) {
+      x = x - context_menu.offsetWidth;
+    }
+    return x;
+  }
+
+  function set_y_contextmenu_position(y) {
+    //nastavi spravne zobrazenie contextoveho okna aj pri zobrazeni kontextoveho okna pri boku obrazovky
+    y += document.body.scrollTop;
+    console.log("screll_tolp: " + document.body.scrollTop)
+    var context_menu = document.getElementById("context_menu");
+    if(y + context_menu.offsetHeight > window.innerHeight + document.body.scrollTop) {
+      y -=  context_menu.offsetHeight * 2;
+    }
+    return y;
+  }
+
+  function rename_dir_control(name) {
+    set_rename_okno();
+    show_window();
+    document.getElementById("action").setAttribute("onclick", "rename(\"" + name + "\")");
+  }
+
+  function rename_file_control(old_name) {
+    console.log(old_name);
+    set_rename_okno();
+    show_window();
+    document.getElementById("action").setAttribute("onclick", "rename_check_ending(\"" + old_name + "\")");
+  }
+
+  function rename_check_ending(old_name) {
+    var new_name = document.getElementById("vklad").value;
+
+    if(old_name.indexOf(".") > -1) {
+      var old_name_ending = old_name.split(".").slice(-1).pop();
+    }
+    else {
+      var old_name_ending = "žiadnej";
+    }
+
+    if(new_name.indexOf(".") > -1) {
+      var new_name_ending = new_name.split(".").slice(-1).pop();
+    }
+    else {
+      var new_name_ending = "žiadnu";
+    }
+    if(old_name_ending != new_name_ending) {
+      set_yes_no_onko();
+      set_yes_no_message("Prajete si zmeniť príponu súboru z '" + old_name_ending + "' na '" + new_name_ending + "'?");
+      show_window();
+      document.getElementById("action").setAttribute("onclick", "rename(\"" + old_name + "\",\"" + new_name + "\")");
+    }
+    else {
+      rename(old_name, new_name);
+    }
+  } 
+
+  function rename(old_name, new_name) {
+    var old_path = actualPath + "/" + old_name;
+    console.log("new name: " + new_name)
+    if(new_name) {
+      var new_path = actualPath + "/" + new_name;
+    }
+    else {
+      var new_path = actualPath + "/" + document.getElementById("vklad").value;
+    }
+    socket.emit("rename", {"old_path": old_path, "new_path": new_path, "user_name": readCookie("name"), "token": readCookie("token") } );
+  }
+
+
+
+
+</script>
+</body>
+</html>
