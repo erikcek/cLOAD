@@ -1,0 +1,80 @@
+body{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+section{
+	width: 50%;
+	margin: 0;
+	display: inline-block;
+	height: 100vh;
+	float: right;
+}
+
+#img{
+	background: no-repeat 
+				url(/images/colorbg.png);
+	background-size: cover;
+	float: left;
+	position: fixed;
+}
+
+#logo{
+	width: 80%;
+	margin: 20% 10%;
+}
+
+div{
+	padding: 30px;
+}
+
+a{
+	display: inline-block;
+	margin: 5px;
+	font-family:'Roboto Mono',
+				 monospace;
+	padding: 7px;
+	text-decoration: none;
+	color: #0e2547;
+}
+
+form{
+	padding: 30px;
+	padding-top: 0;
+}
+
+input{
+	width: 90%;
+	border: none;
+	border-bottom:  2px solid 
+					#0e2547;
+	border-radius: 3px;
+	margin: 20px auto;
+	font-size: 13px;
+	padding: 10px;
+}
+
+input[type=submit]{
+	width: 40%;
+	text-align: center;
+	border: 2px solid #0e2547;
+}
+
+input[type=submit]:hover{
+	background-color: #0e2547;
+	color: white;
+}
+
+#reg{
+	display: none;
+}
+
+.in{
+	border-bottom: 	2px solid
+					#0e2547;
+}
+.in,
+.up{
+	border-radius: 3px;
+}

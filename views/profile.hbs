@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
+	<title></title>
+</head>
+<body>
+	<h1>{{ user }}</h1>
+	<script type="text/javascript">
+		var socket = io();
+
+		socket.emit("lsDirectories", {"path": "/"});
+
+		socket.on("lsDirestoriesReturn", function(data) {
+			console.log(data);
+		})
+				
+	</script>
+
+</body>
+</html>

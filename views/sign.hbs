@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> Login | Registration cLOAD	</title>
+	<link rel="stylesheet" type="text/css" href="/css/sign.css">
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+	
+	 <!-- jQuery -->
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <script src="https://use.fontawesome.com/c411ed4f95.js"></script>
+</head>
+<body>
+	<section id="img">
+		<img id="logo" src="/images/blogo.png" alt="cLOAD logo" title="cLOAD logo">
+	</section>
+
+	<section>
+		<div><a class="in" href="#log">Sign in</a>  |  <a href="#reg" class="up">Sign up</a></div>
+		<form id="log" action="/signin" method="POST">
+				<input type="text" placeholder="Name" name="username">
+				<input type="password" placeholder="Password" name="password">
+				<input type="submit" placeholder="Submit">
+			</form>
+			<form id="reg" action="/signup" method="POST">
+				<input type="text" placeholder="Name" name="username">
+				<!-- <input type="email" placeholder="E-mail"> -->
+				<input type="password" placeholder="Password" name="password">
+				<!-- <input type="password" placeholder="Password"> -->
+				<input type="submit" placeholder="Submit">
+			</form>
+	</section>
+	<script>
+		$(document).ready(function(){
+			$('a.in').on('click', function(e){
+				$(this).css("border-bottom","2px solid #0e2547");
+				$("a.up").css("border-bottom","none");
+				$("#reg").hide(700);
+				$("#log").show(700);
+				e.preventDefault();
+			});
+
+			$("a.up").on('click', function(e){
+				$(this).css("border-bottom","2px solid #0e2547");
+				$("a.in").css("border-bottom","none");
+				$("#log").hide(700);
+				$("#reg").show(700);
+				e.preventDefault();
+			});
+		});
+	</script>
+</body>
+</html>
