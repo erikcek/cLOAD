@@ -1,0 +1,104 @@
+body{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: #0e2547;
+	color: white;
+	overflow: hidden;
+	font-family: "Arial";
+}
+
+#moon{
+	position: absolute;
+	top: 3;
+	height: 35vh;
+	right: 0;
+}
+
+#astro{
+	height: 50vh;
+	bottom: 28px;
+	position: absolute;
+}
+
+/* -- Stars -- */
+.h{
+	width:100%;
+    position: absolute;
+	height: auto;
+	top: 0;
+}
+
+.h1{z-index: -20;}
+.h2{z-index: -20;}
+.h3{z-index: -20;}
+
+/* -- Form -- */
+
+form{
+	width: 50%;
+	margin-left: 25%;
+	position: absolute;
+	margin-top: 6%;
+	text-align: center;
+	z-index: 100;
+	background: #0E2547;
+}
+ 
+form img{
+	width: 40%;
+}
+
+input{
+	background: #0e2547;
+	color: white;
+	width: 90%;
+	border: none;
+	border-bottom: 2px solid #fff;
+	border-radius: 3px;
+	margin: 20px auto;
+	font-size: 13px;
+	padding: 10px;
+	z-index: 1000;
+}
+
+input:focus{
+	outline: none;
+}
+
+input[type=submit]{
+	width: 40%;
+	text-align: center;
+	border: 2px solid #fff;
+	display: inline-block;
+	color: white;
+}
+
+input[type=submit]:hover{
+	background-color: #fff;
+	color: #0e2547;
+}
+
+#google{
+	width: 40%;
+	border: #d34836 solid 2px;
+	background-color: #d34836;
+	color: #0e2547;
+	font-family: "Arial";
+	border-radius: 3px;
+	margin: 20px auto;
+	font-size: 13px;
+	padding: 10px;
+	text-align: center;
+	display: inline-block;
+	text-decoration: none;
+}
+
+#google:hover{
+	background-color: #d34836;
+	color: white;
+}
+
+a{
+	text-decoration: none;
+}
