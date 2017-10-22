@@ -19,37 +19,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title> cLOAD - Internetové úložisko	</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 	
-	 <!-- jQuery -->
+	 <!-- Scripts -->
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+   <script src="js/script.js"></script>
+   <script src="js/stars.js"></script>
 
-     <!-- local scripts -->
-   <script src="/js/indexAnimationScript.js"></script>
-   
-
-    <!-- fonts -->
+    <!-- fonts and icons -->
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <script src="https://use.fontawesome.com/c411ed4f95.js"></script>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
 
 </head>
 <body>
 	<header>
 		<ul id="navigation">
-			<li><a href="/sign" class="menuSing">Sing in | Sing up</a></li>
-			<li><a href="#team" class="menuButton hvr-underline-from-center">Our Team</a></li>
-			<li><a href="#func" class="menuButton hvr-underline-from-center">Functions</a></li>
-			<li><a href="#about" class="menuButton hvr-underline-from-center">About</a></li>
-			<li><a href="#navigation" class="menuButton hvr-underline-from-center">Home</a></li>
+			<li><a href="/signin" class="menuSing">Login</a></li>
+			<li><a href="#team" class="menuButton underline">Our Team</a></li>
+			<li><a href="#func" class="menuButton underline">Functions</a></li>
+			<li><a href="#about" class="menuButton underline">About</a></li>
+			<li><a href="#navigation" class="menuButton underline">Home</a></li>
 		</ul>
 		
-		<img src="/images/h1.png" class="h1 h" alt="">
-		<img src="/images/h2.png" class="h2 h" alt="">
-		<img src="/images/h3.png" class="h3 h" alt="">
+	<!-- Stars --> 
+		<img src="images/h1.png" class="h1 h" alt="">
+		<img src="images/h2.png" class="h2 h" alt="">
+		<img src="images/h3.png" class="h3 h" alt="">
 
-		<img id="rocket" src="/images/rocket.png" alt="Rocket" title="Rocket">
-		<img id="logo" src="/images/blogo.png" alt="cLOAD logo" title="cLOAD logo">
+	<!-- Flying rocket -->
+		<img id="rocket" src="images/rocket.png" alt="Rocket" title="Rocket">
+
+	<!-- Logo cLOAD -->
+		<img id="logo" src="images/blogo.png" alt="cLOAD logo" title="cLOAD logo">
+
+	<!-- Small button "Up" -->
 		<a class="menuButton" href="#navigation"><i class="fa fa-caret-up fa-2x" aria-hidden="true"></i></a>
 	</header>
 
@@ -70,17 +74,17 @@
 		<h1>Prečo práve cLOAD ?</h1>
 		<ul id="funcUL">
 			<li>
-				<img src="/images/ico1.png" class="ico" alt="Icon Security" title="Icon Security">
+				<img src="images/ico1.png" class="ico" alt="Icon Security" title="Icon Security">
 				<h2>Bezpečnosť</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi dicta veniam vero.</p>
 			</li>
 			<li>
-				<img src="/images/ico2.png" class="ico" alt="Speed Icon" title="Speed icon">
+				<img src="images/ico2.png" class="ico" alt="Speed Icon" title="Speed icon">
 				<h2>Rýchlosť</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi dicta veniam vero </p>
 			</li>
 			<li>
-				<img src="/images/ico3.png" class="ico" alt="Simplify icon" title="Icon">
+				<img src="images/ico3.png" class="ico" alt="Simplify icon" title="Icon">
 				<h2>Jednoduchosť</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi d..</p>
 			</li>
@@ -104,6 +108,5 @@
 		
 	</footer>
 
-	
 </body>
 </html>

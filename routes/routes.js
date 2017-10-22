@@ -7,8 +7,13 @@ module.exports = function(app, passport) {
 		console.log(req.session.user);
 	});
 
+
 	app.get("/sign", function(req, res) {
 		res.render("sign", {"singupMessage": req.flash("singupMessage")});
+	});
+
+	app.get("/signin", function (req, res){
+		res.render("login");
 	});
 
 	app.post("/signin", passport.authenticate("local-login", {
