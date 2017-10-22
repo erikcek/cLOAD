@@ -23,6 +23,22 @@ module.exports = function(app, passport) {
         failureFlash 	: true 		// allow flash messages
 	}));
 
+	app.get("/forget", function(req, res) {
+		res.render("forget", {"forgetMessage": req.flash("forgetMessage")});
+	});
+
+	app.post("/forget", function(req, res) {
+		require("../src/forgetPasswordEmailHandler")(req, res);
+	});
+
+	app.get("/reset/:token", function(req,res) {
+		require("../src/tokenHandler")(req, res);
+	});
+
+	app.post("/reset/:token", function(req, res) {
+		require("../src/resetPasswordHandler")(req, res);
+	});
+
 	app.get("/auth/google", passport.authenticate("google", {
 		scope : ['profile', 'email']
 	}));
