@@ -30,9 +30,9 @@ module.exports = function(password) {
 		return {isValidated: true};
 	}
 	else {
-		//var message = [];
-		var message = schema.validate(password, {list: true});
-		/*for (var i = 0; i < checkedPassword.length; i++){
+		var message = [];
+		var checkedPassword = schema.validate(password, {list: true});
+		for (var i = 0; i < checkedPassword.length; i++){
 			switch(checkedPassword[i]) {
 				case "min":
 					message.push("Password must have at least 8 characters.");
@@ -49,8 +49,11 @@ module.exports = function(password) {
 				case "digits":
 					message.push("Password must have at least one digit.");
 					break;
+				case "spaces":
+					message.push("Password cannot have any spaces");
+					break;
 			}
-		} */
+		} 
 		return {isValidated: false, message: message};
 	}
 }

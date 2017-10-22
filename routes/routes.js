@@ -8,7 +8,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.get("/sign", function(req, res) {
-		res.render("sign");
+		res.render("sign", {"singupMessage": req.flash("singupMessage")});
 	});
 
 	app.post("/signin", passport.authenticate("local-login", {

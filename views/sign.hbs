@@ -26,10 +26,13 @@
 				<input type="submit" placeholder="Submit">
 			</form>
 			<form id="reg" action="/signup" method="POST">
+				{{#each singupMessage}}
+					<p>{{this}}</p>
+				{{/each}}
 				<input type="text" placeholder="Name" name="username">
-				<!-- <input type="email" placeholder="E-mail"> -->
+				<input type="email" placeholder="E-mail" name="email">
 				<input type="password" placeholder="Password" name="password">
-				<!-- <input type="password" placeholder="Password"> -->
+			 	<input type="password" placeholder="Password" name="controlPassword">
 				<input type="submit" placeholder="Submit">
 			</form>
 	</section>
