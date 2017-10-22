@@ -1,3 +1,4 @@
+.DS_Store
 /dependencies
 /config/auth.js
 /config/databases.js
