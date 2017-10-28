@@ -4,7 +4,8 @@ module.exports = function(app, passport) {
 	app.get("/", function(req, res) {
 		res.render("index");
 		console.log(req.user);
-		console.log(req.session.user);
+		console.log(req.session)
+		//console.log(req.session.user);
 	});
 
 
