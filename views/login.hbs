@@ -25,6 +25,9 @@
 
 	<form id="log" action="/signin" method="POST">
 		<a href="index.html"><img src="/images/blogo.png" alt="cLOAD logo"></a>
+		{{#each signInMessage}}
+			<p>{{this}}</p>
+		{{/each}}
 		<input type="text" placeholder="Name" name="username">
 		<input type="password" placeholder="Password" name="password">
 		<input type="submit" placeholder="Submit"> or

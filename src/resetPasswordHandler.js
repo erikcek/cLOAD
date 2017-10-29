@@ -32,7 +32,7 @@ module.exports = function(req, res) {
 		},
 
 		function(user, done) {
-			user.local.password = req.body.password;
+			user.local.password = user.generateHash(req.body.password);
 			user.local.passwordResetToken = undefined;
 			user.local.passwordResetExpiration = undefined;
 

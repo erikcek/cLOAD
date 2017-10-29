@@ -179,11 +179,11 @@ module.exports = function(passport) {
 	    		}
 
 	    		if (!user) {
-	    			return done(null, false, req.flash("loginMessage", "User not found."));
+	    			return done(null, false, req.flash("signInMessage", "User not found."));
 	    		}
 
 	    		if (!user.validPassword(password)) {
-	    			return done(null, false, req.flash("Wrong password"));
+	    			return done(null, false, req.flash("signInMessage","Wrong password"));
 	    		}
 
 	    		return done(null, user);

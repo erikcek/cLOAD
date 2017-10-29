@@ -2,6 +2,7 @@ var async = require("async");
 var User = require("../model/user");
 var randomstring = require("randomstring");
 var nodemailer = require("nodemailer");
+var configAuth =  require("../config/auth");
 
 module.exports = function(req, res) {
 	async.waterfall([
@@ -30,8 +31,8 @@ module.exports = function(req, res) {
 			var transporter = nodemailer.createTransport({
 				service: 'gmail',
 				auth: {
-					user: 'erik.kandalik@student.spseke.sk',
-					pass: 'T1e2s3t4'
+					user: configAuth.googleEmailServer.username,
+					pass: configAuth.googleEmailServer.password
 				}
 			});
 

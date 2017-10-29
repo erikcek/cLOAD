@@ -14,12 +14,12 @@ module.exports = function(app, passport) {
 	});
 
 	app.get("/signin", function (req, res){
-		res.render("login");
+		res.render("login", {"signInMessage": req.flash("signInMessage")});
 	});
 
 	app.post("/signin", passport.authenticate("local-login", {
 		successRedirect	: "/profile",
-		failureRedirect	: "/sign",
+		failureRedirect	: "/signin",
 		failureFlash	: true
 	}));
 
