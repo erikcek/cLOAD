@@ -131,6 +131,7 @@ module.exports = function(passport) {
 							function(newUser, async_done) {
 								var newDirectory = Directory();
 								newDirectory.name = newUser.local.username;
+								newDirectory.path = require("./userDirectories").localFolder + newUser.local.username + "/";
 								newDirectory.parentDirectoryPath = require("./userDirectories").localFolder;
 
 								newDirectory.save(function(err, directory) {
@@ -151,6 +152,7 @@ module.exports = function(passport) {
 										return async_done(err)
 									}
 									else {
+										req.session.workingDirectory = user.direcotry;
 										return done(null,newUser);
 									}
 								})
@@ -185,7 +187,8 @@ module.exports = function(passport) {
 	    		if (!user.validPassword(password)) {
 	    			return done(null, false, req.flash("signInMessage","Wrong password"));
 	    		}
-
+	    		req.session.workingDirectory = user.directory;
+	    		console.log(req.session);
 	    		return done(null, user);
 	    	});
 	    }
@@ -251,6 +254,7 @@ module.exports = function(passport) {
     				var newDirectory = new Directory();
 
     				newDirectory.name = profile.emails[0].value;
+    				newDirectory.path = require("./userDirectories").googleFolder + profile.emails[0].value + "/";
     				newDirectory.parentDirectoryPath = require("./userDirectories").googleFolder;
 
     				newUser.google.id 		= 	profile.id;
@@ -294,6 +298,7 @@ module.exports = function(passport) {
 	                	}
 	                	else {
 	                		console.log("Successfully created dirrectory for new user.");
+	                		req.session.workingDirectory = user.direcotry;
 	                		return done(null, user);
 	                	}
                 	});
@@ -302,47 +307,7 @@ module.exports = function(passport) {
     			console.log("error in passport google at waterrfall err function");
     			return done(null, false);
     		});
-    		/*
-    		User.findOne( {"google.id" : profile.id}, function(err, user) {
-    			if (err) {
-    				console.log("in error gogole");
-    				return done(err);
-    
-    			}
 
-    			if (user) {
-    				console.log("in user gogole");
-    				return done(null, user);
-    				
-    			}
-    			else {
-    				console.log("in not user gogole");
-    				var newUser = new User();
-
-    				newUser.google.id 		= 	profile.id;
-    				newUser.google.token 	= 	token;
-    				newUser.google.name 	= 	profile.displayName;
-    				newUser.google.email 	= 	profile.emails[0].value;
-    				console.log(newUser);
-
-    				newUser.save(function(err) {
-    					if (err) {
-    						return done(err);
-    					}
-    					return done(null, newUser);
-    				});
-
-					fs.mkdir( require("./userDirectories.js").googleFolder +  profile.emails[0].value , function(err) {
-	                	if (err) {
-	                		console.log("Unable to create directory for new user.");
-	                		console.log(err);
-	                	}
-	                	else {
-	                		console.log("Successfully created dirrectory for new user.");
-	                	}
-                	});
-    			}
-			}); */
     	});
     }
 

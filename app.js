@@ -23,7 +23,8 @@ var client = redis.createClient();
 var sessionStore = new RedisStore({
 	host: "localhost", 
 	port: 6379, 
-	client: client
+	client: client,
+	ttl: 10
 });
 
 
@@ -51,7 +52,7 @@ var sessionMiddleware = session({
 		path: '/', 
 		httpOnly: true, 
 		secure: false, 
-		maxAge: 60*60*1000//30*24*60*60*1000
+		maxAge: 10*1000//30*24*60*60*1000
 	},
 	saveUninitialized: false,				
 	resave: false,
