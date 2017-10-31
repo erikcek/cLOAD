@@ -13,45 +13,99 @@ module.exports = function(io) {
 		//#######################################################################################
 
 		socket.on("lsFiles", function(data) {
-			var directoryName = getDirectoryName(socket.request);
-			Directory.findOne({"_id": socket.request.user.directory}, function(err, directory) {
-				if (err) {
-					return console.log("error in socketAPI on lsFiles");
-				}
-				console.log(directory);
-			});
-			/*
-			fs.readdir(directoryName + data.path, (err,files) => {
 
-				var filesForReturn = new Array();
-				
-				if (err) {
-					console.log(err)
-				}
-				else {
-					files.forEach( function(file) {
-						if(fs.statSync(directoryName + data.path + "/" + file).isDirectory() != true){
-							
-							filesForReturn.push(file);	
-						}		
+			async.waterfall([
+
+				function(done) {
+					var workingDirectory = socket.request.session.workingDirectory;
+					Directory.findOne( {"_id": workingDirectory}, function(err, directory) {
+						if (err) {
+							return done(true);
+						}
+						else if (!directory) {
+							return done(true);
+						}
+						else {
+							return done(false, directory);
+						}
 					});
-					socket.emit("lsFilesReturn", filesForReturn);
+				},
+
+				function(directory, done) {
+					var fileNames = new Array();
+					for (var i = 0 ; i< directory.files.length; i++) {
+						fileNames.push(directory.files[i].name);
+					}
+					return done(false, fileNames);
+				},
+
+				function(fileNames, done) {
+					//socket.emit("lsDirectoriesReturn", fileNames);
+					console.log(fileNames);
 				}
+
+			], function(err) {
+				console.log("error in lsFiles | socketAPI ");
 			});
-			*/
 
 		});
-//##############################################################################################################################
-//##############################################################################################################################
-												//all in progress
-//##############################################################################################################################
-//##############################################################################################################################
+
+		//#######################################################################################
+		// 									lsDirectories
+		//#######################################################################################
+
+		socket.on("lsDirectories", function() {
+
+			async.waterfall([
+
+				function(done) {
+					var workingDirectory = socket.request.session.workingDirectory;
+					Directory.findOne( {"_id": workingDirectory}, function(err, directory) {
+						if (err) {
+							return done(true);
+						}
+						else if (!directory) {
+							return done(true);
+						}
+						else {
+							return done(false, directory);
+						}
+					});
+				},
+
+				function(directory, done) {
+					var directoryNames = new Array();
+					for (var i = 0 ; i< directory.nestedDirectories.length; i++) {
+						directoryNames.push(directory.nestedDirectories[i].name);
+					}
+					return done(false, directoryNames);
+				},
+
+				function(directoryNames, done) {
+					socket.emit("lsDirectoriesReturn", directoryNames);
+					console.log(directoryNames);
+				}
+
+			], function(err) {
+				console.log("error in lsDirectories | socketAPI ");
+			});
+
+		});
+
+
+		//#######################################################################################
+		// 										createDirectory
+		//#######################################################################################
+		
 		socket.on("createNewDirectory", function(data) {
 
 			var workingDirectory = socket.request.session.workingDirectory;
 
 			async.waterfall([
-				function(done) {
+
+									//skontroluje, či pracovný priečinok užívateľa existuje
+				//#######################################################################################
+				function(done) {									
 					console.log("1");
 					Directory.findOne({ "_id": workingDirectory}, function(err, directory) {
 						if (err) {
@@ -67,6 +121,8 @@ module.exports = function(io) {
 					});
 				},
 
+											//vytvorí objekt newDirectory 	
+				//#######################################################################################
 				function(directory, done) {
 					console.log("2");
 					var newDirectory = new Directory();
@@ -78,6 +134,8 @@ module.exports = function(io) {
 					return done(false, directory, newDirectory);
 				},
 
+									//vytvorý súbor zodpovedajúci objektu newDirecotrx
+				//#######################################################################################
 				function(directory, newDirectory, done) {
 					console.log("3");
 					fs.mkdir(newDirectory.path, function(err) {
@@ -89,6 +147,8 @@ module.exports = function(io) {
 					});
 				},
 
+									//uloží objekt newDirectory do databázy
+				//#######################################################################################
 				function(directory, newDirectory, done) {
 					console.log("4");
 					newDirectory.save(function(err, newDirectory) {
@@ -101,6 +161,8 @@ module.exports = function(io) {
 					});
 				},
 
+									//obnoví dokument rodičovského súboru v databáze
+				//#######################################################################################
 				function(directory, newDirectory, done) {
 					console.log("5");
 					directory.nestedDirectories.push({
@@ -127,8 +189,10 @@ module.exports = function(io) {
 				}
 
 
-
+									//funkcia na spracovanie chýb a ich opravu
+				//#######################################################################################
 			], function(err, errorIn, directory, newDirectory) {
+
 				if (errorIn == "saveNewDirectory") {
 					fs.rmdir(newDirectory.path, function (err) {
 						if (err) {
@@ -188,8 +252,49 @@ module.exports = function(io) {
 			})
 			*/
 		});
-
+//##############################################################################################################################
+//##############################################################################################################################
+												//all in progress
+//##############################################################################################################################
+//##############################################################################################################################
 		socket.on("openDirectory", function(data) {
+			
+			var workingDirectory = socket.request.session.workingDirectory;
+
+			async.waterfall([
+
+									//skontroluje, či pracovný priečinok užívateľa existuje
+				//#######################################################################################
+				function(done) {									
+					console.log("1");
+					Directory.findOne( { $and: [{ "_id": socket.request.session.workingDirectory}, {"nestedDirectories.name": data}] }, function(err, directory) {
+						if (err) {
+							return done(true);
+						}
+						else if (!directory) {
+							return done(true);
+						}
+						else {
+							return done(false, directory);
+						}
+
+					});
+				},
+
+				function(directory, done) {
+					var idOfDirectory = directory.nestedDirectories.filter(function(el) {
+						return el.name == data;
+					})[0]._id;
+
+					socket.request.session.workingDirectory = idOfDirectory;
+					console.log(directory);
+				}
+
+			], function(err) {
+				console.log("error in openDirectory | socketAPI");
+			})
+
+/*
 			Directory.findOne( { $and: [{ "_id": socket.request.session.workingDirectory}, {"nestedDirectories.name": data}] }, function(err, directory) {
 				if (err) {
 					console.log(err);
@@ -204,65 +309,94 @@ module.exports = function(io) {
 					console.log(idOfDirectory);
 				}
 			});
+*/
 		});
 
-//##############################################################################################################################
-//##############################################################################################################################
-//##############################################################################################################################
-//##############################################################################################################################
+		socket.on("returnToUpperDirectory", function() {
 
+			var workingDirectory = socket.request.session.workingDirectory;
 
+			async.waterfall([	
 
-		//#######################################################################################
-		// 									lsDirectories
-		//#######################################################################################
-
-		socket.on("lsDirectories", function(data) {
-
-			var directoryName = getDirectoryName(socket.request);
-
-			fs.readdir(directoryName + data.path, (err,files) => {
-
-				var directoriesForReturn = new Array();
-				
-				if (err) {
-					console.log(err)
-				}
-				else {
-					files.forEach( function(directory) {
-						if(fs.statSync(directoryName + data.path + "/" + directory).isDirectory() == true){
-							
-							directoriesForReturn.push(directory);	
+				function(done) {
+					Directory.findOne( {"_id": workingDirectory}, function(err,directory) {
+						if (err) {
+							return done(true);
+						}
+						else if (!directory) {
+							return done(true);
+						}
+						else {
+							return done(false, directory);
 						}
 					});
-					socket.emit("lsDirestoriesReturn", directoriesForReturn);
+				},
+
+				function(directory, done) {
+					Directory.findOne( {"path": directory.parentDirectoryPath}, function(err, dir) {
+						if (dir) { 
+							socket.request.session.workingDirectory = dir._id;
+						}
+						else {
+							return done(true);
+						}
+					})
+					// znovunacitanie suborov 
 				}
 
+			], function(err) {
+				console.log("error in returnToUpperDirectory | socktAPI");
 			});
-
 		});
 
-		//#######################################################################################
-		// 										lsFiles
-		//#######################################################################################
+		socket.on("repairFileSystem", function() {
+			var workingDirectory = socket.request.session.workingDirectory;
+			repairFileSystem(workingDirectory);
+		});
+
+//##############################################################################################################################
+//##############################################################################################################################
+//##############################################################################################################################
+//##############################################################################################################################
 
 	});
 }
 
+function repairFileSystem(workingDirectory) {	
+	Directory.findOne( {"_id": workingDirectory}, function(err, directory) {
+		if (directory) {
+			var directoryNames = new Array();
+			for (var i = 0 ; i< directory.nestedDirectories.length; i++) {
+				directoryNames.push(directory.nestedDirectories[i].name);
+			}
+			console.log("directory names");
+			console.log(directoryNames);
 
+			fs.readdir(directory.path, function(err, files) {
+				console.log("files");
+				files = files.filter(function(name) {
+					return !(name.startsWith("."));
+				})
+				console.log(files);
 
-function getDirectoryName(req) {
-	if (req.user.local.username) {
-		var directoryName = require("../config/userDirectories.js").localFolder + req.user.local.username;
-	}
-	else if (req.user.google.email) {
-		var directoryName = require("../config/userDirectories.js").googleFolder + req.user.google.email;
-	}
-	else {
-		return console.log("error in lsDirectory socket.io");
-	}
-	return directoryName;
+				if (directoryNames.length < files.length) {
+					var unknowDirectories = files.filter(function(name) {
+						return directoryNames.indexOf(name) == -1;
+					});
+					// vytvor záznamy v Directory kolekcii pre vsetky priecinky v premennej unknowDirectories
+				}
+				// ak je file.l viac ako dir.l tak musíš záznamy v Directory kolekcii vymazat
+
+				//ak su rovné tak je vsetko v poriadu
+
+				//skontroluj ci sedia subory rovnako ako priecinky
+
+				//rekurzivne pokracuj pre vsetky vnorene prieciny.
+			})
+		}
+	});
 }
+
 
 
 
