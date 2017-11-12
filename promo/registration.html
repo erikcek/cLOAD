@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Registration | cLOAD</title>
+	<meta name="author" content="Katarína Golenyová, Erik Kandalík">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Styles -->
+	<link rel="stylesheet" href="css/login.css">
+
+	<!-- Scripts -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/stars.js"></script>
+
+	<!-- Fonts and icons -->
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+</head>
+<body style="overflow-y: scroll;">
+	<img src="images/moon.png" id="moon" alt="Moon">
+	<img src="images/astronaut.png" id="astro" alt="Astronaut">
+
+	<form id="log" style="margin-top: 2%;" action="" method="POST">
+		<a href="index.html"><img src="images/blogo.png" alt="cLOAD logo"></a>
+		<input type="text" name="name" placeholder="Name">
+		<!--<p id="error">This name is alredy used.</p>-->
+		<input type="email" name="email" placeholder="E-mail">
+		<input type="password" name="password" placeholder="Password">
+		<input type="password" name="controlPassword" placeholder="Password">
+
+		<p id="error">This name is alredy used.</p>
+		<input type="submit" value="Sing up"> 
+
+		<p>A member yet? <a href="login.html" class="underline"> Sing in</a></p>
+	</form>
+
+	<!-- Stars -->
+	<img src="images/h4.png" class="h1 h" alt="Stars">
+	<img src="images/h5.png" class="h2 h" alt="stars">
+	<img src="images/h6.png" class="h3 h" alt=stars"">
+</body>
+</html>
