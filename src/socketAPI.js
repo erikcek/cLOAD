@@ -1,9 +1,65 @@
 var fs = require("fs");
 var Directory = require("../model/directory");
 var async = require("async");
+const SocketIOFile = require('socket.io-file');
 
 module.exports = function(io) {
+
 	io.on('connection', socket => {
+
+//##############################################################################################################################
+//##############################################################################################################################
+												//all in progress
+//##############################################################################################################################
+//##############################################################################################################################
+
+
+
+		var uploader = new SocketIOFile(socket, {
+	        // uploadDir: {			// multiple directories
+	        // 	music: 'data/music',
+	        // 	document: 'data/document'
+	        // },
+	        uploadDir: __dirname + '/../usersDirectories/',							// simple directory		// chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
+	        chunkSize: 1024000,							// default is 10240(1KB)
+	        transmissionDelay: 0,						// delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay)
+	        overwrite: true 							// overwrite file if exists, default is true.
+	    });
+
+	    uploader.on('start', (fileInfo) => {
+	        console.log('Start uploading');
+	        console.log(fileInfo);
+	    });
+
+	    uploader.on('stream', (fileInfo) => {
+	        console.log(`${fileInfo.wrote} / ${fileInfo.size} byte(s)`);
+	    });
+
+	    uploader.on('complete', (fileInfo) => {
+	        console.log('Upload Complete.');
+	        console.log(fileInfo);
+	    });
+
+	    uploader.on('error', (err) => {
+	        console.log('Error!', err);
+	    });
+
+	    uploader.on('abort', (fileInfo) => {
+	        console.log('Aborted: ', fileInfo);
+	    });
+
+
+
+//##############################################################################################################################
+//##############################################################################################################################
+//##############################################################################################################################
+//##############################################################################################################################
+
+
+
+
+
+
 		socket.on("info", function(){
 			console.log(socket.request.session);
 		});

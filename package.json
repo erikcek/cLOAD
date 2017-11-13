@@ -33,7 +33,9 @@
     "randomstring": "^1.1.5",
     "redis": "^2.8.0",
     "rimraf": "^2.6.2",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.0.3",
+    "socket.io-file": "^2.0.15",
+    "socket.io-file-client": "^2.0.13"
   },
   "devDependencies": {
     "webpack": "^3.6.0"

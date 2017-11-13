@@ -1,13 +1,32 @@
 
 module.exports = function(app, passport) {
 
+
+
+	app.get('/socket.io-file-client.js', (req, res, next) => {
+	    return res.sendFile("/Users/erikkandalik/Documents/rop/cLOAD/public/js/socket.io-file-client/socket.io-file-client.js");
+	});
+	 
+	app.get('/socket.io.js', (req, res, next) => {
+	    return res.sendFile(__dirname + '/../node_modules/socket.io-client/dist/socket.io.js');
+	});
+
+	app.get('/app.js', (req, res, next) => {
+		console.log("test");
+		console.log(__dirname + "/../public/js/client-socket.js");
+	    return res.sendFile("/Users/erikkandalik/Documents/rop/cLOAD/public/js/client-socket.js");
+	});
+
+
+
+
+
 	app.get("/", function(req, res) {
 		res.render("index");
 		console.log(req.user);
 		console.log(req.session)
 		//console.log(req.session.user);
 	});
-
 
 	app.get("/sign", function(req, res) {
 		res.render("sign", {"singupMessage": req.flash("singupMessage")});
