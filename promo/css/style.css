@@ -159,7 +159,7 @@ a{
   background-size: cover;
   height: 100vh;
   padding-top: 1%;
-}
+} 
 
 #func h1{
   color: white;
@@ -186,4 +186,15 @@ a{
 .ico{
   width: 70%;
   margin:  0 14%;
+}
+
+footer{
+  background-color: black;
+  position: fixed;
+  height: 50vh;
+  width: 100%;
+}
+
+#ul{
+  display: inline-block;
 }
