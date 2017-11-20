@@ -12,15 +12,19 @@ module.exports = function(io) {
 												//all in progress
 //##############################################################################################################################
 //##############################################################################################################################
-
-
-
+		console.log(getWorkingDirectoryPath(socket.request.session.workingDirectory));
 		var uploader = new SocketIOFile(socket, {
 	        // uploadDir: {			// multiple directories
 	        // 	music: 'data/music',
 	        // 	document: 'data/document'
 	        // },
-	        uploadDir: __dirname + '/../usersDirectories/',							// simple directory		// chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
+	        uploadDir:  Directory.findOne( {"_id": workingDirectory }, function(err,directory) {
+						//console.log("ddd");
+						if (directory) {
+							//console.log(directory.path);
+							return directory;
+						}
+					}),
 	        chunkSize: 1024000,							// default is 10240(1KB)
 	        transmissionDelay: 0,						// delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay)
 	        overwrite: true 							// overwrite file if exists, default is true.
@@ -454,6 +458,15 @@ function repairFileSystem(workingDirectory) {
 }
 
 
-
+function getWorkingDirectoryPath(workingDirectory) {
+	console.log(workingDirectory);
+	Directory.findOne( {"_id": workingDirectory }, function(err,directory) {
+		//console.log("ddd");
+		if (directory) {
+			//console.log(directory.path);
+			return directory;
+		}
+	})
+}
 
 

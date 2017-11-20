@@ -22,17 +22,17 @@
 
 	<form id="log" style="margin-top: 2%;" action="/signup" method="POST">
 		<a href="index.html"><img src="images/blogo.png" alt="cLOAD logo"></a>
-		<input type="text" name="username" placeholder="Name">
+		<input type="text" name="username" placeholder="Name" value="{{username}}">
 		<!--<p id="error">This name is alredy used.</p>-->
-		<input type="email" name="email" placeholder="E-mail">
+		<input type="email" name="email" placeholder="E-mail" value="{{email}}">
 		<input type="password" name="password" placeholder="Password">
 		<input type="password" name="controlPassword" placeholder="Password">
 
 		<input type="submit" value="Sing up"> 
-		{{#each singupMessage}}
+		{{#each signUpMessage}}
 			<p id="error">{{this}}</p>
 		{{/each}}
-		<p>Allready member?<a href="/signin" class="underline"> Sing in</a></p>
+		<p>Allready member? <a href="/signin" class="underline"> Sing in</a></p>
 	</form>
 
 	<!-- Stars -->

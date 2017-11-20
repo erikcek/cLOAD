@@ -17,7 +17,7 @@ var session      = require("express-session");
 var RedisStore = require("connect-redis")(session);
 
 var configDB = require("./config/database.js");
-
+var favicon = require("serve-favicon");
 //var sessionStore = new MongoStore({ url: "mongodb://localhost:27017/User" });
 var client = redis.createClient();
 var sessionStore = new RedisStore({
@@ -39,6 +39,7 @@ mongoose.connect(configDB.url, {
 app.use(morgan('dev')); 								// log every request to the console
 app.use(cookieParser()); 								// read cookies (needed for session, passport and sockets)
 app.use(bodyParser());  								// access HTML form data in requests
+app.use(favicon("./public/images/favicon.ico"));
 
 
 app.set("views", path.join(__dirname, "views")); 		//setting view engine and default view directory
