@@ -1,4 +1,4 @@
-
+ 
 module.exports = function(app, passport) {
 
 	app.get("/", function(req, res) {
@@ -7,15 +7,18 @@ module.exports = function(app, passport) {
 		console.log(req.session)
 		//console.log(req.session.user);
 	});
-
-
+/*
 	app.get("/sign", function(req, res) {
 		res.render("sign", {"singupMessage": req.flash("singupMessage")});
 	});
-
+*/
 	app.get("/signin", function (req, res){
 		res.render("login", {"signInMessage": req.flash("signInMessage")});
 	});
+
+	app.get("/signup", function (req, res) {
+		res.render("registration", { "signUpMessage": req.flash("signUpMessage"), "username": req.flash("username"), "email": req.flash("email")});
+	})
 
 	app.post("/signin", passport.authenticate("local-login", {
 		successRedirect	: "/profile",
@@ -25,7 +28,7 @@ module.exports = function(app, passport) {
 
 	app.post("/signup", passport.authenticate("local-singup", {
 		successRedirect : '/profile', 		// redirect to the secure profile section
-        failureRedirect : '/sign', // redirect back to the signup page if there is an error
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash 	: true 		// allow flash messages
 	}));
 
@@ -55,7 +58,7 @@ module.exports = function(app, passport) {
 	}));
 
 	app.get("/profile", isLoggedIn ,function(req, res) {
-		console.log(req.user.google.name);
+		//console.log(req.user.google.name);
 		if(req.user.local.username) {
 			res.render("profile", {user: req.user.local.username});
 		}

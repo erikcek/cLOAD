@@ -39,34 +39,25 @@ module.exports = function(passport) {
 
 					if (user) {
 						
-						return done(null, false, req.flash("singupMessage", "This name is allready taken."));
+						return done(null, false, req.flash("signUpMessage", "This name is allready taken."));
 					}
 					else {
-						console.log("else");
+						//console.log("else");
 						async.waterfall([
 							//######################################################################
 							// 							check username
 							//######################################################################
 							function(async_done) {
+								//console.log("1");
 								var checkedUserName =require("../src/validateUserName")(username);
 
 								if (checkedUserName.isValidated) {
+									req.flash("username", username);
+									req.flash("email", req.body.email);
 									return async_done(false);
 								}
 								else {
-									req.flash("singupMessage", checkedUserName.message);
-									return async_done(true);
-								}
-							},
-							//######################################################################
-							// 					check if passwords are the same
-							//######################################################################
-							function(async_done) {
-								if (req.body.controlPassword == password) {
-									return async_done(false);
-								}
-								else {
-									req.flash("singupMessage", "Passwords are not the same.");
+									req.flash("signUpMessage", checkedUserName.message);
 									return async_done(true);
 								}
 							},
@@ -74,6 +65,7 @@ module.exports = function(passport) {
 							// 				check if email is correct and if email exists
 							//######################################################################
 							function(async_done) {
+								//console.log("3");
 								var email = req.body.email;
 								if (require("../src/validateEmail")(email)) {
 									User.findOne( {"local.email": email}, function(err, user) {
@@ -81,16 +73,30 @@ module.exports = function(passport) {
 											return async_done(true);
 										}
 										else if(user) {
-											req.flash("singupMessage", "Email is allready taken.");
+											req.flash("signUpMessage", "Email is allready taken.");
 											return async_done(true);
 										}
 										else {
+											req.flash("email", email);
 											return async_done(false, email);
 										}
 									});
 								}
 								else {
-									req.flash("singupMessage", "Email is incorrect.");
+									req.flash("signUpMessage", "Email is incorrect.");
+									return async_done(true);
+								}
+							},
+							//######################################################################
+							// 					check if passwords are the same
+							//######################################################################
+							function(email, async_done) {
+								//console.log("2");
+								if (req.body.controlPassword == password) {
+									return async_done(false, email);
+								}
+								else {
+									req.flash("signUpMessage", "Passwords are not the same.");
 									return async_done(true);
 								}
 							},
@@ -98,6 +104,7 @@ module.exports = function(passport) {
 							// 					check if password is strong enaught
 							//######################################################################
 							function(email,async_done) {
+								//console.log("3");
 								var checkedPassword = require("../src/validatePassword")(password);
 
 								if(checkedPassword.isValidated) {
@@ -110,7 +117,7 @@ module.exports = function(passport) {
 								
 								}
 								else {
-									req.flash("singupMessage", checkedPassword.message);
+									req.flash("signUpMessage", checkedPassword.message);
 									return async_done(true);
 								}
 							},
@@ -118,6 +125,7 @@ module.exports = function(passport) {
 							// 					create new directory for new user
 							//######################################################################
 							function(newUser, async_done) {
+								//console.log("4");
 				                fs.mkdir( require("./userDirectories").localFolder + newUser.local.username , function(err) {
 				       				if (err) {
 				       					return async_done(err);
@@ -129,6 +137,7 @@ module.exports = function(passport) {
 							},
 
 							function(newUser, async_done) {
+								//console.log("5");
 								var newDirectory = Directory();
 								newDirectory.name = newUser.local.username;
 								newDirectory.path = require("./userDirectories").localFolder + newUser.local.username + "/";
@@ -145,6 +154,7 @@ module.exports = function(passport) {
 							},
 
 							function(newUser, id, async_done) {
+								//console.log("6");
 								newUser.directory = id;
 
 								newUser.save(function(err, newUser) {
@@ -152,7 +162,8 @@ module.exports = function(passport) {
 										return async_done(err)
 									}
 									else {
-										req.session.workingDirectory = user.direcotry;
+										req.session.workingDirectory = newUser.directory;
+										req.flash = [];											//vymaze flash spravy
 										return done(null,newUser);
 									}
 								})

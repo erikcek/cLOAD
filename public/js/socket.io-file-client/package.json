@@ -1,0 +1,55 @@
+{
+  "_from": "socket.io-file-client",
+  "_id": "socket.io-file-client@2.0.13",
+  "_inBundle": false,
+  "_integrity": "sha1-XfgW0bJ0FzSy1fhJ5IRgLxYhP+8=",
+  "_location": "/socket.io-file-client",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "socket.io-file-client",
+    "name": "socket.io-file-client",
+    "escapedName": "socket.io-file-client",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/socket.io-file-client/-/socket.io-file-client-2.0.13.tgz",
+  "_shasum": "5df816d1b2741734b2d5f849e484602f16213fef",
+  "_spec": "socket.io-file-client",
+  "_where": "/Users/erikkandalik/Documents/rop/cLOAD",
+  "author": {
+    "name": ".modernator"
+  },
+  "bugs": {
+    "url": "https://github.com/rico345100/socket.io-file-client/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Client module for Socket.io-file",
+  "homepage": "https://github.com/rico345100/socket.io-file-client#readme",
+  "keywords": [
+    "WebSocket",
+    "Socket.io",
+    "binary",
+    "arraybuffer",
+    "file",
+    "upload"
+  ],
+  "license": "MIT",
+  "main": "socket.io-file-client.js",
+  "name": "socket.io-file-client",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rico345100/socket.io-file-client.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.0.13"
+}

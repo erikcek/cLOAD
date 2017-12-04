@@ -1,9 +1,69 @@
 var fs = require("fs");
 var Directory = require("../model/directory");
 var async = require("async");
+const SocketIOFile = require('socket.io-file');
 
 module.exports = function(io) {
+
 	io.on('connection', socket => {
+
+//##############################################################################################################################
+//##############################################################################################################################
+												//all in progress
+//##############################################################################################################################
+//##############################################################################################################################
+		console.log(getWorkingDirectoryPath(socket.request.session.workingDirectory));
+		var uploader = new SocketIOFile(socket, {
+	        // uploadDir: {			// multiple directories
+	        // 	music: 'data/music',
+	        // 	document: 'data/document'
+	        // },
+	        uploadDir:  Directory.findOne( {"_id": workingDirectory }, function(err,directory) {
+						//console.log("ddd");
+						if (directory) {
+							//console.log(directory.path);
+							return directory;
+						}
+					}),
+	        chunkSize: 1024000,							// default is 10240(1KB)
+	        transmissionDelay: 0,						// delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay)
+	        overwrite: true 							// overwrite file if exists, default is true.
+	    });
+
+	    uploader.on('start', (fileInfo) => {
+	        console.log('Start uploading');
+	        console.log(fileInfo);
+	    });
+
+	    uploader.on('stream', (fileInfo) => {
+	        console.log(`${fileInfo.wrote} / ${fileInfo.size} byte(s)`);
+	    });
+
+	    uploader.on('complete', (fileInfo) => {
+	        console.log('Upload Complete.');
+	        console.log(fileInfo);
+	    });
+
+	    uploader.on('error', (err) => {
+	        console.log('Error!', err);
+	    });
+
+	    uploader.on('abort', (fileInfo) => {
+	        console.log('Aborted: ', fileInfo);
+	    });
+
+
+
+//##############################################################################################################################
+//##############################################################################################################################
+//##############################################################################################################################
+//##############################################################################################################################
+
+
+
+
+
+
 		socket.on("info", function(){
 			console.log(socket.request.session);
 		});
@@ -398,6 +458,15 @@ function repairFileSystem(workingDirectory) {
 }
 
 
-
+function getWorkingDirectoryPath(workingDirectory) {
+	console.log(workingDirectory);
+	Directory.findOne( {"_id": workingDirectory }, function(err,directory) {
+		//console.log("ddd");
+		if (directory) {
+			//console.log(directory.path);
+			return directory;
+		}
+	})
+}
 
 
