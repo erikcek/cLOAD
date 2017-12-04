@@ -6,7 +6,7 @@
 	<meta name="author" content="Katarína Golenyová, Erik Kandalík">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- Styles --> 
+	<!-- Styles -->
 	<link rel="stylesheet" href="css/login.css">
 
 	<!-- Scripts -->
@@ -20,19 +20,18 @@
 	<img src="images/moon.png" id="moon" alt="Moon">
 	<img src="images/astronaut.png" id="astro" alt="Astronaut">
 
-	<form id="log" style="margin-top: 2%;" action="/signup" method="POST">
+	<form id="log" style="margin-top: 2%;" action="" method="POST">
 		<a href="index.html"><img src="images/blogo.png" alt="cLOAD logo"></a>
-		<input type="text" name="username" placeholder="Name">
+		<input type="text" name="name" placeholder="Name">
 		<!--<p id="error">This name is alredy used.</p>-->
 		<input type="email" name="email" placeholder="E-mail">
 		<input type="password" name="password" placeholder="Password">
 		<input type="password" name="controlPassword" placeholder="Password">
 
+		<p id="error">This name is alredy used.</p>
 		<input type="submit" value="Sing up"> 
-		{{#each singupMessage}}
-			<p id="error">{{this}}</p>
-		{{/each}}
-		<p>Allready member?<a href="/signin" class="underline"> Sing in</a></p>
+
+		<p>A member yet? <a href="login.html" class="underline"> Sing in</a></p>
 	</form>
 
 	<!-- Stars -->
