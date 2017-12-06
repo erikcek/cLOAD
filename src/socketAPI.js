@@ -1,4 +1,5 @@
 var fs = require("fs");
+var ss = require("socket.io-stream");
 var Directory = require("../model/directory");
 var async = require("async");
 const SocketIOFile = require('socket.io-file');
@@ -12,45 +13,152 @@ module.exports = function(io) {
 												//all in progress
 //##############################################################################################################################
 //##############################################################################################################################
-		console.log(getWorkingDirectoryPath(socket.request.session.workingDirectory));
-		var uploader = new SocketIOFile(socket, {
-	        // uploadDir: {			// multiple directories
-	        // 	music: 'data/music',
-	        // 	document: 'data/document'
-	        // },
-	        uploadDir:  Directory.findOne( {"_id": workingDirectory }, function(err,directory) {
-						//console.log("ddd");
-						if (directory) {
-							//console.log(directory.path);
-							return directory;
+		
+		socket.on("startUpload", function(file) {
+			//vytvory novy zaznam v scheme pre suvbory
+			//zada jej velkost aj to ze este nie je uplne uploadnuty
+			//pri ukonceni uploadovania sa tento parameter odsranu (vdaka nemu bude mozne pokracovat v nahrávaní a roztriedit subbory podla 
+			// ci su uplne uploadnute)
+
+			console.log("in start Data");
+			console.log(file);
+
+			async.waterfall([
+				// nájde priečinok v databáze
+				function (done) {
+					console.log(1);
+					Directory.findOne( {"_id": socket.request.session.workingDirectory}, function(err, directory) {
+						if (err) {
+							return done(err);
 						}
-					}),
-	        chunkSize: 1024000,							// default is 10240(1KB)
-	        transmissionDelay: 0,						// delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay)
-	        overwrite: true 							// overwrite file if exists, default is true.
-	    });
+						else if (directory) {
+							return done(false, directory);
+						}
+					});
+				},
+				// overí či už neexistuje subor v databaze
+				function (directory, done) {
+					console.log(2)
+					for (var i=0; i < directory.files.length; i++) {
+						if (directory.files[i].name == file.name) {
+							return done(true);
+						}
+					}
+					return done(false, directory);
+				},
 
-	    uploader.on('start', (fileInfo) => {
-	        console.log('Start uploading');
-	        console.log(fileInfo);
-	    });
+				// overí, či nie je rovnaky subo r v súborovom systéme 
+				function (directory, done) {
+					console.log(3)
+					fs.stat(directory.path + file.name, function(err, stat) {
+						if (err == null) {
+							return done(false, directory);
+							console.log("file exists");
+						}
 
-	    uploader.on('stream', (fileInfo) => {
-	        console.log(`${fileInfo.wrote} / ${fileInfo.size} byte(s)`);
-	    });
+						else if (err.code == 'ENOENT') {
+							return done(false, directory);
+						}
 
-	    uploader.on('complete', (fileInfo) => {
-	        console.log('Upload Complete.');
-	        console.log(fileInfo);
-	    });
+						else {
+							return done(true);
+						}
+					});
+				},
 
-	    uploader.on('error', (err) => {
-	        console.log('Error!', err);
-	    });
+				// pridá súbor do databazy priecinkov, pošle požiadavku na začatie posielania dát,
+				// uloží do sessionu správu o tom aké súbory sa uploaduju a ich cestu
+				function (directory, done) {
+					console.log(4)
+					directory.files.push({name: file.name});
+					console.log("initiate OK");
+					socket.emit("sendData", file.name);
+					if (!socket.request.session.uploadFiles) {
+						socket.request.session.uploadFiles = [];
+					}
+					socket.request.session.uploadFiles.push({name: file.name, path: directory.path});
+				}
+			], function(err) {
+				console.log("error in startUpload");  // správa chýb
+			})
+		});
 
-	    uploader.on('abort', (fileInfo) => {
-	        console.log('Aborted: ', fileInfo);
-	    });
+/*
+		socket.on("endUpload", function(fileName) {
+			async.waterfall([
+
+				function (done) {
+					files = socket.request.session.uploadFiles
+					for (var i=0; i< files.length; i++) {
+						if (files[i].name = file.name) {
+							return done(false, files[i].path);
+						}
+					}
+
+					return done(true);
+				},
+
+				function (path, done) {
+					Directory.findOne( {"path": path }, function(err, directory) {
+						if (err) {
+							return done(err);
+						}
+						else if (directory) {
+							return done(false, directory);
+						}
+					});
+				},
+
+				function (directory, done) {
+					//nastavit v directory.files.mojSubor. not FullyUploaded == undefined
+					//pravdepodobne bude vytvorena nova schema pre subory
+				}
+
+			]);
+		});
+	*/	
+
+		// socket io stream listener pre upload suborov cez streamy
+		ss(socket).on("uploadData", function(stream,file) {   
+			console.log("in upload Data");
+			console.log(file);
+
+			//stream.pipe(fs.createWriteStream(__dirname + "test.png"));
+
+
+
+			async.waterfall([
+
+				function (done) {
+					files = socket.request.session.uploadFiles
+					for (var i=0; i< files.length; i++) {
+						if (files[i].name == file.name) {
+							return done(false, files[i].path);
+						}
+					}
+
+					return done(true);
+					/*
+					Directory.findOne( {"_id": socket.request.session.workingDirectory}, function(err, directory) {
+						if (err) {
+							return done(err);
+						}
+						else if (directory) {
+							return done(false, directory);
+						}
+					}); */
+				},
+
+				function (path, done) {
+					console.log("cresting write strem for file");
+					var writeStream  = fs.createWriteStream(path + file.name);
+					//writeStream.write("file")
+					stream.pipe(writeStream);
+				}
+			]);
+
+		});
+
 
 
 
@@ -58,7 +166,7 @@ module.exports = function(io) {
 //##############################################################################################################################
 //##############################################################################################################################
 //##############################################################################################################################
-
+		
 
 
 

@@ -68,6 +68,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/logout', function(req, res) {
+		req.session.workingDirectory = undefined;           //vymaze working directory so sessionu
         req.logout();
         res.redirect('/');
     });

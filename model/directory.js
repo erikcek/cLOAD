@@ -9,7 +9,9 @@ var directorySchema = mongoose.Schema({
 			_id: {type: mongoose.Schema.Types.ObjectId, ref: "directories"}
 	}],
 	files 				: [{
-							name: String,
+							name: String,					//vytvorit novu schemu pre subory (lepsie pre vyhladavanie)
+							size: Number,					// pravdepoobne to bude rychlejsie pre vyhlavanie na stranke
+							notFullyUploaded: Boolean,
 						}]
 }, {collection: "directories"});
 

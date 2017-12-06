@@ -163,7 +163,8 @@ module.exports = function(passport) {
 									}
 									else {
 										req.session.workingDirectory = newUser.directory;
-										req.flash = [];											//vymaze flash spravy
+										req.flash("email", "");
+										req.flash("username", "");							//vymaze flash spravy
 										return done(null,newUser);
 									}
 								})
@@ -200,6 +201,7 @@ module.exports = function(passport) {
 	    		}
 	    		req.session.workingDirectory = user.directory;
 	    		console.log(req.session);
+	    		req.flash = [];
 	    		return done(null, user);
 	    	});
 	    }
@@ -226,6 +228,7 @@ module.exports = function(passport) {
     					}
     					else if (user) {
     						return done(null, user);
+    						socket.request.session.workingDirectory = user.directory;
     					}
     					else {
     						return async_done(false);
@@ -309,7 +312,7 @@ module.exports = function(passport) {
 	                	}
 	                	else {
 	                		console.log("Successfully created dirrectory for new user.");
-	                		req.session.workingDirectory = user.direcotry;
+	                		req.session.workingDirectory = user.directory;
 	                		return done(null, user);
 	                	}
                 	});

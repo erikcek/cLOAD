@@ -5,15 +5,17 @@
 	<title></title>
 </head>
 <body>
-
+<div id="test">
 
 	<form id="form">
         <input type="file" id="file" multiple />
         <input type="submit" value="Upload" />
     </form>
- 
+</div>
+ 	<!--
     <script src="js/socket.io-file-client/socket.io-file-client.js"></script> 
     <script src="js/client-socket.js"></script> 
+    -->
     <h1>{{ user }}</h1>
 <!--
 	<h1>{{ user }}</h1>
@@ -22,6 +24,8 @@
 
 				
 	</script>
--->
+-->	
+	<script type="text/javascript" src="js/socket.io-stream.js"></script>
+	<script type="text/javascript" src="js/fileUpload.js"></script>
 </body>
 </html>
