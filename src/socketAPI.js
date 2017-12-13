@@ -7,7 +7,7 @@ const SocketIOFile = require('socket.io-file');
 module.exports = function(io) {
 
 	io.on('connection', socket => {
-
+ 
 //##############################################################################################################################
 //##############################################################################################################################
 												//all in progress
@@ -25,7 +25,7 @@ module.exports = function(io) {
 
 			async.waterfall([
 				// nájde priečinok v databáze
-				function (done) {
+				function(done) {
 					console.log(1);
 					Directory.findOne( {"_id": socket.request.session.workingDirectory}, function(err, directory) {
 						if (err) {
@@ -36,28 +36,29 @@ module.exports = function(io) {
 						}
 					});
 				},
+
 				// overí či už neexistuje subor v databaze
-				function (directory, done) {
+				function(directory, done) {
 					console.log(2)
 					for (var i=0; i < directory.files.length; i++) {
 						if (directory.files[i].name == file.name) {
-							return done(true);
+							return done(false, directory, true);
 						}
 					}
-					return done(false, directory);
+					return done(false, directory, false);
 				},
 
 				// overí, či nie je rovnaky subo r v súborovom systéme 
-				function (directory, done) {
+				function(directory, fileInDBExists, done) {
 					console.log(3)
 					fs.stat(directory.path + file.name, function(err, stat) {
 						if (err == null) {
-							return done(false, directory);
 							console.log("file exists");
+							return done(false, directory, true, fileInDBExists);
 						}
 
 						else if (err.code == 'ENOENT') {
-							return done(false, directory);
+							return done(false, directory, false, fileInDBExists);
 						}
 
 						else {
@@ -65,18 +66,103 @@ module.exports = function(io) {
 						}
 					});
 				},
+				//skontroluje či sa subor nachádza v databáze a ak nie tak ho pridá
+				function(directory, fileExists, fileInDBExists, done) {
+					if (!fileExists && !fileInDBExists) {
+						directory.files.push({ name: file.name, notFullyUploaded: true });
+						return done(false, directory, false, false);
+					}
+
+					else if (fileExists && !fileInDBExists) {
+						directory.files.push({ name: file.name, notFullyUploaded: true });
+						return done(false, directory, false, false);
+						//socket send to inform that file allready existrs
+					}
+
+					else if (!fileExists && fileInDBExists) {
+						for (var i=0; i<directory.files.length; i++) {
+							if (directory.files[i].name == file.name) {
+								directory.files.splice(i, 1);
+								return done(false, directory, false, false)
+							}
+						}
+					}
+
+					else {
+						for (var i=0; i<directory.files.length; i++) {
+							if (directory.files[i].name == file.name) {
+								if (directory.files[i].notFullyUploaded) {
+									return done(false, directory, false, false);
+								}
+							}
+						}
+						return done(true, "File allready exists");
+					}
+					
+					/*
+					if (!fileExists) {
+						directory.files.push({ name: file.name, notFullyUploaded: true });
+						return done(false, directory, false, false);
+					}
+					else if (fileExists) {
+						for (var i=0; i<directory.files.length; i++) {
+							if (directory.files[i].name == file.name) {
+								return done(false, directory, true, true);
+							}
+						}
+						directory.files.push({ name: file.name, notFullyUploaded: true });
+						return done(false, directory, true, false);
+					}
+					*/
+				},
+
+				function(directory, fileExists, fileInDBExists, done) {
+					if (!fileInDBExists) {
+						directory.save(function(err) {
+							if (err) {
+								return done(err, "unable to save file in directory in startUpload | socketAPI");
+							}
+							else {
+								return done(false, directory, fileExists);
+							}
+						})	
+					}
+					else {
+						return done(false, directory, fileExists)
+					}
+				},
 
 				// pridá súbor do databazy priecinkov, pošle požiadavku na začatie posielania dát,
 				// uloží do sessionu správu o tom aké súbory sa uploaduju a ich cestu
-				function (directory, done) {
-					console.log(4)
-					directory.files.push({name: file.name});
-					console.log("initiate OK");
-					socket.emit("sendData", file.name);
+				function(directory, fileExists, done) {
 					if (!socket.request.session.uploadFiles) {
-						socket.request.session.uploadFiles = [];
-					}
+							socket.request.session.uploadFiles = [];
+						}
 					socket.request.session.uploadFiles.push({name: file.name, path: directory.path});
+
+					if (!fileExists) {
+						console.log(4)
+						console.log("initiate OK");
+						socket.emit("sendData", { name: file.name, position: 0});
+
+					}
+					else if (fileExists) {
+						fs.stat(directory.path + "/" + file.name, function(err, stat) {
+							if (err) {
+								return done(err, "unable to find stat insfo in startUpload | socketAPI");
+							}
+
+							else if (!stat) {
+								return done(true, "no stat object in startUpload | socketAPI");
+							}
+
+							else {
+								console.log(5)
+								console.log("initiate OK" + stat.size);
+								socket.emit("sendData", {name: file.name, position: stat.size});
+							}
+						});
+					}
 				}
 			], function(err) {
 				console.log("error in startUpload");  // správa chýb
@@ -119,7 +205,7 @@ module.exports = function(io) {
 	*/	
 
 		// socket io stream listener pre upload suborov cez streamy
-		ss(socket).on("uploadData", function(stream,file) {   
+		ss(socket).on("uploadData", function(stream, file) {   
 			console.log("in upload Data");
 			console.log(file);
 
@@ -133,7 +219,8 @@ module.exports = function(io) {
 					files = socket.request.session.uploadFiles
 					for (var i=0; i< files.length; i++) {
 						if (files[i].name == file.name) {
-							return done(false, files[i].path);
+							return done(false, files[i]);
+							socket.request.session.uploadFiles.splice(i, 1);
 						}
 					}
 
@@ -148,16 +235,112 @@ module.exports = function(io) {
 						}
 					}); */
 				},
+				/*
+				function (oneOfFiles, done) {
+					Directory.findOne( {"path": oneOfFiles.path}, function(err, directory) {
+						if (err) {
+							return done(err);
+						}
+						else if (directory) {
+							directory.files.push({ name: oneOfFiles.name, notFullyUploaded: true });
+							return done(false, oneOfFiles, directory);
+						}
+						else {
+							return done(true);
+						}
+					});
+				},
 
-				function (path, done) {
+				function(oneOfFiles, directory, done) {
+					directory.save(function(err) {
+						if (err) {
+							return done(err);
+						}
+						else {
+							return done(false, oneOfFiles);
+						}
+					});
+				},
+	*/
+				function (oneOfFiles, done) {
 					console.log("cresting write strem for file");
-					var writeStream  = fs.createWriteStream(path + file.name);
+					if (file.start == 0) {
+						var writeStream  = fs.createWriteStream(oneOfFiles.path + file.name, {flags: "w+", start: file.start});
+						stream.pipe(writeStream);
+					}
+					else {
+						var writeStream = fs.createWriteStream(oneOfFiles.path + file.name, {flags: "a", start: file.start});
+						stream.pipe(writeStream);
+					}
 					//writeStream.write("file")
-					stream.pipe(writeStream);
-				}
-			]);
+ 				}
+			], function(err, message) {
+				console.log("error in ss.on(uploadData) | socketAPI.js");
+				console.log(err);
+				console.log(message);
+			});
 
 		});
+
+		//done
+		socket.on("deleteFile", function(data) {
+			async.waterfall([
+
+				// vyhladá pracovný priečinok
+				function(done) {
+					console.log(1);
+					Directory.findOne( {"_id": socket.request.session.workingDirectory}, function(err, directory) {
+						if (err) {
+							return done(err, "Unable to find working directory in deleteFile | socketAPI");
+						}
+						else if (directory) {
+							return done(false, directory);
+						}
+					});
+				},
+
+				//overí čí sa súbr nachádza v pracovnom priečinku
+				function(directory, done) {
+					files = directory.files;
+					for (var i=0; i<files.length; i++) {
+						if (files[i].name == data.name) {
+							return done(false, directory, i);
+						}
+					}
+					return done(true, "No such file in directory");
+				},
+
+				//overí či sa súbor nachádza v súborovom systéme
+				function(directory, index, done) {
+					fs.unlink(directory.path + "/" + directory.files[index].name, function(err) {
+						if (err) {
+							//vypíše chybovú hlášku (v pripade ak subor vo FS neexistuje) ale waterfall pokračuje aby sa subor vymazal z databázy
+							console.log(err);
+							console.log("unable to unlink file from fileSystem in deleteFile | socketAPI");
+							//pokračovanie waterfallu
+							return done(false, directory, index);
+						}
+						else {
+							return done(false, directory, index);
+						}
+					})
+				},
+
+				//vymaže zaznam o subore z databázy
+				function(directory, index, done) {
+					directory.files.splice(index, 1);
+					directory.save(function(err) {
+						if (err) {
+							return done(err, "unable to save directory in deleteFIle | socketAPI");
+						}
+					})
+				}
+			], function(err, message) {
+				console.log(err);
+				console.log(message);
+			})
+		});
+
 
 
 

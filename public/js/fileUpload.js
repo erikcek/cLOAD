@@ -12,6 +12,7 @@ body.addEventListener("dragover", function(event) {
 body.addEventListener("drop", function(event) {
     event.preventDefault();
     files = event.dataTransfer.files;
+    fileArray = [];
 
     for (var i=0; i<files.length; i++) {
         fileArray.push({ name: files[i].name, data: files[i] });
@@ -19,22 +20,28 @@ body.addEventListener("drop", function(event) {
     }
 }, false);
 
- socket.on("sendData", function(fileName) {
+ socket.on("sendData", function(data) {
+    console.log(data.position);
     var stream = ss.createStream();
     for (var i=0; i<fileArray.length; i++) {
-        if (fileArray[i].name == fileName) {
+        if (fileArray[i].name == data.name) {
             var file = fileArray[i].data;
 
             console.log(file);
             console.log(file.size);
             var position = 0;
-            var difference = file.size / 10;
-            ss(socket).emit('uploadData', stream, {name: file.name});
-            var blobStream = ss.createBlobReadStream(file);
+           // var difference = file.size / 10;
+            ss(socket).emit('uploadData', stream, {name: file.name, size: file.size, start: data.position});
+            var blobStream = ss.createBlobReadStream(file.slice(data.position));
+            
+            var size = 0
             blobStream.on("data", function(chunk) {
-                position += chunk.length;
-                console.log("a");
+                size += chunk.length;
+                if (size == file.size) {
+                    console.log("uploaded");
+                }
             });
+
             blobStream.pipe(stream);
             
            /*
