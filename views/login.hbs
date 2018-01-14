@@ -9,36 +9,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- Styles -->
-	<link rel="stylesheet" href="/css/login.css">
+	<link rel="stylesheet" href="css/login.css">
 
-	<!-- Scripts -->
+	<!-- Scripts 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="/js/stars.js"></script>
-
+	<script src="js/stars.js"></script>
+-->
 	<!-- Fonts and icons -->
-	<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico" />
 	
 </head>
 <body>
-	<img src="/images/moon.png" id="moon" alt="Moon">
-	<img src="/images/astronaut.png" id="astro" alt="Astronaut">
+	<img src="images/moon.png" id="moon" alt="Moon">
+	
+	<form id="log" action="" method="POST">
+		<a href="index.html"><img src="images/blogo.png" alt="cLOAD logo"></a>
 
-	<form id="log" action="/signin" method="POST">
-		<a href="index.html"><img src="/images/blogo.png" alt="cLOAD logo"></a>
 		{{#each signInMessage}}
-			<p>{{this}}</p>
+			<p id="error">{{this}}</p>
 		{{/each}}
+
 		<input type="text" placeholder="Name" name="username">
-		<input type="password" placeholder="Password" name="password">
-		<input type="submit" placeholder="Submit"> or
+		<div id="pass">
+			<input type="password" placeholder="Password" name="password">
+			<a href="/forget" class="underline fpass">Forgot passwd?</a>
+		</div>
+		<input type="submit" value="Sing In"> or
 		<a href="/auth/google" id="google">Sing in with Google+</a>
-		<p>Not a member yet? <a href="/signup"> Join now</a></p>
+		<p>Not a member yet? <a href="/signup" class="underline"> Join now</a></p>
+
 	</form>
 
+	<img src="images/astronaut.png" id="astro" alt="Astronaut">
+
 	<!-- Stars -->
-	<img src="/images/h4.png" class="h1 h" alt="Stars">
-	<img src="/images/h5.png" class="h2 h" alt="stars">
-	<img src="/images/h6.png" class="h3 h" alt=stars"">
+	<img src="images/h4.png" class="h1 h" alt="Stars">
+	<img src="images/h5.png" class="h2 h" alt="stars">
+	<img src="images/h6.png" class="h3 h" alt="stars">
 
 </body>
 </html>

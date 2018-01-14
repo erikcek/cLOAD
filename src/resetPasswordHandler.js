@@ -41,8 +41,8 @@ module.exports = function(req, res) {
 			})
 		},
 		function(done) {
-			req.flash("forgetMessage", "Password was changed");
-			return res.redirect("/forget");
+			req.flash("signInMessage", "Password was changed");
+			return res.redirect("/signin");
 		}
 
 	],function(err) {

@@ -60,10 +60,10 @@ module.exports = function(app, passport) {
 	app.get("/profile", isLoggedIn ,function(req, res) {
 		//console.log(req.user.google.name);
 		if(req.user.local.username) {
-			res.render("profile", {user: req.user.local.username});
+			res.render("user", {user: req.user.local.username});
 		}
 		else {
-			res.render("profile", {user: req.user.google.name});
+			res.render("user", {user: req.user.google.name});
 		}
 	});
 

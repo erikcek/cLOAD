@@ -40,7 +40,7 @@ module.exports = function(req, res) {
 				from: 'youremail@gmail.com',
 				to: user.local.email,
 				subject: 'Sending Email using Node.js',
-				text: 'That was easy!'
+				text: "localhost:8888/reset/" + token
 			};
 
 			transporter.sendMail(mailOptions, function(error, info){

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title></title>
@@ -10,6 +10,29 @@
 	<form method="POST" action="/forget">
 		<input type="email" name="email">
 		<input type="submit">
+	</form>
+</body> 
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Forgot Password | cLOAD</title>
+	<!-- Styles -->
+	<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+	<form id="pswd" action="/forget" method="POST">
+		<a href="index.html"><img src="/images/blogo.png" alt="cLOAD logo"></a>
+
+		{{#each forgetMessage}}
+			<p>{{this}}</p>
+		{{/each}}
+
+		<input type="email" placeholder="E - mail" name="email">
+		<input type="submit" value="Reset my password">
+
 	</form>
 </body>
 </html>

@@ -212,10 +212,11 @@ module.exports = function(passport) {
     passport.use(new GoogleStrategy({	
     	clientID 		: 	configAuth.google.clientID,
     	clientSecret 	: 	configAuth.google.clientSecret,
-    	callbackURL 	: 	configAuth.google.callbackURL
+    	callbackURL 	: 	configAuth.google.callbackURL,
+    	passReqToCallback : true
     },
 
-    function(token, refreshToken, profile, done) {
+    function(req, token, refreshToken, profile, done) {
 
     	process.nextTick(function() {
 
@@ -227,8 +228,8 @@ module.exports = function(passport) {
     						return async_done(true);
     					}
     					else if (user) {
+    						req.session.workingDirectory = user.directory;
     						return done(null, user);
-    						socket.request.session.workingDirectory = user.directory;
     					}
     					else {
     						return async_done(false);
@@ -312,7 +313,7 @@ module.exports = function(passport) {
 	                	}
 	                	else {
 	                		console.log("Successfully created dirrectory for new user.");
-	                		req.session.workingDirectory = user.directory;
+	                		request.session.workingDirectory = user.directory;
 	                		return done(null, user);
 	                	}
                 	});

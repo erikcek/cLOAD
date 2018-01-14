@@ -1,12 +1,11 @@
 var socket = io();
-var body = document.getElementById("test");
+var body = document.getElementById("wrap");
 
 var fileArray = [];
 
 
 body.addEventListener("dragover", function(event) {
     event.preventDefault();
-    body.style.backgroundColor = "green";
 }, false);
 
 body.addEventListener("drop", function(event) {
