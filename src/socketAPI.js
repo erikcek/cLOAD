@@ -99,21 +99,6 @@ module.exports = function(io) {
 						return done(true, "File allready exists");
 					}
 					
-					/*
-					if (!fileExists) {
-						directory.files.push({ name: file.name, notFullyUploaded: true });
-						return done(false, directory, false, false);
-					}
-					else if (fileExists) {
-						for (var i=0; i<directory.files.length; i++) {
-							if (directory.files[i].name == file.name) {
-								return done(false, directory, true, true);
-							}
-						}
-						directory.files.push({ name: file.name, notFullyUploaded: true });
-						return done(false, directory, true, false);
-					}
-					*/
 				},
 
 				function(directory, fileExists, fileInDBExists, done) {

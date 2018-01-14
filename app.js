@@ -52,7 +52,7 @@ var sessionMiddleware = session({
 		path: '/', 
 		httpOnly: true, 
 		secure: false, 
-		maxAge: 30*24*60*60*1000
+		maxAge: 10*1000 //30*24*60*60*1000
 	},
 	saveUninitialized: false,				
 	resave: false,
