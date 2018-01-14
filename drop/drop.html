@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
+<script src="https://use.fontawesome.com/c411ed4f95.js"></script>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<link rel="stylesheet" type="text/css" href="drop.css">
+<meta charset="utf-8">
+<title>Static website</title>
+</head>
+<body>
+
+  <nav>
+      <ul id="left">
+        <li onclick="show_uploader()"><button class="newFile"> <i class="fa fa-plus-square-o" aria-hidden="true"></i> New File </button></li>
+        <li onclick="back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> BACK</li>
+        <li onclick="forth()"> FORWARD <i class="fa fa-arrow-right" aria-hidden="true"></i></li>
+      </ul>
+      <ul id="right">
+        <li><i class="fa fa-user" aria-hidden="true"></i><span id="nav_userName">Katka Golenyová</span></li>
+        <li onclick="logout()"><button class="logOut" >LogOut</button></li>
+      </ul>
+  </nav>
+
+
+  <div id="main_div">
+      <div id="input">
+        <p id="input_error_log"></p>
+        <input type="text" id="input_area" autofocus>
+        <button onclick="mkdir()">Submit</button>
+      </div>
+
+      <div id="yes_no">
+        
+      </div>
+
+      <div id="upload_file">
+        <input type="file" id="FileBox" multiple>
+        <button id="UploadButton">Upload</button>
+        <br>
+        <span id="UploadArea">
+        </span>
+      </div>
+      <div id="directories">
+
+      </div>
+      <div id="files">
+        
+      </div>
+  </div>
+
+  <!-- VYSKAKOVACIE OKNO -->
+<section id="okno">
+<div id="medzera"></div>
+  <div id="oznam">
+  <h1>New directory</h1>
+  <input type="text" id="vklad" placeholder="Zadaj meno priečinka">
+  <ul id="tlacidla">
+    <li><buttom class="newFile okno ">Submit</buttom></li>
+    <li><buttom onclick="mkdir()" class="logOut okno ">Close</buttom></li>
+  </ul>
+  </div>
+</section>
+
+
+
+
+<div id="mp4_player">
+  <video controls id="mp4_video">
+    
+  </video>
+</div>
+
+  <!--<section id="login">
+    <div id="log">
+      <img src="pdw.png">
+      <input type="text" id="login_name" placeholder="Name">
+      <input type="password" id="login_password" placeholder="Password">
+      <p id="error_log"><i class="fa fa-ban" aria-hidden="true"></i><span></span></p>
+      <button onclick="sub()" id="logbut">LogIn</button>
+    </div>
+  </section>
+
+  <ul id="context_menu">
+    <li onclick="logout()">logout</li>
+  </ul> -->
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Meno |  cLOAD - internetové úložisko</title>
+	<meta name="author" content="Katarína Golenyová, Erik Kandalík">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../public/css/user.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.3/css/all.css" rel="stylesheet">
+</head>
+<body>
+	<nav>
+		<a href="#" ide="nav" onclick="openNav()">&#9776;</a>
+		<i class="fas fa-search "></i>
+		<input type="text" placeholder="Search..">
+		<ul class="right">
+			<li><i class="fas fa-user"></i></li>
+			<li>Meno Užívateľa</li>
+			<li><i class="fas fa-power-off"></i></li>
+		</ul>
+	</nav>
+
+	<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
+</div>
+
+	<div id="wrap">
+		<h6>Directories</h6>
+
+		<div class="dir">Dir1</div>
+		<div class="dir">Dir1</div>
+		<div class="dir">Dir1</div>
+		<div class="dir">Dir1</div>
+
+		<h6>Files</h6>
+
+		<div class="file">
+			<div class="img">
+			</div>
+			<div class="name">File.img</div>
+		</div>
+
+	</div>
+
+ <script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+</body>
+</html>
