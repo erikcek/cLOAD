@@ -20,16 +20,37 @@
 		<ul class="right">
 			<li><i class="fas fa-user"></i></li>
 			<li>Meno Užívateľa</li>
-			<li><i class="fas fa-power-off"></i></li>
+			<li><a href="/logout"><i class="fas fa-power-off"></i></a></li>
 		</ul>
 	</nav>
 
+	<section id="okno">
+        <div id="medzera"></div>
+        <div id="oznam">
+            <h1 id="h1_oznam" >New directory</h1>
+            <span id="vklad_container">
+              	<input type="text" id="vklad" placeholder="Zadaj meno priečinka">
+            </span>
+            <ul id="tlacidla">
+              <li><buttom class="newFile okno" id="action" >Submit</buttom></li>
+              <li><buttom onclick="hide_window()" class="logOut okno " id="close">Close</buttom></li>
+            </ul>
+          </div>
+     </section>
+
+<!-- Bočné vysúvacie menu -->
 	<div id="mySidenav" class="sidenav">
-		<a href="#">Notes</a>
-  		<a href="#">Settings</a>
-  		<a href="#">Clients</a>
- 		<a href="#">Contact</a>
-</div>
+		<img src="" alt="">
+		<h5>Bookmarks</h5>
+		<a href="#">Documents</a>
+  		<a href="#">Pictures</a>
+  		<a href="#">Movies</a>
+ 		<a href="#">Music</a>
+ 		<h5>Tools</h5>
+ 		<a href="#">Trash</a>
+ 		<a href="#">Settings</a>
+ 		<h5></h5>
+ 	</div>
 
 	<div id="wrap">
 		<h5>Directories</h5>
@@ -51,7 +72,18 @@
 			<div class="name">File.img</div>
 		</div>
 
+<!-- Vyskakovacie okno pri pridávaní priečinku 
+	<div class="bg">
+		<div id="addDir">
+		<form action="">
+			<input type="text" placeholder="New directory ... ">
+			<button type="submit" value="Submit">Submit</button>
+			<button type="reset" value="Close">Reset</button>
+		</form>
+		</div>
 	</div>
+
+	</div> -->
 
 <script>
 function myFunction(x) {
@@ -68,7 +100,6 @@ function myFunction(x) {
 	  document.getElementById("mySidenav").style.width = "";
 	}
 }
-		
 </script>
 
 </body>

@@ -13,8 +13,7 @@ section{
 }
 
 #img{
-	background: no-repeat 
-				url(/images/colorbg.png);
+	background: no-repeat url(colorbg.png);
 	background-size: cover;
 	float: left;
 	position: fixed;
@@ -32,8 +31,7 @@ div{
 a{
 	display: inline-block;
 	margin: 5px;
-	font-family:'Roboto Mono',
-				 monospace;
+	font-family:'Roboto Mono', monospace;
 	padding: 7px;
 	text-decoration: none;
 	color: #0e2547;
@@ -47,22 +45,44 @@ form{
 input{
 	width: 90%;
 	border: none;
-	border-bottom:  2px solid 
-					#0e2547;
+	border-bottom: 2px solid #0e2547;
 	border-radius: 3px;
 	margin: 20px auto;
 	font-size: 13px;
 	padding: 10px;
 }
 
+input:focus{
+	outline: none;
+}
+
 input[type=submit]{
 	width: 40%;
 	text-align: center;
 	border: 2px solid #0e2547;
+	display: inline-block;
 }
 
 input[type=submit]:hover{
 	background-color: #0e2547;
+	color: white;
+}
+
+#google{
+	width: 40%;
+	border: #d34836 solid 2px;
+	color: #d34836;
+	font-family: "Arial";
+	border-radius: 3px;
+	margin: 20px auto;
+	font-size: 13px;
+	padding: 10px;
+	text-align: center;
+	display: inline-block;
+}
+
+#google:hover{
+	background-color: #d34836;
 	color: white;
 }
 
@@ -71,9 +91,9 @@ input[type=submit]:hover{
 }
 
 .in{
-	border-bottom: 	2px solid
-					#0e2547;
+	border-bottom: 	2px solid #0e2547;
 }
+
 .in,
 .up{
 	border-radius: 3px;

@@ -16,14 +16,15 @@ nav{
 	text-align: center;
 	vertical-align: center;
 	height: 47px;
+	color: #818181;
 }
 
 #nav{
 	float: left;
 	font-size: 22px;
 	color: black;
-	
 }
+
 .container {
     display: inline-block;
     cursor: pointer;
@@ -62,6 +63,10 @@ nav{
 li{
 	display: inline-block;
 	padding: 0 5px;
+}
+
+.right li:hover{
+	color: black;
 }
 
 input{
@@ -108,23 +113,28 @@ input{
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #0e2547;
+    background-color: #FFF;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+    box-shadow: 4px -2px 2px -2px #80808085;
+}
+
+.sidenav h5{
+	padding-left: 20px;
 }
 
 .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 20px;
     color: #818181;
     display: block;
     transition: 0.3s;
 }
 
 .sidenav a:hover {
-    color: #f1f1f1;
+    color: #353535;
 }
 
 .sidenav .closebtn {
@@ -135,6 +145,42 @@ input{
     margin-left: 50px;
 }
 
+/* Vyskakovacie okno pri pridávaní priečinku*/
+ #okno{
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	position: absolute;
+	background: rgba(0,0,0,0.4);
+	z-index: 999;
+	margin-top: 0px;
+	display: none;
+}
+#medzera{
+	height: 20vh;
+}
+
+#oznam{
+	margin: auto;
+	background: white;
+	box-shadow: 0px 4px 5px #6b6b6b;
+	width: 40%;
+	padding: 20px;
+	border-radius: 2px;
+}
+
+#vklad{
+	margin-bottom: 30px;
+	width: 100%;
+}
+
+#tlacidla{
+	text-align: center;
+}
+
+#tlacidla li {
+	display: inline-block;
+}
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
@@ -166,4 +212,26 @@ input{
 		margin: 30px 1.5%;
 		width: 19%;
 	}
+}
+
+@media only screen and (max-width: 1180px){
+	.dir,.file{
+		margin: 30px 1.5%;
+		width: 17%;
+	}
+}
+
+@media only screen and (max-width: 880px){
+	.dir,.file{
+		margin: 30px 1.5%;
+		width: 25%;
+	}
+
+	.dir,.name{
+		padding: 3% 1.5%;
+	}
+}
+
+@media only screen and (max-width: 600px){
+	
 }

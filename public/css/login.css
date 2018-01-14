@@ -177,10 +177,8 @@ a{
 	z-index: 10100;
 }
 
-#astro{
-	height: 30vh;
-	position: relative;
-	z-index: 10100;
-
-}
+	#astro{
+		height: 30vh;
+		z-index: 10100;
+	}
 }
