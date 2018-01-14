@@ -10,7 +10,7 @@ body{
 
 #moon{
 	position: absolute;
-	top: 3;
+	top: 3px;
 	height: 35vh;
 	right: 0;
 }
@@ -171,7 +171,7 @@ a{
 
 	#moon{
 	position: absolute;
-	top: 3;
+	top: 3px;
 	height: 15vh;
 	right: 0;
 	z-index: 10100;
