@@ -12,11 +12,16 @@ h5{
 
 /* ---------  MENU  --------- */
 nav{
-	padding: 0 17px;
+	padding: 0;
 	box-shadow: 0 4px 2px -2px #80808085;
 	text-align: center;
 	height: 47px;
 	color: #818181;
+	background-color: white;
+	position: fixed;
+	width: 100%;
+	top: 0;
+
 }
 
 /* --- IKONA MENU, IKONA X */
@@ -27,7 +32,8 @@ nav{
     margin-left: 10px;
     float: left;
     z-index: 100;
-    position: relative;
+    top: 0px;
+    position: fixed;
 }
 
 .bar1, .bar2, .bar3 {
@@ -66,6 +72,13 @@ li{
 	color: black;
 }
 
+#logOut i{
+	color: #818181;
+}
+#logOut i:hover{
+	color: red;
+}
+
 /* --- VYHLADAVANIE ---*/
 input{
 	height: 26px;
@@ -77,6 +90,7 @@ input{
 #wrap{
 	width: 70%;
 	margin-left: 14%;
+	padding-top: 40px;
 }
 
 /* --- PRIECINKY ---*/
@@ -97,6 +111,7 @@ input{
 	width: 20%;
 	margin: 10px 2.4%;
 	box-shadow: 4px 4px 2px -2px #80808085;
+	display: inline-block;
 }
 
 .img{
@@ -105,6 +120,7 @@ input{
 }
 
 .name{
+	padding: 5px 0;
 	padding-left: 10px;
 }
 
@@ -140,13 +156,47 @@ input{
     color: #353535;
 }
 
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+/* --- POZNAMKY --- */
+
+#poznamky{
+	display: none;
 }
+.myNote{
+	display: inline-block;
+}
+
+.noteI{
+	display: inline-block;
+}
+
+.poznamky input{
+	width: 90%;
+	margin-left: 3%;
+}
+
+textarea{
+	margin-left: 3%;
+	width: 89%;
+
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #818181; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b30000; 
+}
+
 
 /* Vyskakovacie okno pri pridávaní priečinku*/
  #okno{
@@ -238,5 +288,19 @@ input{
 }
 
 @media only screen and (max-width: 600px){
-	
+	.dir,.file{
+		margin: 20px 1.5%;
+		width: 46%;
+	}
+
+	.right li:first-child{
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 390px){
+	.dir,.file{
+		margin: 10px 1.5%;
+		width: 96%;
+	}
 }
