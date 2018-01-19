@@ -132,10 +132,15 @@ function myFunction(x) {
 function showNotes(){
 	if($("#poznamky").css("display") == "none"){
 		$("#poznamky").css("display","block");
+		$(".sidenav a").css("display","none");
+		$(".sidenav h5").css("display","none");
+
 	}
 
 	else{
 		$("#poznamky").css("display","none");
+		$(".sidenav a").css("display","block");
+		$(".sidenav h5").css("display","block");
 	}
 
 }
