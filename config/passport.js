@@ -77,7 +77,6 @@ module.exports = function(passport) {
 											return async_done(true);
 										}
 										else {
-											req.flash("email", email);
 											return async_done(false, email);
 										}
 									});

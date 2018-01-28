@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title></title>
+	<meta charset="UTF-8">
+	<title>Create new password | cLOAD</title>
+		<!-- Styles -->
+	<link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
+	<form id="pswd" action="" method="POST">
+		<a href="index.html"><img src="/images/blogo.png" alt="cLOAD logo"></a>
 
-	{{#each resetMessage}}
-		<p>{{this}}</p>
-	{{/each}}
-	<form method="POST">
-		New Password: <input type="password" name="password">
-		New Password: <input type="password" name="controlPassword">
-		<input type="submit">
+		{{#each resetMessage}}
+			<p id="error">{{this}}</p>
+		{{/each}}
+
+		<input type="password" placeholder="New password" name="password">
+		<input type="password" placeholder="Repeat password" name="controlPassword">
+		<input type="submit" value="Change password"> 
+
 	</form>
-
 </body>
 </html>

@@ -376,7 +376,7 @@ module.exports = function(io) {
 				},
 
 				function(fileNames, done) {
-					//socket.emit("lsDirectoriesReturn", fileNames);
+					socket.emit("lsDirectoriesReturn", fileNames);
 					console.log(fileNames);
 				}
 
@@ -603,7 +603,7 @@ module.exports = function(io) {
 				//#######################################################################################
 				function(done) {									
 					console.log("1");
-					Directory.findOne( { $and: [{ "_id": socket.request.session.workingDirectory}, {"nestedDirectories.name": data}] }, function(err, directory) {
+					Directory.findOne( { $and: [{ "_id": socket.request.session.workingDirectory}, {"nestedDirectories.name": data.name}] }, function(err, directory) {
 						if (err) {
 							return done(true);
 						}
@@ -618,8 +618,8 @@ module.exports = function(io) {
 				},
 
 				function(directory, done) {
-					var idOfDirectory = directory.nestedDirectories.filter(function(el) {
-						return el.name == data;
+					var idOfDirectory = directory.nestedDirectories.filter( function(elements) {
+						return elements.name == data.name;
 					})[0]._id;
 
 					socket.request.session.workingDirectory = idOfDirectory;
