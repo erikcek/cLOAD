@@ -42,13 +42,13 @@ module.exports = function(passport) {
 						return done(null, false, req.flash("signUpMessage", "This name is allready taken."));
 					}
 					else {
-						//console.log("else");
+						console.log("else");
 						async.waterfall([
 							//######################################################################
 							// 							check username
 							//######################################################################
 							function(async_done) {
-								//console.log("1");
+								console.log("1");
 								var checkedUserName =require("../src/validateUserName")(username);
 
 								if (checkedUserName.isValidated) {
@@ -65,7 +65,7 @@ module.exports = function(passport) {
 							// 				check if email is correct and if email exists
 							//######################################################################
 							function(async_done) {
-								//console.log("3");
+								console.log("3");
 								var email = req.body.email;
 								if (require("../src/validateEmail")(email)) {
 									User.findOne( {"local.email": email}, function(err, user) {
@@ -77,6 +77,7 @@ module.exports = function(passport) {
 											return async_done(true);
 										}
 										else {
+											req.flash("email", email);
 											return async_done(false, email);
 										}
 									});
@@ -90,7 +91,7 @@ module.exports = function(passport) {
 							// 					check if passwords are the same
 							//######################################################################
 							function(email, async_done) {
-								//console.log("2");
+								console.log("2");
 								if (req.body.controlPassword == password) {
 									return async_done(false, email);
 								}
@@ -103,7 +104,7 @@ module.exports = function(passport) {
 							// 					check if password is strong enaught
 							//######################################################################
 							function(email,async_done) {
-								//console.log("3");
+								console.log("3");
 								var checkedPassword = require("../src/validatePassword")(password);
 
 								if(checkedPassword.isValidated) {
@@ -124,7 +125,7 @@ module.exports = function(passport) {
 							// 					create new directory for new user
 							//######################################################################
 							function(newUser, async_done) {
-								//console.log("4");
+								console.log("4");
 				                fs.mkdir( require("./userDirectories").localFolder + newUser.local.username , function(err) {
 				       				if (err) {
 				       					return async_done(err);
@@ -136,7 +137,7 @@ module.exports = function(passport) {
 							},
 
 							function(newUser, async_done) {
-								//console.log("5");
+								console.log("5");
 								var newDirectory = Directory();
 								newDirectory.name = newUser.local.username;
 								newDirectory.path = require("./userDirectories").localFolder + newUser.local.username + "/";
@@ -153,7 +154,7 @@ module.exports = function(passport) {
 							},
 
 							function(newUser, id, async_done) {
-								//console.log("6");
+								console.log("6");
 								newUser.directory = id;
 
 								newUser.save(function(err, newUser) {

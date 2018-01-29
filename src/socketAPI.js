@@ -596,7 +596,6 @@ module.exports = function(io) {
 		socket.on("openDirectory", function(data) {
 			
 			var workingDirectory = socket.request.session.workingDirectory;
-
 			async.waterfall([
 
 									//skontroluje, či pracovný priečinok užívateľa existuje
@@ -623,6 +622,7 @@ module.exports = function(io) {
 					})[0]._id;
 
 					socket.request.session.workingDirectory = idOfDirectory;
+					socket.emit("openDirectoryReturn");
 					console.log(directory);
 				}
 
