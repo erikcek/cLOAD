@@ -8,23 +8,24 @@
     <link rel="stylesheet" type="text/css" href="/css/user.css">
     <link href="https://use.fontawesome.com/releases/v5.0.3/css/all.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
-	<nav>
-		<div class="container" onclick="myFunction(this)">
+	<div class="container" onclick="myFunction(this)">
   			<div class="bar1"></div>
   			<div class="bar2"></div>
  			<div class="bar3"></div>
 		</div>
+	<nav>
+		<i onclick="returnToUpperDirectory()" class="fas fa-arrow-left"></i>
 		<i class="fas fa-search "></i>
 		<input type="text" placeholder="Search..">
 		<ul class="right">
-			<li><i class="fas fa-user"></i></li>
-			<li>{{ user }}</li>
+			<li onclick="showHideWindow()"><i class="fas fa-user"></i> {{ user }}</li>
 			<li><a href="/logout"><i class="fas fa-power-off"></i></a></li>
 		</ul>
 	</nav>
-
+<!-- Okno pri pridávaní priečinku -->
 	<section id="okno">
         <div id="medzera"></div>
         <div id="oznam">
@@ -32,12 +33,16 @@
             <span id="vklad_container">
               	<input type="text" id="vklad" placeholder="Zadaj meno priečinka">
             </span>
-            <ul id="tlacidla">
-              <li><buttom class="newFile okno" id="action" >Submit</buttom></li>
-              <li><buttom onclick="hide_window()" class="logOut okno " id="close">Close</buttom></li>
-            </ul>
+            
+            <button class="subBtn btn" onclick="createDrectory()">Submit</button>
+            <button onclick="showHideWindow()" class="closeBtn btn ">Close</button>
           </div>
      </section>
+
+<!--- Message - --> 
+	<div id="message">
+		<p id="sprava"></p>
+	</div>
 
 <!-- Bočné vysúvacie menu -->
 	<div id="mySidenav" class="sidenav">
@@ -50,58 +55,189 @@
  		<h5>Tools</h5>
  		<a href="#">Trash</a>
  		<a href="#">Settings</a>
+		<a href="#" onclick="showNotes()">Notes</a>
+
+		<div id="poznamky">
+			<div class="note"><p onclick="showNotes() class="myNote">Moja poznámka 1</p><i class="noteI fas fa-user"></i><i class="noteI fas fa-user"></i></div>
+			<form action="" class="poznamky">
+				<input type="text" placeholder="Meno">
+				<textarea name="newnote" id="" cols="30" rows="10"></textarea>
+				<input type="submit"> 
+			</form>
+		</div>
+
  		<h5></h5>
  	</div>
 
 	<div id="wrap">
 		<h5>Directories</h5>
 
-		<div class="dir">Dir1</div>
-		<div class="dir">Dir1</div>
-		<div class="dir">Dir1</div>
-		<div class="dir">Dir1</div>
-		<div class="dir">Dir1</div>
-		<div class="dir">Dir1</div>
-		<div class="dir">Dir1</div>
-		<div class="dir">Dir1</div>
+		<section id="directories">
+			<div class="dir">Dir1</div>
+			<div class="dir">Dir1</div>
+			<div class="dir">Dir1</div>
+			<div class="dir">Dir1</div>
+			<div class="dir">Dir1</div>
+			<div class="dir">Dir1</div>
+			<div class="dir">Dir1</div>
+			<div class="dir">Dir1</div>
+		</section>
 
 		<h5>Files</h5>
 
-		<div class="file">
-			<div class="img">
+		<section id="files">
+			<div class="file">
+				<div class="img">
+				</div>
+				<div class="name">File.img</div>
 			</div>
-			<div class="name">File.img</div>
-		</div>
-
-<!-- Vyskakovacie okno pri pridávaní priečinku 
-	<div class="bg">
-		<div id="addDir">
-		<form action="">
-			<input type="text" placeholder="New directory ... ">
-			<button type="submit" value="Submit">Submit</button>
-			<button type="reset" value="Close">Reset</button>
-		</form>
-		</div>
-	</div>
-	-->
+		</section>
 	</div> 
 <script type="text/javascript" src="js/socket.io-stream.js"></script>
 <script type="text/javascript" src="js/fileUpload.js"></script>
 <script>
+
+document.addEventListener("contextmenu", (event) => {
+	console.log("inside context menu");
+	event.preventDefault();
+});
+
+function droweContextMenu(type, x, y) {
+	
+}
+
+function set_x_contextmenu_position(contextMenu, x) { //x  je xova suradnica kurzora myši a contextMenu je DOM element stránky
+
+    if(x + contextMenu.offsetWidth > window.innerWidth) {
+      x = x - contextMenu.offsetWidth;
+    }
+    return x;
+}
+
+function set_y_contextmenu_position(contextMenu, y) {
+    y += document.body.scrollTop;
+    console.log("screll_tolp: " + document.body.scrollTop)
+    if(y + contextMenu.offsetHeight > window.innerHeight + document.body.scrollTop) {
+      y -=  contextMenu.offsetHeight * 2;
+    }
+    return y;
+ }
+
 function myFunction(x) {
-	var div = document.getElementById("mySidenav").style.width;
+	var $div = $("#mySidenav").css("width");
     x.classList.toggle("change");
-    console.log(document.getElementById("mySidenav").style.width);
+    console.log($("#mySidenav").css("width"));
     	
-	if(div == ""){
-	  document.getElementById("mySidenav").style.width = "250px";
-	  i=1;
+	if ($div == "0px") {
+	  $("#mySidenav").css("width","250px");
+	  console.log("if");
 	}
 
-	else{
-	  document.getElementById("mySidenav").style.width = "";
+	else {
+	  $("#mySidenav").css("width","0px");
+	  console.log("else");
 	}
 }
+
+function showNotes() {
+	if ($("#poznamky").css("display") == "none") {
+		$("#poznamky").css("display","block");
+		$(".sidenav a").css("display","none");
+		$(".sidenav h5").css("display","none");
+
+	}
+
+	else {
+		$("#poznamky").css("display","none");
+		$(".sidenav a").css("display","block");
+		$(".sidenav h5").css("display","block");
+	}
+
+}
+
+function showHideWindow(){
+	if ($("#okno").css("display") == "none") {
+		$("#okno").css("display","block");
+	}
+
+	else {
+		$("#okno").css("display","none");
+	}
+}
+
+function removeContent(element) {
+	element.html("");
+	console.log("inside");
+}
+
+function loadDirectoryContent(element, nameArray) {
+	removeContent(element);
+
+	for(var i=0; i<nameArray.length; i++) {
+		element.append("<div class='dir' onclick='openDirectory(this)'>" + nameArray[i] + "</div>\n");
+	}
+}
+
+function loadFileContent(element, array) {
+	console.log("in file content");
+	removeContent(element);
+	for (var i=0; i<array.length; i++) {
+		element.append("<div class='file'><div class='img'></div><div class='name'>" + array[i] + "</div></div>");
+	}
+}
+
+function openDirectory(e) {
+	console.log(e);
+	var name = e.innerHTML;
+	console.log(name)
+	socket.emit("openDirectory", {"name": name});
+}
+
+function returnToUpperDirectory() {
+	socket.emit("returnToUpperDirectory");
+}
+
+
+function message(text){
+	$("#sprava").html(text);
+	$("#message").css("display","block");
+	$("#message").fadeOut(4000);
+}
+
+function createDrectory() {
+	var name = $("#vklad").val();
+	console.log(name);
+	socket.emit("createNewDirectory", {
+		name : name
+	});
+
+	showHideWindow();
+	message("Priečinok bol pridaný!");
+}
+
+socket.emit("lsDirectories");
+socket.emit("lsFiles");
+
+socket.on("lsDirectoriesReturn", (pole) => {
+	loadDirectoryContent($("#directories"), pole);
+});
+
+socket.on("openDirectoryReturn", () => {
+	socket.emit("lsDirectories");
+	socket.emit("lsFiles");
+})
+
+socket.on("lsFilesReturn", (pole) => {
+	console.log("in files return");
+	loadFileContent($("#files"), pole);
+});
+
+socket.on("returnToUpperDirectoryReturn", () => {
+	socket.emit("lsDirectories");
+	socket.emit("lsFiles");
+}) 
+
+
 </script>
 
 </body>

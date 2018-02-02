@@ -39,7 +39,7 @@ mongoose.connect(configDB.url, {
 app.use(morgan('dev')); 								// log every request to the console
 app.use(cookieParser()); 								// read cookies (needed for session, passport and sockets)
 app.use(bodyParser());  								// access HTML form data in requests
-app.use(favicon("./public/images/favicon.ico"));
+//app.use(favicon("./public/images/favicon.ico"));
 
 
 app.set("views", path.join(__dirname, "views")); 		//setting view engine and default view directory
@@ -52,7 +52,7 @@ var sessionMiddleware = session({
 		path: '/', 
 		httpOnly: true, 
 		secure: false, 
-		maxAge: 10*1000 //30*24*60*60*1000
+		maxAge: /*10*1000*/ 30*24*60*60*1000
 	},
 	saveUninitialized: false,				
 	resave: false,

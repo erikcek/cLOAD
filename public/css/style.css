@@ -190,9 +190,13 @@ a{
 
 footer{
   background-color: black;
-  position: fixed;
-  height: 50vh;
+  
+  height: 400px;
   width: 100%;
+}
+
+.fText{
+  position: fixed;
 }
 
 #ul{

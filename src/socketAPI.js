@@ -376,7 +376,7 @@ module.exports = function(io) {
 				}
 
 				function(fileNames, done) {
-					socket.emit("lsDirectoriesReturn", fileNames);
+					socket.emit("lsFilesReturn", fileNames);
 					console.log(fileNames);
 				}
 
@@ -596,7 +596,6 @@ module.exports = function(io) {
 		socket.on("openDirectory", function(data) {
 			
 			var workingDirectory = socket.request.session.workingDirectory;
-
 			async.waterfall([
 
 									//skontroluje, či pracovný priečinok užívateľa existuje
@@ -623,6 +622,7 @@ module.exports = function(io) {
 					})[0]._id;
 
 					socket.request.session.workingDirectory = idOfDirectory;
+					socket.emit("openDirectoryReturn");
 					console.log(directory);
 				}
 
@@ -654,7 +654,9 @@ module.exports = function(io) {
 
 			async.waterfall([	
 
+				
 				function(done) {
+					console.log(1)
 					Directory.findOne( {"_id": workingDirectory}, function(err,directory) {
 						if (err) {
 							return done(true);
@@ -669,9 +671,11 @@ module.exports = function(io) {
 				},
 
 				function(directory, done) {
+					console.log(2)
 					Directory.findOne( {"path": directory.parentDirectoryPath}, function(err, dir) {
 						if (dir) { 
 							socket.request.session.workingDirectory = dir._id;
+							socket.emit("returnToUpperDirectoryReturn");
 						}
 						else {
 							return done(true);
