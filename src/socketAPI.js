@@ -373,7 +373,7 @@ module.exports = function(io) {
 						fileNames.push(directory.files[i].name);
 					}
 					return done(false, fileNames);
-				},
+				}
 
 				function(fileNames, done) {
 					socket.emit("lsDirectoriesReturn", fileNames);
