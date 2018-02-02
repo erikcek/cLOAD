@@ -21,6 +21,7 @@
     "express-session": "^1.15.5",
     "hbs": "^4.0.1",
     "method-override": "^2.3.9",
+    "mime-types": "^2.1.17",
     "mongoose": "^4.11.12",
     "morgan": "^1.8.2",
     "mysql": "^2.14.1",

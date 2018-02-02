@@ -2,6 +2,7 @@ var fs = require("fs");
 var ss = require("socket.io-stream");
 var Directory = require("../model/directory");
 var async = require("async");
+var mime = require("mime-types");
 const SocketIOFile = require('socket.io-file');
 
 module.exports = function(io) {
@@ -373,11 +374,23 @@ module.exports = function(io) {
 						fileNames.push(directory.files[i].name);
 					}
 					return done(false, fileNames);
-				}
+				},
 
-				function(fileNames, done) {
-					socket.emit("lsFilesReturn", fileNames);
-					console.log(fileNames);
+				function(fileName, done) {
+					var files = new Array();
+					for (var i=0; i<fileName.length; i++) {
+						console.log(mime.lookup(fileName[i]));
+						files.push({
+							"name": fileName[i],
+							"type": mime.lookup(fileName[i])
+						});
+					}
+					return done(false, files);
+				},
+
+				function(files, done) {
+					socket.emit("lsFilesReturn", files);
+					console.log(files);
 				}
 
 			], function(err) {

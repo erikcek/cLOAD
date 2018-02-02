@@ -1,5 +1,6 @@
 .DS_Store
 /config/auth.js
 /node_modules
+/db_data
 /usersDirectories/local/
 /usersDirectories/google/

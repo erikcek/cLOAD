@@ -182,7 +182,7 @@ function loadFileContent(element, array) {
 	console.log("in file content");
 	removeContent(element);
 	for (var i=0; i<array.length; i++) {
-		element.append("<div class='file'><div class='img'></div><div class='name'>" + array[i] + "</div></div>");
+		element.append("<div class='file'><div class='img'></div><div class='name'>" + array[i].name + "</div></div>");
 	}
 }
 
