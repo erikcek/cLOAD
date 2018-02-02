@@ -376,7 +376,7 @@ module.exports = function(io) {
 				},
 
 				function(fileNames, done) {
-					socket.emit("lsDirectoriesReturn", fileNames);
+					socket.emit("lsFilesReturn", fileNames);
 					console.log(fileNames);
 				}
 
@@ -654,7 +654,9 @@ module.exports = function(io) {
 
 			async.waterfall([	
 
+				
 				function(done) {
+					console.log(1)
 					Directory.findOne( {"_id": workingDirectory}, function(err,directory) {
 						if (err) {
 							return done(true);
@@ -669,9 +671,11 @@ module.exports = function(io) {
 				},
 
 				function(directory, done) {
+					console.log(2)
 					Directory.findOne( {"path": directory.parentDirectoryPath}, function(err, dir) {
 						if (dir) { 
 							socket.request.session.workingDirectory = dir._id;
+							socket.emit("returnToUpperDirectoryReturn");
 						}
 						else {
 							return done(true);

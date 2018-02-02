@@ -17,7 +17,7 @@
  			<div class="bar3"></div>
 		</div>
 	<nav>
-		<i class="fas fa-arrow-left"></i>
+		<i onclick="returnToUpperDirectory()" class="fas fa-arrow-left"></i>
 		<i class="fas fa-search "></i>
 		<input type="text" placeholder="Search..">
 		<ul class="right">
@@ -85,65 +85,43 @@
 
 		<h5>Files</h5>
 
-		<div class="file">
-			<div class="img">
+		<section id="files">
+			<div class="file">
+				<div class="img">
+				</div>
+				<div class="name">File.img</div>
 			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file"> 
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
-		<div class="file">
-			<div class="img">
-			</div>
-			<div class="name">File.img</div>
-		</div>
+		</section>
 	</div> 
 <script type="text/javascript" src="js/socket.io-stream.js"></script>
 <script type="text/javascript" src="js/fileUpload.js"></script>
 <script>
+
+document.addEventListener("contextmenu", (event) => {
+	console.log("inside context menu");
+	event.preventDefault();
+});
+
+function droweContextMenu(type, x, y) {
+	
+}
+
+function set_x_contextmenu_position(contextMenu, x) { //x  je xova suradnica kurzora myši a contextMenu je DOM element stránky
+
+    if(x + contextMenu.offsetWidth > window.innerWidth) {
+      x = x - contextMenu.offsetWidth;
+    }
+    return x;
+}
+
+function set_y_contextmenu_position(contextMenu, y) {
+    y += document.body.scrollTop;
+    console.log("screll_tolp: " + document.body.scrollTop)
+    if(y + contextMenu.offsetHeight > window.innerHeight + document.body.scrollTop) {
+      y -=  contextMenu.offsetHeight * 2;
+    }
+    return y;
+ }
 
 function myFunction(x) {
 	var $div = $("#mySidenav").css("width");
@@ -192,11 +170,19 @@ function removeContent(element) {
 	console.log("inside");
 }
 
-function loadContent(element, nameArray) {
+function loadDirectoryContent(element, nameArray) {
 	removeContent(element);
 
 	for(var i=0; i<nameArray.length; i++) {
 		element.append("<div class='dir' onclick='openDirectory(this)'>" + nameArray[i] + "</div>\n");
+	}
+}
+
+function loadFileContent(element, array) {
+	console.log("in file content");
+	removeContent(element);
+	for (var i=0; i<array.length; i++) {
+		element.append("<div class='file'><div class='img'></div><div class='name'>" + array[i] + "</div></div>");
 	}
 }
 
@@ -205,6 +191,10 @@ function openDirectory(e) {
 	var name = e.innerHTML;
 	console.log(name)
 	socket.emit("openDirectory", {"name": name});
+}
+
+function returnToUpperDirectory() {
+	socket.emit("returnToUpperDirectory");
 }
 
 
@@ -226,14 +216,26 @@ function createDrectory() {
 }
 
 socket.emit("lsDirectories");
+socket.emit("lsFiles");
 
 socket.on("lsDirectoriesReturn", (pole) => {
-	loadContent($("#directories"), pole);
+	loadDirectoryContent($("#directories"), pole);
 });
 
 socket.on("openDirectoryReturn", () => {
 	socket.emit("lsDirectories");
+	socket.emit("lsFiles");
 })
+
+socket.on("lsFilesReturn", (pole) => {
+	console.log("in files return");
+	loadFileContent($("#files"), pole);
+});
+
+socket.on("returnToUpperDirectoryReturn", () => {
+	socket.emit("lsDirectories");
+	socket.emit("lsFiles");
+}) 
 
 
 </script>
