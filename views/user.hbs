@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/user.css">
     <link href="https://use.fontawesome.com/releases/v5.0.3/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
-<body>
+<body id="test" onclick="deleteContextMenu()">
 	<div class="container" onclick="myFunction(this)">
   			<div class="bar1"></div>
   			<div class="bar2"></div>
@@ -21,7 +22,7 @@
 		<i class="fas fa-search "></i>
 		<input type="text" placeholder="Search..">
 		<ul class="right">
-			<li onclick="showHideWindow()"><i class="fas fa-user"></i> {{ user }}</li>
+			<li><i class="fas fa-user"></i> {{ user }}</li>
 			<li><a href="/logout"><i class="fas fa-power-off"></i></a></li>
 		</ul>
 	</nav>
@@ -39,7 +40,16 @@
           </div>
      </section>
 
-<!--- Message - --> 
+<!-- context menu -->
+     <div id="context">
+     	<ul id="contextMenu">
+     		<li onclick="showHideWindow()" class="contextLi"><i class="fas fa-plus cMenuIcon"></i>  Pridať priečinok</li>
+     		<li class="contextLi"><i class="fas fa-search cMenuIcon"></i>  Nahrať súbor</li>
+     		<li class="contextLi"><i class="fas fa-search cMenuIcon"></i>  Zmazať</li>
+     	</ul>
+     </div>
+
+<!-- Message - --> 
 	<div id="message">
 		<p id="sprava"></p>
 	</div>
@@ -73,24 +83,13 @@
 		<h5>Directories</h5>
 
 		<section id="directories">
-			<div class="dir">Dir1</div>
-			<div class="dir">Dir1</div>
-			<div class="dir">Dir1</div>
-			<div class="dir">Dir1</div>
-			<div class="dir">Dir1</div>
-			<div class="dir">Dir1</div>
-			<div class="dir">Dir1</div>
-			<div class="dir">Dir1</div>
+			
 		</section>
 
 		<h5>Files</h5>
 
 		<section id="files">
-			<div class="file">
-				<div class="img">
-				</div>
-				<div class="name">File.img</div>
-			</div>
+			
 		</section>
 	</div> 
 <script type="text/javascript" src="js/socket.io-stream.js"></script>
@@ -98,16 +97,25 @@
 <script>
 
 document.addEventListener("contextmenu", (event) => {
-	console.log("inside context menu");
 	event.preventDefault();
+	console.log(window.event);
+	x = set_x_contextmenu_position($("#context"), event.clientX);
+	y = set_y_contextmenu_position($("#context"), event.clientY);
+
+	droweContextMenu(x, y);
+	
 });
 
-function droweContextMenu(type, x, y) {
+function droweContextMenu(x, y) {
+	console.log("v vykreslovacej funkcii");
+	$("#context").css("display","block");
+	$("#context").css("top",y + "px");
+	$("#context").css("left",x + "px");
 	
 }
 
-function set_x_contextmenu_position(contextMenu, x) { //x  je xova suradnica kurzora myši a contextMenu je DOM element stránky
 
+function set_x_contextmenu_position(contextMenu, x) { //x  je xova suradnica kurzora myši a contextMenu je DOM element stránky
     if(x + contextMenu.offsetWidth > window.innerWidth) {
       x = x - contextMenu.offsetWidth;
     }
@@ -123,10 +131,13 @@ function set_y_contextmenu_position(contextMenu, y) {
     return y;
  }
 
+function deleteContextMenu(){
+	$("#context").css("display","none");
+}
+
 function myFunction(x) {
 	var $div = $("#mySidenav").css("width");
     x.classList.toggle("change");
-    console.log($("#mySidenav").css("width"));
     	
 	if ($div == "0px") {
 	  $("#mySidenav").css("width","250px");
@@ -167,7 +178,6 @@ function showHideWindow(){
 
 function removeContent(element) {
 	element.html("");
-	console.log("inside");
 }
 
 function loadDirectoryContent(element, nameArray) {
@@ -179,7 +189,6 @@ function loadDirectoryContent(element, nameArray) {
 }
 
 function loadFileContent(element, array) {
-	console.log("in file content");
 	removeContent(element);
 	for (var i=0; i<array.length; i++) {
 		element.append("<div class='file'><div class='img'></div><div class='name'>" + array[i].name + "</div></div>");
@@ -187,9 +196,7 @@ function loadFileContent(element, array) {
 }
 
 function openDirectory(e) {
-	console.log(e);
 	var name = e.innerHTML;
-	console.log(name)
 	socket.emit("openDirectory", {"name": name});
 }
 
@@ -206,13 +213,16 @@ function message(text){
 
 function createDrectory() {
 	var name = $("#vklad").val();
-	console.log(name);
 	socket.emit("createNewDirectory", {
 		name : name
 	});
 
 	showHideWindow();
 	message("Priečinok bol pridaný!");
+	socket.emit("lsDirectories");
+	socket.on("lsDirectoriesReturn", (pole) => {
+		loadDirectoryContent($("#directories"),pole)
+	});
 }
 
 socket.emit("lsDirectories");
@@ -228,8 +238,8 @@ socket.on("openDirectoryReturn", () => {
 })
 
 socket.on("lsFilesReturn", (pole) => {
-	console.log("in files return");
 	loadFileContent($("#files"), pole);
+	console.log(pole);
 });
 
 socket.on("returnToUpperDirectoryReturn", () => {
