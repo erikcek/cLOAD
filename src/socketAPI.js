@@ -255,6 +255,7 @@ module.exports = function(io) {
 						stream.pipe(writeStream);
 					}
 					else {
+						console.log(oneOfFiles);
 						var writeStream = fs.createWriteStream(oneOfFiles.path + file.name, {flags: "a", start: file.start});
 						stream.pipe(writeStream);
 					}

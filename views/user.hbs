@@ -18,12 +18,12 @@
  			<div class="bar3"></div>
 		</div>
 	<nav>
-		<i onclick="returnToUpperDirectory()" class="fas fa-arrow-left"></i>
+		<i onclick="returnToUpperDirectory()" title="Return to upper directory" class="fas fa-arrow-left"></i>
 		<i class="fas fa-search "></i>
 		<input type="text" placeholder="Search..">
 		<ul class="right">
-			<li><i class="fas fa-user"></i> {{ user }}</li>
-			<li><a href="/logout"><i class="fas fa-power-off"></i></a></li>
+			<li title="Account settings" ><i class="fas fa-user"></i> {{ user }}</li>
+			<li><a href="/logout" title="Log out" id="logOut"><i class="fas fa-power-off"></i></a></li>
 		</ul>
 	</nav>
 <!-- Okno pri pridávaní priečinku -->
@@ -43,9 +43,12 @@
 <!-- context menu -->
      <div id="context">
      	<ul id="contextMenu">
-     		<li onclick="showHideWindow()" class="contextLi"><i class="fas fa-plus cMenuIcon"></i>  Pridať priečinok</li>
-     		<li class="contextLi"><i class="fas fa-search cMenuIcon"></i>  Nahrať súbor</li>
-     		<li class="contextLi"><i class="fas fa-search cMenuIcon"></i>  Zmazať</li>
+     		<li onclick="showHideWindow()" class="contextLi"><i class="fas fa-plus cMenuIcon" style="color: green;"></i>  Add directory</li>
+     		<li class="contextLi">
+     			
+     			<input type="file" id="file"/>
+				<label for="file"><i style="color: green;" class="fas fa-upload cMenuIcon"></i>  Upload a file</label></li>
+     		<li class="contextLi"><i style="color: red;" class="fas fa-minus cMenuIcon"></i>  Delete</li>
      	</ul>
      </div>
 
@@ -98,7 +101,6 @@
 
 document.addEventListener("contextmenu", (event) => {
 	event.preventDefault();
-	console.log(window.event);
 	x = set_x_contextmenu_position($("#context"), event.clientX);
 	y = set_y_contextmenu_position($("#context"), event.clientY);
 
@@ -107,13 +109,10 @@ document.addEventListener("contextmenu", (event) => {
 });
 
 function droweContextMenu(x, y) {
-	console.log("v vykreslovacej funkcii");
 	$("#context").css("display","block");
 	$("#context").css("top",y + "px");
 	$("#context").css("left",x + "px");
-	
 }
-
 
 function set_x_contextmenu_position(contextMenu, x) { //x  je xova suradnica kurzora myši a contextMenu je DOM element stránky
     if(x + contextMenu.offsetWidth > window.innerWidth) {
@@ -124,7 +123,6 @@ function set_x_contextmenu_position(contextMenu, x) { //x  je xova suradnica kur
 
 function set_y_contextmenu_position(contextMenu, y) {
     y += document.body.scrollTop;
-    console.log("screll_tolp: " + document.body.scrollTop)
     if(y + contextMenu.offsetHeight > window.innerHeight + document.body.scrollTop) {
       y -=  contextMenu.offsetHeight * 2;
     }
@@ -141,12 +139,10 @@ function myFunction(x) {
     	
 	if ($div == "0px") {
 	  $("#mySidenav").css("width","250px");
-	  console.log("if");
 	}
 
 	else {
 	  $("#mySidenav").css("width","0px");
-	  console.log("else");
 	}
 }
 
@@ -191,7 +187,30 @@ function loadDirectoryContent(element, nameArray) {
 function loadFileContent(element, array) {
 	removeContent(element);
 	for (var i=0; i<array.length; i++) {
-		element.append("<div class='file'><div class='img'></div><div class='name'>" + array[i].name + "</div></div>");
+		var type = array[i].type;
+		
+		switch(type.split("/")[0]){
+			case "text": 
+				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-alt'></i></div><div class='name'>" + array[i].name + "</div></div>");
+				break;
+
+			case "image": 
+				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-image'></i></div><div class='name'>" + array[i].name + "</div></div>");
+				break;
+
+			case "audio": 
+				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-audio'></i></div><div class='name'>" + array[i].name + "</div></div>") ;
+				break;
+
+			case "video": 
+				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-video'></i></div><div class='name'>" + array[i].name + "</div></div>");
+				break;
+
+			case "application": 
+				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-alt'></i></div><div class='name'>" + array[i].name + "</div></div>") ;
+				break;
+			default: element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file'></i></div><div class='name'>" + array[i].name + "</div></div>") ;;
+		}
 	}
 }
 
@@ -239,7 +258,6 @@ socket.on("openDirectoryReturn", () => {
 
 socket.on("lsFilesReturn", (pole) => {
 	loadFileContent($("#files"), pole);
-	console.log(pole);
 });
 
 socket.on("returnToUpperDirectoryReturn", () => {

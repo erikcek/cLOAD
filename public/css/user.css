@@ -81,6 +81,17 @@ li{
 	color: red;
 }
 
+.fa-arrow-left{
+	color: grey;
+	float: left;
+	    padding: 15px;
+    margin-left: 47px;
+}
+
+.fa-arrow-left:hover{
+	color: black;
+}
+
 /* --- VYHLADAVANIE ---*/
 input{
 	height: 26px;
@@ -123,15 +134,25 @@ input{
 
 .img{
 	height: 150px;
-	background: #767676;
+	background-color: white;
+	text-align: center;
+    vertical-align: middle;
+}
+
+.img .fas{
+	margin-top: 35px;
 }
 
 .name{
 	padding: 5px 0;
 	padding-left: 10px;
-		overflow: hidden;
+	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap; 
+}
+
+.fa-5x{
+	color: grey;
 }
 
 /* --------- BOCNA NAVIGACIA ------*/
@@ -309,8 +330,23 @@ textarea{
 	color:#ccc;
 }
 
+input[type=file] {
+	display:none;
+	margin:10px;
+}
+/*
+input[type=file] + label {
+	display:inline-block;
+	background-color: #FFFFFF;
+	color:#666F77;
+}
 
-
+input[type=file]:active + label {
+	background-image: none;
+	background-color:#2D6C7A;
+	color:#FFFFFF;
+}
+*/
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
