@@ -77,6 +77,50 @@ body.addEventListener("drop", function(event) {
 
 });
 
+function download(name) {
+    var stream = ss.createStream();
+    var buffer = [];
+    var length = 0;
+    
+    ss(socket).emit("download", stream, {name: name})
+    stream.on("data",function(chunk) {
+        length += chunk.length;
+        buffer.push(chunk);
+    })
+    stream.on("end", function() {
+        var filedata = new Uint8Array(length),
+        i = 0;
+
+        for(var x=0; x<buffer.length; x++){
+            var buff = buffer[x];
+            for (var j = 0; j < buff.length; j++) {
+                filedata[i] = buff[j];
+                i++;
+            }
+        }
+        downloadFileFromBlob([filedata], name);
+        console.log(filedata);
+    })
+}
+
+var downloadFileFromBlob = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+        var blob = new Blob(data, {
+                type : "octet/stream"
+            }),
+        url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
+//socket.on("getData", function)
+
 function uploadData(name, data) {
     socket.emit("uploadData", {name: name, data: data});
 }

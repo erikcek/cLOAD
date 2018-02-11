@@ -193,6 +193,25 @@ module.exports = function(io) {
 
 		});
 
+		ss(socket).on("download", function(stream, file) {
+			async.waterfall([
+				function(done) {
+					Directory.findOne( {"_id": socket.request.session.workingDirectory}, function(err, directory) {
+						if (err) {
+							return done(err);
+						}
+						else if (directory) {
+							return done(false, directory);
+						}
+					});
+				},
+				function(directory, done) {
+					var myStream = fs.createReadStream(directory.path + file.name)
+					myStream.pipe(stream);
+				}
+			])
+		})
+
 		//done
 		socket.on("deleteFile", function(data) {
 			async.waterfall([
