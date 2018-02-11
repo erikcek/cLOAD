@@ -20,7 +20,7 @@ body.addEventListener("drop", function(event) {
 }, false);
 
  socket.on("sendData", function(data) {
-    console.log(data.position);
+    console.log("position" + data.position);
     var stream = ss.createStream();
     for (var i=0; i<fileArray.length; i++) {
         if (fileArray[i].name == data.name) {
