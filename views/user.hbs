@@ -5,18 +5,27 @@
 	<title>{{ user }} |  cLOAD - internetové úložisko</title>
 	<meta name="author" content="Katarína Golenyová, Erik Kandalík">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Styles -->
     <link rel="stylesheet" type="text/css" href="/css/user.css">
+<!-- Font awesome -->
     <link href="https://use.fontawesome.com/releases/v5.0.3/css/all.css" rel="stylesheet">
+<!-- Google fonts - Open Sans -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<!-- Scripts  -->    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
+
 <body id="test" onclick="deleteContextMenu()">
+
+	<!-- Open/close sidebar ico -->
 	<div class="container" onclick="myFunction(this)">
-  			<div class="bar1"></div>
-  			<div class="bar2"></div>
- 			<div class="bar3"></div>
-		</div>
+  		<div class="bar1"></div>
+  		<div class="bar2"></div>
+ 		<div class="bar3"></div>
+	</div>
+
+	<!-- Top navigation -->
 	<nav>
 		<i onclick="returnToUpperDirectory()" title="Return to upper directory" class="fas fa-arrow-left"></i>
 		<i class="fas fa-search "></i>
@@ -32,7 +41,7 @@
         <div id="oznam">
             <h1 id="h1_oznam" >New directory</h1>
             <span id="vklad_container">
-              	<input type="text" id="vklad" placeholder="Zadaj meno priečinka">
+              	<input type="text" id="vklad" placeholder="Name of the directory">
             </span>
             
             <button class="subBtn btn" onclick="createDrectory()">Submit</button>
@@ -40,15 +49,26 @@
           </div>
      </section>
 
-<!-- context menu -->
+<!-- context menu in body -->
      <div id="context">
      	<ul id="contextMenu">
-     		<li onclick="showHideWindow()" class="contextLi"><i class="fas fa-plus cMenuIcon" style="color: green;"></i>  Add directory</li>
+     		<li onclick="showHideWindow()" class="contextLi">
+     			<i class="fas fa-plus cMenuIcon" style="color: green;"></i>  Add directory</li>
      		<li class="contextLi">
-     			
+     			<input onchange="test(this)" type="file" id="file"/>
+				<label for="file"><i style="color: green;" class="fas fa-upload cMenuIcon"></i>  Upload a file</label></li>
+     		<li class="contextLi"><i style="color: red;" class="fas fa-minus cMenuIcon"></i>  Settings</li>
+     	</ul>
+     </div>
+<!--  context menu for folders-->
+	<div id="context">
+     	<ul id="contextMenu">
+     		<li onclick="showHideWindow()" class="contextLi">
+     			<i class="fas fa-plus cMenuIcon" style="color: green;"></i>  Add directory</li>
+     		<li class="contextLi">
      			<input type="file" id="file"/>
 				<label for="file"><i style="color: green;" class="fas fa-upload cMenuIcon"></i>  Upload a file</label></li>
-     		<li class="contextLi"><i style="color: red;" class="fas fa-minus cMenuIcon"></i>  Delete</li>
+     		<li class="contextLi"><i style="color: red;" class="fas fa-minus cMenuIcon"></i>  Settings</li>
      	</ul>
      </div>
 
@@ -61,14 +81,14 @@
 	<div id="mySidenav" class="sidenav">
 		<img src="" alt="">
 		<h5>Bookmarks</h5>
-		<a href="#">Documents</a>
-  		<a href="#">Pictures</a>
-  		<a href="#">Movies</a>
- 		<a href="#">Music</a>
+			<a href="#">Documents</a>
+	  		<a href="#">Pictures</a>
+  			<a href="#">Movies</a>
+	 		<a href="#">Music</a>
  		<h5>Tools</h5>
- 		<a href="#">Trash</a>
- 		<a href="#">Settings</a>
-		<a href="#" onclick="showNotes()">Notes</a>
+ 			<a href="#">Trash</a>
+ 			<a href="#">Settings</a>
+			<a href="#" onclick="showNotes()">Notes</a>
 
 		<div id="poznamky">
 			<div class="note"><p onclick="showNotes() class="myNote">Moja poznámka 1</p><i class="noteI fas fa-user"></i><i class="noteI fas fa-user"></i></div>
@@ -81,7 +101,7 @@
 
  		<h5></h5>
  	</div>
-
+<!-- Wrap for files and directories -->
 	<div id="wrap">
 		<h5>Directories</h5>
 
@@ -95,18 +115,39 @@
 			
 		</section>
 	</div> 
+
 <script type="text/javascript" src="js/socket.io-stream.js"></script>
 <script type="text/javascript" src="js/fileUpload.js"></script>
 <script>
-
+/*
 document.addEventListener("contextmenu", (event) => {
 	event.preventDefault();
+	console.log(event);
+	console.log(document);
 	x = set_x_contextmenu_position($("#context"), event.clientX);
 	y = set_y_contextmenu_position($("#context"), event.clientY);
 
 	droweContextMenu(x, y);
-	
 });
+*/
+
+function test(e) {
+	console.log($("#file").val());
+}
+
+$(document).bind("contextmenu", function (e) {
+    e.preventDefault();                 // To prevent the default context menu.
+    $("#context").css("left", e.pageX);   // For updating the menu position.
+    $("#context").css("top", e.pageY);    // 
+    $("#context").fadeIn(500, startFocusOut()); //  For bringing the context menu in picture.
+});
+
+function startFocusOut() {
+    $(document).on("click", function () {   
+        $("#context").hide(500);              // To hide the context menu
+        $(document).off("click");           
+    });
+}
 
 function droweContextMenu(x, y) {
 	$("#context").css("display","block");
@@ -128,6 +169,8 @@ function set_y_contextmenu_position(contextMenu, y) {
     }
     return y;
  }
+
+
 
 function deleteContextMenu(){
 	$("#context").css("display","none");
@@ -180,16 +223,16 @@ function loadDirectoryContent(element, nameArray) {
 	removeContent(element);
 
 	for(var i=0; i<nameArray.length; i++) {
-		element.append("<div class='dir' onclick='openDirectory(this)'>" + nameArray[i] + "</div>\n");
+		element.append("<div class='dir' ondblclick='openDirectory(this)'>" + nameArray[i] + "</div>\n");
 	}
 }
 
 function loadFileContent(element, array) {
 	removeContent(element);
 	for (var i=0; i<array.length; i++) {
-		var type = array[i].type;
-		
-		switch(type.split("/")[0]){
+		var typeOfFIle = array[i].type.split("/");
+		console.log(typeOfFIle);
+		switch(typeOfFIle[0]){
 			case "text": 
 				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-alt'></i></div><div class='name'>" + array[i].name + "</div></div>");
 				break;
@@ -263,7 +306,16 @@ socket.on("lsFilesReturn", (pole) => {
 socket.on("returnToUpperDirectoryReturn", () => {
 	socket.emit("lsDirectories");
 	socket.emit("lsFiles");
-}) 
+});
+
+socket.on("siteRefresh", () => {
+	socket.emit("lsDirectories");
+	socket.emit("lsFiles");
+});
+
+socket.on("errorMessage", () => {
+	//vypíš chybu v zavislosti od erooru
+})
 
 
 </script>
