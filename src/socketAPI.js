@@ -8,13 +8,8 @@ const SocketIOFile = require('socket.io-file');
 module.exports = function(io) {
 
 	io.on('connection', socket => {
- 
-//##############################################################################################################################
-//##############################################################################################################################
-												//all in progress
-//##############################################################################################################################
-//##############################################################################################################################
-		
+
+
 		socket.on("startUpload", function(file) {
 			//vytvory novy zaznam v scheme pre suvbory
 			//zada jej velkost aj to ze este nie je uplne uploadnuty
@@ -49,7 +44,6 @@ module.exports = function(io) {
 					return done(false, directory, false);
 				},
 
-				// overí, či nie je rovnaky subo r v súborovom systéme 
 				function(directory, fileInDBExists, done) {
 					console.log(3)
 					fs.stat(directory.path + file.name, function(err, stat) {
@@ -151,44 +145,10 @@ module.exports = function(io) {
 					}
 				}
 			], function(err) {
+				scoket.emit("errorLog", "Pri inicializovaní nahrávania súborov nastala chyba");
 				console.log("error in startUpload");  // správa chýb
 			})
-		});
-
-/*
-		socket.on("endUpload", function(fileName) {
-			async.waterfall([
-
-				function (done) {
-					files = socket.request.session.uploadFiles
-					for (var i=0; i< files.length; i++) {
-						if (files[i].name = file.name) {
-							return done(false, files[i].path);
-						}
-					}
-
-					return done(true);
-				},
-
-				function (path, done) {
-					Directory.findOne( {"path": path }, function(err, directory) {
-						if (err) {
-							return done(err);
-						}
-						else if (directory) {
-							return done(false, directory);
-						}
-					});
-				},
-
-				function (directory, done) {
-					//nastavit v directory.files.mojSubor. not FullyUploaded == undefined
-					//pravdepodobne bude vytvorena nova schema pre subory
-				}
-
-			]);
-		});
-	*/	
+		});	
 
 		// socket io stream listener pre upload suborov cez streamy
 		ss(socket).on("uploadData", function(stream, file) {   
@@ -211,43 +171,7 @@ module.exports = function(io) {
 					}
 
 					return done(true);
-					/*
-					Directory.findOne( {"_id": socket.request.session.workingDirectory}, function(err, directory) {
-						if (err) {
-							return done(err);
-						}
-						else if (directory) {
-							return done(false, directory);
-						}
-					}); */
 				},
-				/*
-				function (oneOfFiles, done) {
-					Directory.findOne( {"path": oneOfFiles.path}, function(err, directory) {
-						if (err) {
-							return done(err);
-						}
-						else if (directory) {
-							directory.files.push({ name: oneOfFiles.name, notFullyUploaded: true });
-							return done(false, oneOfFiles, directory);
-						}
-						else {
-							return done(true);
-						}
-					});
-				},
-
-				function(oneOfFiles, directory, done) {
-					directory.save(function(err) {
-						if (err) {
-							return done(err);
-						}
-						else {
-							return done(false, oneOfFiles);
-						}
-					});
-				},
-	*/
 				function (oneOfFiles, done) {
 					console.log("cresting write strem for file");
 					if (file.start == 0) {
@@ -255,13 +179,13 @@ module.exports = function(io) {
 						stream.pipe(writeStream);
 					}
 					else {
-						console.log(oneOfFiles);
 						var writeStream = fs.createWriteStream(oneOfFiles.path + file.name, {flags: "a", start: file.start});
 						stream.pipe(writeStream);
 					}
 					//writeStream.write("file")
  				}
 			], function(err, message) {
+				scoket.emit("errorLog", "Počas nahrávania súborov nastala chyba.");
 				console.log("error in ss.on(uploadData) | socketAPI.js");
 				console.log(err);
 				console.log(message);
@@ -323,34 +247,17 @@ module.exports = function(io) {
 					})
 				}
 			], function(err, message) {
+				scoket.emit("errorLog", "Pri vymazávaní súboru nastala chyba");
 				console.log(err);
 				console.log(message);
 			})
-		});
-
-
-
-
-
-//##############################################################################################################################
-//##############################################################################################################################
-//##############################################################################################################################
-//##############################################################################################################################
-		
-
-
-
-
-
-		socket.on("info", function(){
-			console.log(socket.request.session);
 		});
 
 		//#######################################################################################
 		// 										lsFiles
 		//#######################################################################################
 
-		socket.on("lsFiles", function(data) {
+		socket.on("lsFiles", function(data={}) {
 
 			async.waterfall([
 
@@ -371,10 +278,20 @@ module.exports = function(io) {
 
 				function(directory, done) {
 					var fileNames = new Array();
-					for (var i = 0 ; i< directory.files.length; i++) {
-						fileNames.push(directory.files[i].name);
+					if (data.category) {
+						for (var i = 0 ; i< directory.files.length; i++) {
+							if (directory.files[i].category == data.category) {
+								fileNames.push(directory.files[i].name);
+							}
+						}
+					} 
+					else {
+						for (var i = 0 ; i< directory.files.length; i++) {
+							fileNames.push(directory.files[i].name);
+						}
 					}
 					return done(false, fileNames);
+
 				},
 
 				function(fileName, done) {
@@ -442,7 +359,6 @@ module.exports = function(io) {
 
 		});
 
-
 		//#######################################################################################
 		// 										createDirectory
 		//#######################################################################################
@@ -456,7 +372,7 @@ module.exports = function(io) {
 									//skontroluje, či pracovný priečinok užívateľa existuje
 				//#######################################################################################
 				function(done) {									
-					console.log("1");
+					//console.log("1");
 					Directory.findOne({ "_id": workingDirectory}, function(err, directory) {
 						if (err) {
 							return done(true);
@@ -474,7 +390,7 @@ module.exports = function(io) {
 											//vytvorí objekt newDirectory 	
 				//#######################################################################################
 				function(directory, done) {
-					console.log("2");
+					//console.log("2");
 					var newDirectory = new Directory();
 
 					newDirectory.name = data.name;
@@ -487,7 +403,7 @@ module.exports = function(io) {
 									//vytvorý súbor zodpovedajúci objektu newDirecotrx
 				//#######################################################################################
 				function(directory, newDirectory, done) {
-					console.log("3");
+					//console.log("3");
 					fs.mkdir(newDirectory.path, function(err) {
 						if (err) {
 							//socket.request.flash("directoryCreateError", "Directory allready exists");
@@ -500,7 +416,7 @@ module.exports = function(io) {
 									//uloží objekt newDirectory do databázy
 				//#######################################################################################
 				function(directory, newDirectory, done) {
-					console.log("4");
+					//console.log("4");
 					newDirectory.save(function(err, newDirectory) {
 						if (err) {
 							console.log("unable to create newDirectory document  socketAPI/createNewDirectory");
@@ -514,19 +430,20 @@ module.exports = function(io) {
 									//obnoví dokument rodičovského súboru v databáze
 				//#######################################################################################
 				function(directory, newDirectory, done) {
-					console.log("5");
+					//console.log("5");
 					directory.nestedDirectories.push({
 						name 	: data.name,
 						_id		: newDirectory._id
 					});
 
 					directory.save(function(err) {
-						console.log("6");
+						// console.log("6");
 						if (err) {
 							console.log("unable to update directory document  socketAPI/createNewDirectory");
 							var errorIn = "saveDirectory";
 							return done(true, errorIn, directory, newDirectory);
 						}
+						socket.emit("createNewDIrectoryReturn");
 						return done(false, directory, newDirectory);
 					}); 
 				},
@@ -568,45 +485,9 @@ module.exports = function(io) {
 				}
 				console.log("error in createNewDirectory");
 			})
-/*
-			Directory.findOne({ "_id": socket.request.session.workingDirectory}, function(err, directory) {
-				if (err) {
-					return 0
-				}
 
-				else {
-					fs.mkdir(directory.parentDirectoryPath + directory.name + "/" + data, function(err) {
-						if (err) {
-							console.log("error in creating new directory  SOCKETAPI")
-						}
-						else {
-							var newDirectory = new Directory();
-
-							newDirectory.name = data;
-							newDirectory.parentDirectoryPath = directory.parentDirectoryPath + directory.name + "/"
-
-							newDirectory.save(function(err, newDirectory) {
-								if(!err) {
-									directory.nestedDirectories.push({name: data, _id: newDirectory._id});
-									directory.save(function(err) {
-										if (!err) {
-											console.log(newDirectory);
-										}
-									})
-								}
-							})
-						}
-					})
-					console.log(directory);
-				}
-			})
-			*/
 		});
-//##############################################################################################################################
-//##############################################################################################################################
-												//all in progress
-//##############################################################################################################################
-//##############################################################################################################################
+
 		socket.on("openDirectory", function(data) {
 			
 			var workingDirectory = socket.request.session.workingDirectory;
@@ -644,22 +525,7 @@ module.exports = function(io) {
 				console.log("error in openDirectory | socketAPI");
 			})
 
-/*
-			Directory.findOne( { $and: [{ "_id": socket.request.session.workingDirectory}, {"nestedDirectories.name": data}] }, function(err, directory) {
-				if (err) {
-					console.log(err);
-				}
-				else if (directory){
-					var idOfDirectory = directory.nestedDirectories.filter(function(el) {
-						return el.name == data;
-					})[0]._id;
 
-					socket.request.session.workingDirectory = idOfDirectory;
-
-					console.log(idOfDirectory);
-				}
-			});
-*/
 		});
 
 		socket.on("returnToUpperDirectory", function() {
@@ -703,15 +569,57 @@ module.exports = function(io) {
 			});
 		});
 
-		socket.on("repairFileSystem", function() {
-			var workingDirectory = socket.request.session.workingDirectory;
-			repairFileSystem(workingDirectory);
+		socket.on("addFileToCategory", function(data) {
+			async.waterfall([
+				function(done) {
+					var workingDirectory = socket.request.session.workingDirectory;
+					Directory.findOne( {"_id": workingDirectory}, function(err, directory) {
+						if (err) {
+							return done(true);
+						}
+						else if (!directory) {
+							return done(true);
+						}
+						else {
+							return done(false, directory);
+						}
+					});
+				},
+				function(directory, done) {
+					files = directory.files;
+					for (var i=0; i<files.length; i++) {
+						if (files[i].name == data.name) {
+							return done(false, directory, i);
+						}
+					}
+					return done(true, "No such file in directory");
+				},
+				function(directory, i, done) {
+					if (data.category) {
+						directory.files[i].category = data.category;
+						return done(false, directory);
+					}
+					return done(true, "Category is not defined in data in addFileToCategory | socketAPI");
+				},
+				function(directory, done) {
+					directory.save(function(err) {
+						if (err) {
+							return done(err, "unable to save directory in addFileToCategory | socketAPI");
+						}
+						socket.emit("addFileToCategoryReturn");
+					});
+				}
+			], function(err, message) {
+				socket.emit("errorLog", "Nepodarilo sa pridať súbor do kategórie");
+				//console.log(err);
+				//console.log(message);
+			});
 		});
 
-//##############################################################################################################################
-//##############################################################################################################################
-//##############################################################################################################################
-//##############################################################################################################################
+		socket.on("repairFileSystem", function() {
+			var workingDirectory = socket.request.session.workingDirectory;
+			repair(workingDirectory);
+		});
 
 	});
 }
@@ -750,6 +658,7 @@ function repairFileSystem(workingDirectory) {
 		}
 	});
 }
+
 
 
 function getWorkingDirectoryPath(workingDirectory) {

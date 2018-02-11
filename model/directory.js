@@ -12,6 +12,7 @@ var directorySchema = mongoose.Schema({
 							name: String,					//vytvorit novu schemu pre subory (lepsie pre vyhladavanie)
 							size: Number,					// pravdepoobne to bude rychlejsie pre vyhlavanie na stranke
 							notFullyUploaded: Boolean,
+							category: String
 						}]
 }, {collection: "directories"});
 
