@@ -341,7 +341,7 @@ module.exports = function(io) {
 		// 									lsDirectories
 		//#######################################################################################
 
-		socket.on("lsDirectories", function() {
+		socket.on("lsDirectories", function(data = {}) {
 
 			async.waterfall([
 
@@ -362,8 +362,17 @@ module.exports = function(io) {
 
 				function(directory, done) {
 					var directoryNames = new Array();
-					for (var i = 0 ; i< directory.nestedDirectories.length; i++) {
-						directoryNames.push(directory.nestedDirectories[i].name);
+					if (data.category) {
+						for (var i = 0 ; i< directory.nestedDirectories.length; i++) {
+							if (data.category == directory.nestedDirectories[i].category) {
+								directoryNames.push(directory.nestedDirectories[i].name);
+							}
+						}
+					}
+					else {
+						for (var i = 0 ; i< directory.nestedDirectories.length; i++) {
+							directoryNames.push(directory.nestedDirectories[i].name);
+						}
 					}
 					return done(false, directoryNames);
 				},
@@ -632,6 +641,58 @@ module.exports = function(io) {
 			], function(err, message) {
 				socket.emit("errorLog", "Nepodarilo sa pridať súbor do kategórie");
 				//console.log(err);
+				//console.log(message);
+			});
+		});
+
+		socket.on("addDirectoryToCategory", function(data = {}) {
+			console.log("aaaaaaaaa")
+			async.waterfall([
+				function(done) {
+					var workingDirectory = socket.request.session.workingDirectory;
+					Directory.findOne( {"_id": workingDirectory}, function(err, directory) {
+						if (err) {
+							return done(true);
+						}
+						else if (!directory) {
+							return done(true);
+						}
+						else {
+							return done(false, directory);
+						}
+					});
+				},
+				function(directory, done) {
+					nestedDirectories = directory.nestedDirectories;
+					console.log(nestedDirectories);
+					console.log(data.name)
+					for (var i=0; i<nestedDirectories.length; i++) {
+						if (nestedDirectories[i].name == data.name) {
+							return done(false, directory, i);
+							console.log("OK")
+						}
+					}
+					return done(true, "No such directory");
+				},
+				function(directory, i, done) {
+					if (data.category) {
+						directory.nestedDirectories[i].category = data.category;
+						return done(false, directory);
+					}
+					return done(true, "Category is not defined in data in addFileToCategory | socketAPI");
+				},
+				function(directory, done) {
+					directory.save(function(err) {
+						if (err) {
+							return done(err, "unable to save directory in addFileToCategory | socketAPI");
+						}
+						console.log("OK")
+						socket.emit("addDirectoryToCategoryReturn");
+					});
+				}
+			], function(err, message) {
+				socket.emit("errorLog", "Nepodarilo sa pridať súbor do kategórie");
+				console.log(message);
 				//console.log(message);
 			});
 		});
