@@ -244,6 +244,7 @@ module.exports = function(io) {
 						if (err) {
 							return done(err, "unable to save directory in deleteFIle | socketAPI");
 						}
+						socket.emit("deleteFileReturn");
 					})
 				}
 			], function(err, message) {

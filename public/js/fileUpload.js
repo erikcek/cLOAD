@@ -38,6 +38,7 @@ body.addEventListener("drop", function(event) {
                 size += chunk.length;
                 if (size == file.size) {
                     console.log("uploaded");
+                    socket.emit("lsFiles");
                 }
             });
 
