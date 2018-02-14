@@ -145,8 +145,9 @@ module.exports = function(io) {
 					}
 				}
 			], function(err) {
-				scoket.emit("errorLog", "Pri inicializovaní nahrávania súborov nastala chyba");
-				console.log("error in startUpload");  // správa chýb
+				socket.emit("errorLog", "Pri inicializovaní nahrávania súborov nastala chyba");
+				console.log("error in startUpload");
+				console.log(err);  // správa chýb
 			})
 		});	
 

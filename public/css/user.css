@@ -92,11 +92,11 @@ li{
 	color: black;
 }
 
-/* --- VYHLADAVANIE ---*/
+/* --- VYHLADAVANIE --- */
 input{
 	height: 26px;
     margin: 8px 0;
-    width: 40%;
+	width: 100%;
 }
 
 /* -------------- DIV SO SUBORMI A PRIECINKAMI ----------------*/
@@ -246,11 +246,11 @@ textarea{
 
 
 /* Vyskakovacie okno pri pridávaní priečinku*/
- #okno{
+ #createDirectory, #addFile{
 	left: 0;
 	width: 100%;
 	height: 100vh;
-	position: absolute;
+	position: fixed;
 	background: rgba(0,0,0,0.4);
 	z-index: 999;
 	margin-top: 0px;
@@ -260,7 +260,7 @@ textarea{
 	height: 20vh;
 }
 
-#oznam{
+#advice{
 	margin: auto;
 	background: white;
 	box-shadow: 0px 4px 5px #6b6b6b;
@@ -269,7 +269,7 @@ textarea{
 	border-radius: 2px;
 }
 
-#vklad{
+#addDirectoryName{
 	margin-bottom: 30px;
 	width: 100%;
 }
@@ -298,7 +298,7 @@ textarea{
 
 /* ------ CONTEXT MENU ------------ */
 
-#context{
+#context, #contextFile, #contextDir{
 	background-color: white;
 	padding: 3px;
 	position: absolute;
@@ -329,12 +329,12 @@ textarea{
 .cMenuIcon{
 	color:#ccc;
 }
-
+/*
 input[type=file] {
 	display:none;
 	margin:10px;
 }
-/*
+
 input[type=file] + label {
 	display:inline-block;
 	background-color: #FFFFFF;
@@ -426,7 +426,7 @@ input[type=file]:active + label {
 		padding: 3% 1.5%;
 	}
 
-	#oznam{
+	#advice{
 		width: 80%;
 	}
 
@@ -457,4 +457,52 @@ input[type=file]:active + label {
 		width: 80%;
 		padding: 15px 8%;
 	}
+}
+
+#indicator{
+	background-color: pink;
+    position: fixed;
+    bottom: 0;
+    width: 30%;
+    margin-left: 65%;
+}
+
+#panel{
+	height: 30px;
+	background-color:  #333;
+	width: 100%;
+	margin: 0;
+	color: white;
+}
+
+#minimalize{
+	text-decoration: none;
+	color: white;
+	padding: 5px;
+}
+
+#minimalite:visited{
+	color: white;
+}
+
+.indicatorArea{
+	background-color: white;
+	padding: 10px;
+	display: none;
+}
+
+#fileName{
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.img .fas {
+	pointer-events: none
+}
+
+#indc{
+	height: 10px;
+	width: 100%;
+	background-color: blue;
+	margin-bottom: 15px;
 }

@@ -1,5 +1,5 @@
 var socket = io();
-var body = document.getElementById("wrap");
+var body = document.getElementById("test");
 
 var fileArray = [];
 

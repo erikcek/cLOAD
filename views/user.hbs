@@ -28,47 +28,72 @@
 	<!-- Top navigation -->
 	<nav>
 		<i onclick="returnToUpperDirectory()" title="Return to upper directory" class="fas fa-arrow-left"></i>
-		<i class="fas fa-search "></i>
-		<input type="text" placeholder="Search..">
+		<!--<i class="fas fa-search "></i>
+		<input type="text" placeholder="Search..">-->
 		<ul class="right">
 			<li title="Account settings" ><i class="fas fa-user"></i> {{ user }}</li>
 			<li><a href="/logout" title="Log out" id="logOut"><i class="fas fa-power-off"></i></a></li>
 		</ul>
 	</nav>
+
+
 <!-- Okno pri pridávaní priečinku -->
-	<section id="okno">
+	<section id="createDirectory">
         <div id="medzera"></div>
-        <div id="oznam">
+        <div id="advice">
             <h1 id="h1_oznam" >New directory</h1>
             <span id="vklad_container">
               	<input type="text" id="vklad" placeholder="Name of the directory">
             </span>
             
             <button class="subBtn btn" onclick="createDrectory()">Submit</button>
-            <button onclick="showHideWindow()" class="closeBtn btn ">Close</button>
+            <button onclick="hideWindow()" class="closeBtn btn ">Close</button>
           </div>
      </section>
+
+<!-- Okno pri pridávaní suboru -->
+	<section id="addFile">
+        <div id="medzera"></div>
+        <div id="advice">
+            <h1 id="h1_oznam" >Add file</h1>
+            <span id="vklad_container">
+              	<input type="file" id="vklad" placeholder="Name of the directory">
+            </span>
+            
+            <button class="subBtn btn" onclick="addFile()">Submit</button>
+            <button onclick="hideWindow()" class="closeBtn btn ">Close</button>
+          </div>
+     </section>
+
+
 
 <!-- context menu in body -->
      <div id="context">
      	<ul id="contextMenu">
-     		<li onclick="showHideWindow()" class="contextLi">
-     			<i class="fas fa-plus cMenuIcon" style="color: green;"></i>  Add directory</li>
-     		<li class="contextLi">
-     			<input onchange="test(this)" type="file" id="file"/>
-				<label for="file"><i style="color: green;" class="fas fa-upload cMenuIcon"></i>  Upload a file</label></li>
-     		<li class="contextLi"><i style="color: red;" class="fas fa-minus cMenuIcon"></i>  Settings</li>
+     		<li onclick="showWindow('directory')" class="contextLi">
+     			<i class="fas fa-plus cMenuIcon"></i>  Add directory</li>
+     		<li onclick="showWindow('file')" class="contextLi">
+     			<i class="fas fa-plus cMenuIcon" ></i>  Add file</li>
      	</ul>
      </div>
+
 <!--  context menu for folders-->
-	<div id="context">
+	<div id="contextDir">
      	<ul id="contextMenu">
-     		<li onclick="showHideWindow()" class="contextLi">
-     			<i class="fas fa-plus cMenuIcon" style="color: green;"></i>  Add directory</li>
-     		<li class="contextLi">
-     			<input type="file" id="file"/>
-				<label for="file"><i style="color: green;" class="fas fa-upload cMenuIcon"></i>  Upload a file</label></li>
-     		<li class="contextLi"><i style="color: red;" class="fas fa-minus cMenuIcon"></i>  Settings</li>
+     			<li onclick="" class="contextLi">
+     			<i class="fas fa-plus cMenuIcon" ></i> Open directory </li>
+   
+     		<li class="contextLi"><i class="fas fa-minus cMenuIcon"></i> Add directory to category</li>
+     	</ul>
+     </div>
+
+<!--  context menu for files-->
+	<div id="contextFile">
+     	<ul id="contextMenu">
+     		<li onclick="showWindow('file')" class="contextLi">
+     			<i class="fas fa-plus cMenuIcon" ></i>  Add file</li>
+     		
+     		<li class="contextLi"><i class="fas fa-minus cMenuIcon"></i>  file</li>
      	</ul>
      </div>
 
@@ -81,12 +106,13 @@
 	<div id="mySidenav" class="sidenav">
 		<img src="" alt="">
 		<h5>Bookmarks</h5>
-			<a href="#">Documents</a>
-	  		<a href="#">Pictures</a>
-  			<a href="#">Movies</a>
-	 		<a href="#">Music</a>
+			<a onclick="lsFIles()" href="#">All</a>
+			<a onclick="lsFIles('Documents')" href="#">Documents</a>
+	  		<a onclick="lsFIles('Pictures')" href="#">Pictures</a>
+  			<a onclick="lsFIles('Movies')" href="#">Movies</a>
+	 		<a onclick="lsFIles('Music')" href="#">Music</a>
+	 		<a onclick="lsFIles('Othes')" href="#">Others</a>
  		<h5>Tools</h5>
- 			<a href="#">Trash</a>
  			<a href="#">Settings</a>
 			<a href="#" onclick="showNotes()">Notes</a>
 
@@ -116,44 +142,66 @@
 		</section>
 	</div> 
 
+<!-- Upload a download indikátor -->
+	<div id="indicator">
+		<div id="panel" onclick="minimalize()">
+			<a href="#" id="minimalize"> Uploading or downloading files </a>
+		</div>
+		<div class="indicatorArea">
+			<p id="fileName"><b>99%</b>  meno suboru</p>
+			<div id="indc"></div>
+		</div>
+		<div class="indicatorArea">
+			<p id="fileName"><b>99%</b>  meno suboru</p>
+			<div id="indc"></div>
+		</div>
+		<div class="indicatorArea">
+			<p id="fileName"><b>99%</b>  meno suboru</p>
+			<div id="indc"></div>
+		</div>
+		<div class="indicatorArea">
+			<p id="fileName"><b>99%</b>  meno suboru</p>
+			<div id="indc"></div>
+		</div>
+		
+	</div>
+
+
+
+
+
 <script type="text/javascript" src="js/socket.io-stream.js"></script>
 <script type="text/javascript" src="js/fileUpload.js"></script>
 <script>
-/*
-document.addEventListener("contextmenu", (event) => {
-	event.preventDefault();
-	console.log(event);
-	console.log(document);
-	x = set_x_contextmenu_position($("#context"), event.clientX);
-	y = set_y_contextmenu_position($("#context"), event.clientY);
+var nameOfElement;
 
-	droweContextMenu(x, y);
-});
-*/
-
-function test(e) {
-	console.log($("#file").val());
+function lsFIles(category="") {
+	if (category && category != "") {
+		socket.emit("lsFiles", {"category": category});
+	}
+	else {
+		socket.emit("lsFiles");
+	}
 }
 
-$(document).bind("contextmenu", function (e) {
-    e.preventDefault();                 // To prevent the default context menu.
-    $("#context").css("left", e.pageX);   // For updating the menu position.
-    $("#context").css("top", e.pageY);    // 
-    $("#context").fadeIn(500, startFocusOut()); //  For bringing the context menu in picture.
+$(document).on("contextmenu", function (e) {
+
+	deleteContextMenu();
+    
+    e.preventDefault();                 
+    console.log("o");
+    $("#context").css("left", e.pageX);   
+    $("#context").css("top", e.pageY);    
+    $("#context").fadeIn(500, startFocusOut()); 
 });
 
 function startFocusOut() {
+    
     $(document).on("click", function () {   
-        $("#context").hide(500);              // To hide the context menu
+        $("#context").hide(500);              
         $(document).off("click");           
-    });
-}
-
-function droweContextMenu(x, y) {
-	$("#context").css("display","block");
-	$("#context").css("top",y + "px");
-	$("#context").css("left",x + "px");
-}
+     });
+ }
 
 function set_x_contextmenu_position(contextMenu, x) { //x  je xova suradnica kurzora myši a contextMenu je DOM element stránky
     if(x + contextMenu.offsetWidth > window.innerWidth) {
@@ -172,48 +220,57 @@ function set_y_contextmenu_position(contextMenu, y) {
 
 
 
-function deleteContextMenu(){
-	$("#context").css("display","none");
-}
+
+
 
 function myFunction(x) {
+	
 	var $div = $("#mySidenav").css("width");
     x.classList.toggle("change");
     	
 	if ($div == "0px") {
-	  $("#mySidenav").css("width","250px");
+		$("#mySidenav").css("width","250px");
 	}
 
 	else {
-	  $("#mySidenav").css("width","0px");
+		$("#mySidenav").css("width","0px");
 	}
 }
 
-function showNotes() {
-	if ($("#poznamky").css("display") == "none") {
-		$("#poznamky").css("display","block");
-		$(".sidenav a").css("display","none");
-		$(".sidenav h5").css("display","none");
 
+
+
+
+function showWindow(type){
+	console.log(type);
+	if (type == "directory") {
+		$("#createDirectory").css("display","block");
 	}
 
 	else {
-		$("#poznamky").css("display","none");
-		$(".sidenav a").css("display","block");
-		$(".sidenav h5").css("display","block");
-	}
-
-}
-
-function showHideWindow(){
-	if ($("#okno").css("display") == "none") {
-		$("#okno").css("display","block");
-	}
-
-	else {
-		$("#okno").css("display","none");
+		$("#addFile").css("display","block");
 	}
 }
+
+function hideWindow(){
+	$("#createDirectory").css("display","none");
+	$("#addFile").css("display","none");
+}
+
+
+function minimalize(){
+	if ($(".indicatorArea").css("display") == "none") {
+		$(".indicatorArea").css("display","block");
+	}
+
+	else{
+		$(".indicatorArea").css("display","block");
+	}
+}
+
+
+
+
 
 function removeContent(element) {
 	element.html("");
@@ -229,16 +286,24 @@ function loadDirectoryContent(element, nameArray) {
 
 function loadFileContent(element, array) {
 	removeContent(element);
+	console.log(array);
 	for (var i=0; i<array.length; i++) {
-		var typeOfFIle = array[i].type.split("/");
-		console.log(typeOfFIle);
-		switch(typeOfFIle[0]){
+		var typeOfFile;
+
+		if (array[i].type) {
+			typeOfFile = array[i].type.split("/");
+		}
+		else {
+			typeOfFile = "";
+		}
+		console.log(typeOfFile);
+		switch(typeOfFile[0]){
 			case "text": 
 				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-alt'></i></div><div class='name'>" + array[i].name + "</div></div>");
 				break;
 
 			case "image": 
-				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-image'></i></div><div class='name'>" + array[i].name + "</div></div>");
+				element.append("<div id='ttest' class='file'><div class='img'><i class='fas fa-5x fa-file-image'></i></div><div class='name'>" + array[i].name + "</div></div>");
 				break;
 
 			case "audio": 
@@ -257,6 +322,12 @@ function loadFileContent(element, array) {
 	}
 }
 
+
+
+
+
+
+
 function openDirectory(e) {
 	var name = e.innerHTML;
 	socket.emit("openDirectory", {"name": name});
@@ -267,14 +338,19 @@ function returnToUpperDirectory() {
 }
 
 
+
+
+
+
+
+
 function message(text){
 	$("#sprava").html(text);
-	$("#message").css("display","block");
-	$("#message").fadeOut(4000);
+	$("#message").css("display","block").fadeOut(4000);
 }
 
 function createDrectory() {
-	var name = $("#vklad").val();
+	var name = $("#addDirectoryName").val();
 	socket.emit("createNewDirectory", {
 		name : name
 	});
@@ -292,6 +368,7 @@ socket.emit("lsFiles");
 
 socket.on("lsDirectoriesReturn", (pole) => {
 	loadDirectoryContent($("#directories"), pole);
+	setDirectoriesListener();
 });
 
 socket.on("openDirectoryReturn", () => {
@@ -301,6 +378,7 @@ socket.on("openDirectoryReturn", () => {
 
 socket.on("lsFilesReturn", (pole) => {
 	loadFileContent($("#files"), pole);
+	setFileListener();
 });
 
 socket.on("returnToUpperDirectoryReturn", () => {
@@ -314,8 +392,65 @@ socket.on("siteRefresh", () => {
 });
 
 socket.on("errorMessage", () => {
-	//vypíš chybu v zavislosti od erooru
+	message(errorMessage);
 })
+
+
+
+function deleteContextMenu(){
+	$("#context").css("display","none");
+	$("#contextDir").css("display","none");
+	$("#contextFile").css("display","none");
+}
+
+function setFileListener() {
+
+	$(".file").on("contextmenu", function (e) {
+		
+		deleteContextMenu();
+	    
+	    e.preventDefault();    
+	    e.stopPropagation();
+
+	    console.log("OK");
+	   
+	   nameOfElement = e.target.parentElement.children[1].innerHTML;	
+	    
+	    $("#contextFile").css("left", e.pageX);   // For updating the menu position.
+	    $("#contextFile").css("top", e.pageY);    // 
+	    $("#contextFile").fadeIn(500, startFocusOut()); //  For bringing the context menu in picture.
+	});
+}
+
+function startFocusOut() {
+
+    $(".file").on("click", function () {   
+        $("#contextFile").hide(500);              // To hide the context menu
+        $(document).off("click");           
+    });
+}
+
+
+
+function setDirectoriesListener(){
+
+	$(".dir").bind("contextmenu", function (e) {
+		
+		e.preventDefault();  
+		e.stopPropagation();               // To prevent the default context menu.
+    	$("#contextDir").css("left", e.pageX);   // For updating the menu position.
+	    $("#contextDir").css("top", e.pageY);    // 
+	    $("#contextDir").fadeIn(500, startFocusOut()); //  For bringing the context menu in picture.
+	});
+
+	function startFocusOut() {
+    	$(".dir").on("click", function () {   
+    	    $("#contextDir").hide(500);              // To hide the context menu
+    	    $(document).off("click");           
+    	});
+	}
+}
+
 
 
 </script>

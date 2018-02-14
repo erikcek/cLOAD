@@ -22,7 +22,7 @@ h1{
 
 p{
   font-size: 1.3em;
-  margin-bottom: 80px;
+  margin-bottom: 40px;
 }
 
 article{
@@ -250,3 +250,78 @@ footer{
     background-size: 80%;
   }
 }
+
+#indicator{
+  width: 35%;
+  max-height: 70vh;
+  margin-left: 60%;
+  position: absolute;
+  
+}
+
+#panel{
+  background-color: #555;
+  height: 40px;
+}
+
+#indicatorArea{
+  height: 70px;
+  background-color: white;
+}
+
+#indc{
+  width: 90%;
+  margin-left: 5%;
+  height: 10px;
+  background-color: red;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
