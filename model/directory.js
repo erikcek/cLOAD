@@ -6,7 +6,8 @@ var directorySchema = mongoose.Schema({
 	parentDirectoryPath : {type: String, required: true},
 	nestedDirectories	: [{
 			name: String,
-			_id: {type: mongoose.Schema.Types.ObjectId, ref: "directories"}
+			_id: {type: mongoose.Schema.Types.ObjectId, ref: "directories"},
+			category: String
 	}],
 	files 				: [{
 							name: String,					//vytvorit novu schemu pre subory (lepsie pre vyhladavanie)
