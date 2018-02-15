@@ -16,7 +16,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 
-<body id="test" onclick="deleteContextMenu()">
+<body id="test" onclick="startFocusOut()">
 
 	<!-- Open/close sidebar ico -->
 	<div class="container" onclick="myFunction(this)">
@@ -35,6 +35,12 @@
 			<li><a href="/logout" title="Log out" id="logOut"><i class="fas fa-power-off"></i></a></li>
 		</ul>
 	</nav>
+
+	<div id="context">
+     	<ul id="contextMenu">
+     		
+     	</ul>
+     </div>
 
 
 <!-- Okno pri pridávaní priečinku -->
@@ -66,37 +72,6 @@
      </section>
 
 
-
-<!-- context menu in body -->
-     <div id="context">
-     	<ul id="contextMenu">
-     		<li onclick="showWindow('directory')" class="contextLi">
-     			<i class="fas fa-plus cMenuIcon"></i>  Add directory</li>
-     		<li onclick="showWindow('file')" class="contextLi">
-     			<i class="fas fa-plus cMenuIcon" ></i>  Add file</li>
-     	</ul>
-     </div>
-
-<!--  context menu for folders-->
-	<div id="contextDir">
-     	<ul id="contextMenu">
-     			<li onclick="" class="contextLi">
-     			<i class="fas fa-plus cMenuIcon" ></i> Open directory </li>
-   
-     		<li class="contextLi"><i class="fas fa-minus cMenuIcon"></i> Add directory to category</li>
-     	</ul>
-     </div>
-
-<!--  context menu for files-->
-	<div id="contextFile">
-     	<ul id="contextMenu">
-     		<li onclick="showWindow('file')" class="contextLi">
-     			<i class="fas fa-plus cMenuIcon" ></i>  Add file</li>
-     		
-     		<li class="contextLi"><i class="fas fa-minus cMenuIcon"></i>  file</li>
-     	</ul>
-     </div>
-
 <!-- Message - --> 
 	<div id="message">
 		<p id="sprava"></p>
@@ -106,12 +81,12 @@
 	<div id="mySidenav" class="sidenav">
 		<img src="" alt="">
 		<h5>Bookmarks</h5>
-			<a onclick="lsFIles()" href="#">All</a>
-			<a onclick="lsFIles('Documents')" href="#">Documents</a>
-	  		<a onclick="lsFIles('Pictures')" href="#">Pictures</a>
-  			<a onclick="lsFIles('Movies')" href="#">Movies</a>
-	 		<a onclick="lsFIles('Music')" href="#">Music</a>
-	 		<a onclick="lsFIles('Othes')" href="#">Others</a>
+			<a onclick="lsContent()" href="#">All</a>
+			<a onclick="lsContent('Documents')" href="#">Documents</a>
+	  		<a onclick="lsContent('Pictures')" href="#">Pictures</a>
+  			<a onclick="lsContent('Movies')" href="#">Movies</a>
+	 		<a onclick="lsContent('Music')" href="#">Music</a>
+	 		<a onclick="lsContent('Othes')" href="#">Others</a>
  		<h5>Tools</h5>
  			<a href="#">Settings</a>
 			<a href="#" onclick="showNotes()">Notes</a>
@@ -167,15 +142,14 @@
 	</div>
 
 
-
+ 
 
 
 <script type="text/javascript" src="js/socket.io-stream.js"></script>
 <script type="text/javascript" src="js/fileUpload.js"></script>
-<script>
-var nameOfElement;
+<script type="text/javascript">
 
-function lsFIles(category="") {
+function lsFiles(category = "") {
 	if (category && category != "") {
 		socket.emit("lsFiles", {"category": category});
 	}
@@ -184,44 +158,29 @@ function lsFIles(category="") {
 	}
 }
 
-$(document).on("contextmenu", function (e) {
-
-	deleteContextMenu();
-    
-    e.preventDefault();                 
-    console.log("o");
-    $("#context").css("left", e.pageX);   
-    $("#context").css("top", e.pageY);    
-    $("#context").fadeIn(500, startFocusOut()); 
-});
-
-function startFocusOut() {
-    
-    $(document).on("click", function () {   
-        $("#context").hide(500);              
-        $(document).off("click");           
-     });
- }
-
-function set_x_contextmenu_position(contextMenu, x) { //x  je xova suradnica kurzora myši a contextMenu je DOM element stránky
-    if(x + contextMenu.offsetWidth > window.innerWidth) {
-      x = x - contextMenu.offsetWidth;
-    }
-    return x;
+function lsDirect(category = ""){
+	if (category && category != "") {
+		socket.emit("lsDirectories", {"category": category});
+	}
+	else {
+		socket.emit("lsDirectories");
+	}
 }
 
-function set_y_contextmenu_position(contextMenu, y) {
-    y += document.body.scrollTop;
-    if(y + contextMenu.offsetHeight > window.innerHeight + document.body.scrollTop) {
-      y -=  contextMenu.offsetHeight * 2;
-    }
-    return y;
- }
+function lsContent(category = ""){
+		lsDirect(category);
+		lsFiles(category);
+}
 
+function addFileToCategory(category, name){
+	socket.emit( "addFileToCategory", { "name" : name, "category" : category});
+	console.log("file ok");
+}
 
-
-
-
+function addDirToCategory(category, name){
+	socket.emit( "addDirectoryToCategory", { "name" : name, "category" : category});
+	console.log("dir ok");
+}
 
 function myFunction(x) {
 	
@@ -237,12 +196,10 @@ function myFunction(x) {
 	}
 }
 
-
-
-
-
 function showWindow(type){
+
 	console.log(type);
+
 	if (type == "directory") {
 		$("#createDirectory").css("display","block");
 	}
@@ -261,10 +218,12 @@ function hideWindow(){
 function minimalize(){
 	if ($(".indicatorArea").css("display") == "none") {
 		$(".indicatorArea").css("display","block");
+		console.log("minimalize block ok ")
 	}
 
 	else{
-		$(".indicatorArea").css("display","block");
+		$(".indicatorArea").css("display","none");
+		console.log("minimalize none ok");
 	}
 }
 
@@ -286,7 +245,7 @@ function loadDirectoryContent(element, nameArray) {
 
 function loadFileContent(element, array) {
 	removeContent(element);
-	console.log(array);
+
 	for (var i=0; i<array.length; i++) {
 		var typeOfFile;
 
@@ -296,7 +255,7 @@ function loadFileContent(element, array) {
 		else {
 			typeOfFile = "";
 		}
-		console.log(typeOfFile);
+		
 		switch(typeOfFile[0]){
 			case "text": 
 				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-alt'></i></div><div class='name'>" + array[i].name + "</div></div>");
@@ -322,27 +281,20 @@ function loadFileContent(element, array) {
 	}
 }
 
-
-
-
-
-
-
 function openDirectory(e) {
 	var name = e.innerHTML;
 	socket.emit("openDirectory", {"name": name});
 }
-
-function returnToUpperDirectory() {
-	socket.emit("returnToUpperDirectory");
+function openDirectoryByMenu(name) {
+	
+	console.log("open dir in menu ok");
+	socket.emit("openDirectory", {"name": name});
 }
 
+function returnToUpperDirectory() {
 
-
-
-
-
-
+	socket.emit("returnToUpperDirectory");
+}
 
 function message(text){
 	$("#sprava").html(text);
@@ -355,8 +307,9 @@ function createDrectory() {
 		name : name
 	});
 
-	showHideWindow();
+	hideWindow();
 	message("Priečinok bol pridaný!");
+
 	socket.emit("lsDirectories");
 	socket.on("lsDirectoriesReturn", (pole) => {
 		loadDirectoryContent($("#directories"),pole)
@@ -397,62 +350,82 @@ socket.on("errorMessage", () => {
 
 
 
-function deleteContextMenu(){
-	$("#context").css("display","none");
-	$("#contextDir").css("display","none");
-	$("#contextFile").css("display","none");
-}
+$(document).on("contextmenu", function (e) {
+
+	$(".contextLi").remove(); 
+    e.preventDefault(); 
+    e.stopPropagation();                
+
+    $("#contextMenu").prepend("<li onclick='showWindow(\"file\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Add file </li>");
+	$("#contextMenu").prepend("<li onclick='showWindow(\"directory\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Add directory </li>");
+		
+
+    $("#context").css("left", e.pageX);   
+    $("#context").css("top", e.pageY);    
+    $("#context").fadeIn(500, startFocusOut()); 
+});
+
+function startFocusOut() {
+    
+    $(document).on("click", function () {   
+        $("#context").hide(00);              
+        $(document).off("click"); 
+    
+    });
+ }
 
 function setFileListener() {
 
 	$(".file").on("contextmenu", function (e) {
-		
-		deleteContextMenu();
-	    
+
+		$(".contextLi").remove(); 
+
 	    e.preventDefault();    
 	    e.stopPropagation();
-
-	    console.log("OK");
 	   
-	   nameOfElement = e.target.parentElement.children[1].innerHTML;	
+	   nameOfElement = e.target.parentElement.children[1].innerHTML;
+		
+		$("#contextMenu").append("<li class='contextLi'><i class='fas fa-plus cMenuIcon'></i> "+ nameOfElement +" </li>");
+	
+		// woq 
+		// $("#contextMenu").append("<li onclick='showWindow('file')'  class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Delete file </li>");
+		// console.log("<li onclick='showWindow('file')'  class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Delete file </li>");
+
+		$("#contextMenu").append("<li onclick='download(\"" + nameOfElement + "\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Download file </li>");
+
+		$("#contextMenu").append("<li class='contextLi shC'><i class='fas fa-plus cMenuIcon'></i> Add to category<ul id='category'><li class='categoryLi' onclick='addFileToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addFileToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addFileToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addFileToCategory(\"Music\"," + nameOfElement + ")'>Music</li><li class='categoryLi' onclick='addFileToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
+
 	    
-	    $("#contextFile").css("left", e.pageX);   // For updating the menu position.
-	    $("#contextFile").css("top", e.pageY);    // 
-	    $("#contextFile").fadeIn(500, startFocusOut()); //  For bringing the context menu in picture.
+	    $("#context").css("left", e.pageX);  
+	    $("#context").css("top", e.pageY);    
+	    $("#context").fadeIn(500, startFocusOut()); 
 	});
 }
-
-function startFocusOut() {
-
-    $(".file").on("click", function () {   
-        $("#contextFile").hide(500);              // To hide the context menu
-        $(document).off("click");           
-    });
-}
-
-
 
 function setDirectoriesListener(){
 
-	$(".dir").bind("contextmenu", function (e) {
-		
+	$(".dir").on("contextmenu", function (e) {
+
+		$(".contextLi").remove(); 
+
 		e.preventDefault();  
-		e.stopPropagation();               // To prevent the default context menu.
-    	$("#contextDir").css("left", e.pageX);   // For updating the menu position.
-	    $("#contextDir").css("top", e.pageY);    // 
-	    $("#contextDir").fadeIn(500, startFocusOut()); //  For bringing the context menu in picture.
+		e.stopPropagation(); 
+
+		nameOfElement = e.target.innerHTML; 
+
+		$("#contextMenu").append("<li class='contextLi'><i class='fas fa-plus cMenuIcon'></i> " + nameOfElement + " </li>");
+
+		$("#contextMenu").append("<li onclick='openDirectoryByMenu(\"" + nameOfElement + "\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Open directory </li>");
+		// wop 
+		// $("#contextMenu").append("<li onclick='' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Delete directory </li>");
+
+		$("#contextMenu").append("<li onclick='' class='contextLi shC'><i class='fas fa-plus cMenuIcon'></i> Add to category<ul id='category'><li class='categoryLi' onclick='addDirToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addDirToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addDirToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addDirToCategory(\"Music\"," + nameOfElement + ")'>Music</li>	<li class='categoryLi' onclick='addDirToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
+
+    	$("#context").css("left", e.pageX);   
+	    $("#context").css("top", e.pageY);    
+	    $("#context").fadeIn(500, startFocusOut()); 
 	});
-
-	function startFocusOut() {
-    	$(".dir").on("click", function () {   
-    	    $("#contextDir").hide(500);              // To hide the context menu
-    	    $(document).off("click");           
-    	});
-	}
 }
-
-
-
 </script>
 
 </body>

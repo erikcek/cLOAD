@@ -298,7 +298,7 @@ textarea{
 
 /* ------ CONTEXT MENU ------------ */
 
-#context, #contextFile, #contextDir{
+#context, #category{
 	background-color: white;
 	padding: 3px;
 	position: absolute;
@@ -307,12 +307,17 @@ textarea{
 	min-width: 200px;
 }
 
+#category{
+	left: 0px;
+	top: 99%;
+}
+
 #contextMenu{
 	padding-left: 0px;
 	margin: 0px;
 }
 
-.contextLi{
+.contextLi, .categoryLi{
 	display: block;
 	padding: 8px;
 	border-bottom: solid 1px #80808085;
@@ -322,13 +327,19 @@ textarea{
 	border-bottom: none;
 }				
 
-.contextLi:hover{
+.contextLi:hover, .categoryLi:hover{
 	background-color: #eee;
 }
 
 .cMenuIcon{
 	color:#ccc;
 }
+.shC:hover #category{
+	display: block;
+	position: absolute;
+}
+
+
 /*
 input[type=file] {
 	display:none;
@@ -506,3 +517,14 @@ input[type=file]:active + label {
 	background-color: blue;
 	margin-bottom: 15px;
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -402,7 +402,7 @@ module.exports = function(io) {
 									//skontroluje, či pracovný priečinok užívateľa existuje
 				//#######################################################################################
 				function(done) {									
-					//console.log("1");
+					console.log("1");
 					Directory.findOne({ "_id": workingDirectory}, function(err, directory) {
 						if (err) {
 							return done(true);
@@ -420,7 +420,7 @@ module.exports = function(io) {
 											//vytvorí objekt newDirectory 	
 				//#######################################################################################
 				function(directory, done) {
-					//console.log("2");
+					console.log("2");
 					var newDirectory = new Directory();
 
 					newDirectory.name = data.name;
@@ -433,7 +433,7 @@ module.exports = function(io) {
 									//vytvorý súbor zodpovedajúci objektu newDirecotrx
 				//#######################################################################################
 				function(directory, newDirectory, done) {
-					//console.log("3");
+					console.log("3");
 					fs.mkdir(newDirectory.path, function(err) {
 						if (err) {
 							//socket.request.flash("directoryCreateError", "Directory allready exists");
@@ -446,7 +446,7 @@ module.exports = function(io) {
 									//uloží objekt newDirectory do databázy
 				//#######################################################################################
 				function(directory, newDirectory, done) {
-					//console.log("4");
+					console.log("4");
 					newDirectory.save(function(err, newDirectory) {
 						if (err) {
 							console.log("unable to create newDirectory document  socketAPI/createNewDirectory");
@@ -460,7 +460,7 @@ module.exports = function(io) {
 									//obnoví dokument rodičovského súboru v databáze
 				//#######################################################################################
 				function(directory, newDirectory, done) {
-					//console.log("5");
+					console.log("5");
 					directory.nestedDirectories.push({
 						name 	: data.name,
 						_id		: newDirectory._id
