@@ -2,5 +2,6 @@
 /config/auth.js
 /node_modules
 /db_data
+/redis/dump.rdb
 /usersDirectories/local/
 /usersDirectories/google/

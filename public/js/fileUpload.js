@@ -19,7 +19,7 @@ body.addEventListener("drop", function(event) {
     for (var i=0; i<files.length; i++) {
         fileArray.push({ name: files[i].name, data: files[i] });
         socket.emit("startUpload", {name: files[i].name});
-        $("#indicator").append("<div class=\"indicatorArea\"><p id=\"fileName\"><b>  </b>" + files[i].name + "</p><div id=\"indc\"></div></div>")
+        $("#filesContainer").append("<div class=\"indicatorArea\"><p id=\"fileName\"><b></b><p>" + files[i].name + "</p></p><div id=\"indc\"></div></div>")
     }
 }, false);
 
@@ -47,12 +47,25 @@ socket.on("sendData", function(data) {
             var size = 0
             blobStream.on("data", function(chunk) {
                 size += chunk.length;
-                var percenta = size / file.size;
+                var percenta = Math.round(size / file.size * 100);
+                var childrenElements = $("#filesContainer").children();
 
-    
+                childrenElements.each(function( index ) {
+                    if ($(this).children()[1].innerHTML == file.name) {
+                        $(this).children()[0].innerHTML =  percenta + "% ";
+                        console.log($(this).children().last())
+                        $(this).children().last().css("width",percenta + "%");
+                    }
+
+                });
+                // for (var i=0; i<childrenElements.length; i++) {
+                //     console.log(childrenElements[i].children());
+                // }
+                
 
                 if (size == file.size) {
                     console.log("uploaded");
+                    console.log($("#filesContainer").children());
                     socket.emit("lsFiles");
                 }
             });

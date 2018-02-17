@@ -148,7 +148,9 @@ input{
 	overflow: hidden;
 	text-overflow: ellipsis;
 	max-height: 18.4px;
-	white-space: nowrap; 
+	white-space: nowrap;
+	cursor: default;
+
 }
 
 .dir:hover{
@@ -182,7 +184,8 @@ img{
 	padding-left: 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap; 
+	white-space: nowrap;
+	cursor: default; 
 }
 
 .fa-5x{
@@ -356,6 +359,7 @@ textarea{
 #contextMenu{
 	padding-left: 0px;
 	margin: 0px;
+	max-width: 230px
 }
 
 .contextLi, .categoryLi{
@@ -518,6 +522,7 @@ input[type=file]:active + label {
     width: 30%;
     margin-left: 65%;
     display: none;
+
 }
 
 #panel{
@@ -533,6 +538,7 @@ input[type=file]:active + label {
 	text-decoration: none;
 	color: white;
 	padding: 10px;
+	cursor: default;
 }
 
 #panelText:visited{
@@ -542,7 +548,7 @@ input[type=file]:active + label {
 .indicatorArea{
 	background-color: white;
 	padding: 10px;
-	display: none;
+	
 }
 
 #fileName{
@@ -561,7 +567,10 @@ input[type=file]:active + label {
 	margin-bottom: 15px;
 }
 
-
+.close{
+	float: right;
+	cursor: pointer;
+}
 
 
 

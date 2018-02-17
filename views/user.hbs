@@ -117,9 +117,11 @@
 <!-- Upload a download indikátor -->
 	<div id="indicator">
 		<div id="panel" onclick="minimalize()">
-			<a href="#" id="panelText"> <i class="fas  fa-spinner fa-pulse"></i> Uploading or downloading files </a>
-			<div class=\"indicatorArea\">
-				<p id=\"fileName\"><b>  </b>" + files[i].name + "</p><div id=\"indc\"></div></div>
+			<a href="#" id="panelText"> <!--<i class="fas  fa-spinner fa-pulse"></i>-->Uploading or downloading files </a> <i onclick="close()" class="fas close fa-times"></i>
+		</div>
+
+		<div id="filesContainer">
+			
 		</div>
 		
 	</div>
