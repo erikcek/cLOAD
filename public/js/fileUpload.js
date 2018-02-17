@@ -19,7 +19,7 @@ body.addEventListener("drop", function(event) {
     for (var i=0; i<files.length; i++) {
         fileArray.push({ name: files[i].name, data: files[i] });
         socket.emit("startUpload", {name: files[i].name});
-        $("#filesContainer").append("<div class=\"indicatorArea\"><p id=\"fileName\"><b></b><p>" + files[i].name + "</p></p><div id=\"indc\"></div></div>")
+       
     }
 }, false);
 
@@ -31,13 +31,11 @@ document.addEventListener("dragexit", function(event) {
 
 socket.on("sendData", function(data) {
     console.log("position " + data.position);
+     $("#filesContainer").append("<div class=\"indicatorArea\"><p id=\"fileName\"><b></b><p>" + data.name + "</p></p><div id=\"indc\"></div></div>");
     var stream = ss.createStream();
     for (var i=0; i<fileArray.length; i++) {
         if (fileArray[i].name == data.name) {
             var file = fileArray[i].data;
-
-            console.log(file);
-            console.log(file.name);
 
             var position = 0;
            // var difference = file.size / 10;

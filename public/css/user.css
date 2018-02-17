@@ -278,7 +278,7 @@ textarea{
 	width: 50%;
 	margin-left: 25%;
 	top: 40px;
-	position: absolute;
+	position: fixed;
 	background-color: white;
 	height: 40px;
 	border: 1px solid #808080;

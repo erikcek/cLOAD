@@ -328,6 +328,18 @@ function createDrectory() {
 		loadDirectoryContent($("#directories"),pole)
 	});
 }
+/*
+function addFile(){
+
+	socket.emit();
+}*/
+
+function deleteFile(name){
+	socket.emit("deleteFile",{ name : name });
+
+	message("Súbor " + name + "bol odstránený.");
+	socket.emit("lsFiles");
+}
 
 // ##########################################################################
 // #################### UPLOAD A DOWNLOAD ###################################
@@ -349,9 +361,9 @@ function addDirToCategory(category, name){
 	console.log("dir ok");
 }
 
-// ###########################################################################
-// ############## FUNKCIE PRE FRONT END ######################################
-// ###########################################################################
+// ##########################################################################
+// ############## FUNKCIE PRE FRONT END #####################################
+// ##########################################################################
 
 function myFunction(x) {
 	
@@ -445,8 +457,8 @@ $(document).on("contextmenu", function (e) {
     e.preventDefault(); 
     e.stopPropagation();                
 
-    $("#contextMenu").prepend("<li onclick='showWindow(\"file\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Add file </li>");
-	$("#contextMenu").prepend("<li onclick='showWindow(\"directory\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Add directory </li>");
+    $("#contextMenu").prepend("<li onclick='showWindow(\"file\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i>  Add file </li>");
+	$("#contextMenu").prepend("<li onclick='showWindow(\"directory\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i>  Add directory </li>");
 		
 	contextMenuPosition(e.pageX, e.pageY)
 });
@@ -462,15 +474,17 @@ function setFileListener() {
 	   
 	   nameOfElement = e.target.parentElement.children[1].innerHTML;
 		
-		$("#contextMenu").append("<li class='contextLi'><i class='fas fa-plus cMenuIcon'></i> "+ nameOfElement +" </li>");
-	
-		// woq 
-		// $("#contextMenu").append("<li onclick='showWindow('file')'  class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Delete file </li>");
-		// console.log("<li onclick='showWindow('file')'  class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Delete file </li>");
+		// Pridá meno súboru
+		$("#contextMenu").append("<li class='contextLi'><i class='fas fa-map-marker cMenuIcon'></i>   "+ nameOfElement +" </li>");
 
-		$("#contextMenu").append("<li onclick='download(\"" + nameOfElement + "\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Download file </li>");
+		// Sťahovanie súboru
+		$("#contextMenu").append("<li onclick='download(\"" + nameOfElement + "\")' class='contextLi'><i class='fas fa-download cMenuIcon'></i>  Download file </li>");
 
-		$("#contextMenu").append("<li class='contextLi shC'><i class='fas fa-plus cMenuIcon'></i> Add to category<ul id='category'><li class='categoryLi' onclick='addFileToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addFileToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addFileToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addFileToCategory(\"Music\"," + nameOfElement + ")'>Music</li><li class='categoryLi' onclick='addFileToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
+		//Zmazanie suboru
+		$("#contextMenu").append("<li onclick='deleteFile(\"" + nameOfElement + "\")' class='contextLi'><i class='fas fa-minus cMenuIcon'></i>  Delete file </li>");
+
+		// Pridanie do kategorie subor
+		$("#contextMenu").append("<li class='contextLi shC'><i class='fas fa-plus-square cMenuIcon'></i>  Add to category<ul id='category'><li class='categoryLi' onclick='addFileToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addFileToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addFileToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addFileToCategory(\"Music\"," + nameOfElement + ")'>Music</li><li class='categoryLi' onclick='addFileToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
 
 	    contextMenuPosition(e.pageX,e.pageY);
 	});
@@ -487,13 +501,13 @@ function setDirectoriesListener(){
 
 		nameOfElement = e.target.innerHTML; 
 
-		$("#contextMenu").append("<li class='contextLi'><i class='fas fa-plus cMenuIcon'></i> " + nameOfElement + " </li>");
+		$("#contextMenu").append("<li class='contextLi'><i class='fas fa-map-marker cMenuIcon'></i>    " + nameOfElement + " </li>");
 
-		$("#contextMenu").append("<li onclick='openDirectoryByMenu(\"" + nameOfElement + "\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Open directory </li>");
+		$("#contextMenu").append("<li onclick='openDirectoryByMenu(\"" + nameOfElement + "\")' class='contextLi'><i class='fas fa-folder-open cMenuIcon'></i>  Open directory </li>");
 		// wop 
 		// $("#contextMenu").append("<li onclick='' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Delete directory </li>");
 
-		$("#contextMenu").append("<li onclick='' class='contextLi shC'><i class='fas fa-plus cMenuIcon'></i> Add to category<ul id='category'><li class='categoryLi' onclick='addDirToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addDirToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addDirToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addDirToCategory(\"Music\"," + nameOfElement + ")'>Music</li>	<li class='categoryLi' onclick='addDirToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
+		$("#contextMenu").append("<li onclick='' class='contextLi shC'><i class='fas fa-plus-square cMenuIcon'></i>  Add to category<ul id='category'><li class='categoryLi' onclick='addDirToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addDirToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addDirToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addDirToCategory(\"Music\"," + nameOfElement + ")'>Music</li>	<li class='categoryLi' onclick='addDirToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
 
     	contextMenuPosition(e.pageX,e.pageY);
 	});
