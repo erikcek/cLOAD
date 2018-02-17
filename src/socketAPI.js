@@ -88,7 +88,7 @@ module.exports = function(io) {
 						for (var i=0; i<directory.files.length; i++) {
 							if (directory.files[i].name == file.name) {
 								if (directory.files[i].notFullyUploaded) {
-									return done(false, directory, false, false);
+									return done(false, directory, true, false);
 								}
 							}
 						}
@@ -210,11 +210,28 @@ module.exports = function(io) {
 						}
 					});
 				},
+
+				function(directory, done) {
+					for (var i=0; i<directory.files.length; i++) {
+						if (directory.files[i].name == file.name) {
+							if (!directory.files[i].notFullyUploaded) {
+								return done(false, directory);
+							}
+							else {
+								return done(true, "Súbor nie je plne nahraný");
+							}
+						}
+					}
+					return done(true, "Pri sťahovaní súboru nastala chyba");
+				},
+
 				function(directory, done) {
 					var myStream = fs.createReadStream(directory.path + file.name)
 					myStream.pipe(stream);
 				}
-			])
+			], function(err, message) {
+				socket.emit("errorLog", message);
+			})
 		})
 
 		//done
