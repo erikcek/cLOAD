@@ -69,7 +69,7 @@ module.exports = function(io) {
 					}
 
 					else if (fileExists && !fileInDBExists) {
-						directory.files.push({ name: file.name, notFullyUploaded: true });
+						directory.files.push({ name: file.name, notFullyUploaded: false });
 						return done(false, directory, false, false);
 						//socket send to inform that file allready existrs
 					}
@@ -84,6 +84,7 @@ module.exports = function(io) {
 					}
 
 					else {
+						console.log("here");
 						for (var i=0; i<directory.files.length; i++) {
 							if (directory.files[i].name == file.name) {
 								if (directory.files[i].notFullyUploaded) {
@@ -144,10 +145,10 @@ module.exports = function(io) {
 						});
 					}
 				}
-			], function(err) {
+			], function(err, error) {
 				socket.emit("errorLog", "Pri inicializovaní nahrávania súborov nastala chyba");
 				console.log("error in startUpload");
-				console.log(err);  // správa chýb
+				console.log(error);  // správa chýb
 			})
 		});	
 
@@ -183,6 +184,9 @@ module.exports = function(io) {
 						var writeStream = fs.createWriteStream(oneOfFiles.path + file.name, {flags: "a", start: file.start});
 						stream.pipe(writeStream);
 					}
+					writeStream.on("finish", function() {
+						doneUploading(socket.request.session.workingDirectory, file.name);
+					})
 					//writeStream.write("file")
  				}
 			], function(err, message) {
@@ -208,9 +212,6 @@ module.exports = function(io) {
 				},
 				function(directory, done) {
 					var myStream = fs.createReadStream(directory.path + file.name)
-					myStream.on("finish", function() {
-						doneUploading(socket.request.session.workingDirectory, file.name);
-					})
 					myStream.pipe(stream);
 				}
 			])
@@ -746,10 +747,12 @@ function repairFileSystem(workingDirectory) {
 
 
 function doneUploading(id, name) {
-	async.watterfall([
+	console.log("heree");
+	async.waterfall([
 		function(done) {
 			Directory.findOne({"_id": id}, function(err, directory) {
 				if (directory) {
+					console.log(directory);
 					return done(false, directory);
 				}
 				else {
@@ -759,8 +762,11 @@ function doneUploading(id, name) {
 		},
 
 		function(directory, done) {
-			for(var i=0; i<directory.files; i++) {
-				if (directory.files[i] == name) {
+			console.log("dsds" + name);
+			console.log(name);
+			for(var i=0; i<directory.files.length; i++) {
+				console.log(directory.files[i].name)
+				if (directory.files[i].name == name) {
 					return done(false, directory, i);
 				}
 			}
@@ -768,7 +774,16 @@ function doneUploading(id, name) {
 		},
 
 		function(directory, index, done) {
-			directory.files[i].notFullyUploaded = false;
+			console.log(name);
+			directory.files[index].notFullyUploaded = false;
+			return done(false, directory);
+		},
+
+		function (directory, done) {
+			console.log(directory);
+			directory.save( function(err) {
+				
+			})
 		}
 	])
 }
