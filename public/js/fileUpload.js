@@ -6,28 +6,39 @@ var fileArray = [];
 
 body.addEventListener("dragover", function(event) {
     event.preventDefault();
+    $("#drag").css("display","block");
 }, false);
 
 body.addEventListener("drop", function(event) {
     event.preventDefault();
+    $("#drag").css("display","none");
+    $("#indicator").css("display","block");
     files = event.dataTransfer.files;
-    fileArray = [];
+    //fileArray = [];
 
     for (var i=0; i<files.length; i++) {
         fileArray.push({ name: files[i].name, data: files[i] });
         socket.emit("startUpload", {name: files[i].name});
+        $("#indicator").append("<div class=\"indicatorArea\"><p id=\"fileName\"><b>  </b>" + files[i].name + "</p><div id=\"indc\"></div></div>")
     }
 }, false);
 
- socket.on("sendData", function(data) {
-    console.log("position" + data.position);
+document.addEventListener("dragexit", function(event) {
+    event.preventDefault();
+    $("#drag").css("display","none");
+}, false);
+
+
+socket.on("sendData", function(data) {
+    console.log("position " + data.position);
     var stream = ss.createStream();
     for (var i=0; i<fileArray.length; i++) {
         if (fileArray[i].name == data.name) {
             var file = fileArray[i].data;
 
             console.log(file);
-            console.log(file.size);
+            console.log(file.name);
+
             var position = 0;
            // var difference = file.size / 10;
             ss(socket).emit('uploadData', stream, {name: file.name, size: file.size, start: data.position});
@@ -36,6 +47,10 @@ body.addEventListener("drop", function(event) {
             var size = 0
             blobStream.on("data", function(chunk) {
                 size += chunk.length;
+                var percenta = size / file.size;
+
+    
+
                 if (size == file.size) {
                     console.log("uploaded");
                     socket.emit("lsFiles");

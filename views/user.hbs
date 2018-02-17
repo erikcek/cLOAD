@@ -81,15 +81,12 @@
 	<div id="mySidenav" class="sidenav">
 		<img src="" alt="">
 		<h5>Bookmarks</h5>
-			<a onclick="lsContent()" href="#">All</a>
-			<a onclick="lsContent('Documents')" href="#">Documents</a>
-	  		<a onclick="lsContent('Pictures')" href="#">Pictures</a>
-  			<a onclick="lsContent('Movies')" href="#">Movies</a>
-	 		<a onclick="lsContent('Music')" href="#">Music</a>
-	 		<a onclick="lsContent('Othes')" href="#">Others</a>
- 		<h5>Tools</h5>
- 			<a href="#">Settings</a>
-			<a href="#" onclick="showNotes()">Notes</a>
+			<a class="a" onclick="lsContent()" href="#">All</a>
+			<a class="d" onclick="lsContent('Documents')" href="#">Documents</a>
+	  		<a class="p" onclick="lsContent('Pictures')" href="#">Pictures</a>
+  			<a class="mo" onclick="lsContent('Movies')" href="#">Movies</a>
+	 		<a class="mu" onclick="lsContent('Music')" href="#">Music</a>
+	 		<a class="o" onclick="lsContent('Othes')" href="#">Others</a>
 
 		<div id="poznamky">
 			<div class="note"><p onclick="showNotes() class="myNote">Moja poznámka 1</p><i class="noteI fas fa-user"></i><i class="noteI fas fa-user"></i></div>
@@ -120,34 +117,29 @@
 <!-- Upload a download indikátor -->
 	<div id="indicator">
 		<div id="panel" onclick="minimalize()">
-			<a href="#" id="minimalize"> Uploading or downloading files </a>
-		</div>
-		<div class="indicatorArea">
-			<p id="fileName"><b>99%</b>  meno suboru</p>
-			<div id="indc"></div>
-		</div>
-		<div class="indicatorArea">
-			<p id="fileName"><b>99%</b>  meno suboru</p>
-			<div id="indc"></div>
-		</div>
-		<div class="indicatorArea">
-			<p id="fileName"><b>99%</b>  meno suboru</p>
-			<div id="indc"></div>
-		</div>
-		<div class="indicatorArea">
-			<p id="fileName"><b>99%</b>  meno suboru</p>
-			<div id="indc"></div>
+			<a href="#" id="panelText"> <i class="fas  fa-spinner fa-pulse"></i> Uploading or downloading files </a>
+			<div class=\"indicatorArea\">
+				<p id=\"fileName\"><b>  </b>" + files[i].name + "</p><div id=\"indc\"></div></div>
 		</div>
 		
 	</div>
 
-
+<div id="drag">
+	<div id="dragOver">
+		<i class="fas fa-10x fa-upload"></i>
+		<h1 id="dragText">Upload your file here!</h1>
+	</div>
+</div>
  
 
 
 <script type="text/javascript" src="js/socket.io-stream.js"></script>
 <script type="text/javascript" src="js/fileUpload.js"></script>
 <script type="text/javascript">
+
+// ########################################################################
+// ####################### FUNKCIE PRE PRACU S OBSAHOM ####################
+// ########################################################################
 
 function lsFiles(category = "") {
 	if (category && category != "") {
@@ -167,10 +159,183 @@ function lsDirect(category = ""){
 	}
 }
 
+// FUNKCIA NAČÍTA OBSAH 
 function lsContent(category = ""){
 		lsDirect(category);
 		lsFiles(category);
 }
+
+function removeContent(element) {
+	element.html("");
+}
+
+function loadDirectoryContent(element, nameArray) {
+	removeContent(element);
+
+	for(var i=0; i<nameArray.length; i++) {
+		element.append("<div class='dir' ondblclick='openDirectory(this)'>" + nameArray[i] + "</div>\n");
+	}
+}
+
+
+// FUNKCIA NAČÍTA SÚBORY A IKONKU IM PRIRADÍ PODĽA TYPU SÚBORU
+function loadFileContent(element, array) {
+	removeContent(element);
+
+	for (var i=0; i<array.length; i++) {
+		var typeOfFile;
+
+		if (array[i].type) {
+			typeOfFile = array[i].type.split("/");
+		}
+		else {
+			typeOfFile = "";
+		}
+		
+		switch(typeOfFile[0]){
+			case "text": 
+				switch(typeOfFile[1]){
+					case "doc":
+					case "docx":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/doc.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+						break;
+
+					default: element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/doc.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+						break;
+				}
+				break;	
+
+			case "image": 
+				switch(typeOfFile[1]){
+					case "jpeg":
+					case "jpg":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/jpg.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+						break;
+					case "png":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/png.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+						break;
+
+					case "svg":
+					case "svg+xml":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/svg.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+						break;
+
+					default: element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/img.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+				}
+				break;
+
+			case "audio": 
+				switch(typeOfFile[1]){
+					case "mp3":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/mp3.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+
+					case "wav":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/wav.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+					
+					default:
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/audio.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					}
+				break;
+
+			case "video": 
+				switch(typeOfFile[1]){
+					case "avi":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/avi.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+
+					case "avi":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/wmv.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+
+					case "mp4":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/mp4.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+					
+					default:
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/video.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					}
+				break;
+
+			case "application": 
+				switch(typeOfFile[1]){
+					case "pdf":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/pdf.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+
+					case "zip":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/zip.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+
+					case "rar":
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/rar.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					break;
+					
+					default:
+						element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/app.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+					}
+				break;
+
+			default: 
+				element.append("<div class='file'><div class='img'><img src=\"images/fileIcon/other.png\" alt=\"icon\" title=\"icon\"></div><div class='name'>" + array[i].name + "</div></div>");
+				break;
+		}
+	}
+}
+
+function openDirectory(e) {
+
+	var name = e.innerHTML;
+	socket.emit("openDirectory", {"name": name});
+
+}
+
+function openDirectoryByMenu(name) {
+	
+	console.log("open dir in menu ok");
+	socket.emit("openDirectory", {"name": name});
+}
+
+function returnToUpperDirectory() {
+
+	socket.emit("returnToUpperDirectory");
+}
+
+function message(text){
+
+	$("#sprava").html(text);
+	$("#message").css("display","block").fadeOut(4000);
+}
+
+function createDrectory() {
+	console.log("in function");
+
+	var name = $("#vklad").val();
+	console.log(name);
+	socket.emit("createNewDirectory", {
+		name : name
+	});
+
+	hideWindow();
+	message("Priečinok bol pridaný!");
+
+	socket.emit("lsDirectories");
+	socket.on("lsDirectoriesReturn", (pole) => {
+		loadDirectoryContent($("#directories"),pole)
+	});
+}
+
+// ##########################################################################
+// #################### UPLOAD A DOWNLOAD ###################################
+// ##########################################################################
+
+
+
+// ##########################################################################
+// ###################PRIDAVANIE DO KATEGORII ###############################
+// ##########################################################################
 
 function addFileToCategory(category, name){
 	socket.emit( "addFileToCategory", { "name" : name, "category" : category});
@@ -181,6 +346,10 @@ function addDirToCategory(category, name){
 	socket.emit( "addDirectoryToCategory", { "name" : name, "category" : category});
 	console.log("dir ok");
 }
+
+// ###########################################################################
+// ############## FUNKCIE PRE FRONT END ######################################
+// ###########################################################################
 
 function myFunction(x) {
 	
@@ -218,103 +387,17 @@ function hideWindow(){
 function minimalize(){
 	if ($(".indicatorArea").css("display") == "none") {
 		$(".indicatorArea").css("display","block");
-		console.log("minimalize block ok ")
 	}
 
 	else{
 		$(".indicatorArea").css("display","none");
-		console.log("minimalize none ok");
 	}
 }
 
 
-
-
-
-function removeContent(element) {
-	element.html("");
-}
-
-function loadDirectoryContent(element, nameArray) {
-	removeContent(element);
-
-	for(var i=0; i<nameArray.length; i++) {
-		element.append("<div class='dir' ondblclick='openDirectory(this)'>" + nameArray[i] + "</div>\n");
-	}
-}
-
-function loadFileContent(element, array) {
-	removeContent(element);
-
-	for (var i=0; i<array.length; i++) {
-		var typeOfFile;
-
-		if (array[i].type) {
-			typeOfFile = array[i].type.split("/");
-		}
-		else {
-			typeOfFile = "";
-		}
-		
-		switch(typeOfFile[0]){
-			case "text": 
-				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-alt'></i></div><div class='name'>" + array[i].name + "</div></div>");
-				break;
-
-			case "image": 
-				element.append("<div id='ttest' class='file'><div class='img'><i class='fas fa-5x fa-file-image'></i></div><div class='name'>" + array[i].name + "</div></div>");
-				break;
-
-			case "audio": 
-				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-audio'></i></div><div class='name'>" + array[i].name + "</div></div>") ;
-				break;
-
-			case "video": 
-				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-video'></i></div><div class='name'>" + array[i].name + "</div></div>");
-				break;
-
-			case "application": 
-				element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file-alt'></i></div><div class='name'>" + array[i].name + "</div></div>") ;
-				break;
-			default: element.append("<div class='file'><div class='img'><i class='fas fa-5x fa-file'></i></div><div class='name'>" + array[i].name + "</div></div>") ;;
-		}
-	}
-}
-
-function openDirectory(e) {
-	var name = e.innerHTML;
-	socket.emit("openDirectory", {"name": name});
-}
-function openDirectoryByMenu(name) {
-	
-	console.log("open dir in menu ok");
-	socket.emit("openDirectory", {"name": name});
-}
-
-function returnToUpperDirectory() {
-
-	socket.emit("returnToUpperDirectory");
-}
-
-function message(text){
-	$("#sprava").html(text);
-	$("#message").css("display","block").fadeOut(4000);
-}
-
-function createDrectory() {
-	var name = $("#addDirectoryName").val();
-	socket.emit("createNewDirectory", {
-		name : name
-	});
-
-	hideWindow();
-	message("Priečinok bol pridaný!");
-
-	socket.emit("lsDirectories");
-	socket.on("lsDirectoriesReturn", (pole) => {
-		loadDirectoryContent($("#directories"),pole)
-	});
-}
+// #############################################################################
+// #################################  SOCKETY  #################################
+// #############################################################################
 
 socket.emit("lsDirectories");
 socket.emit("lsFiles");
@@ -346,9 +429,13 @@ socket.on("siteRefresh", () => {
 
 socket.on("errorMessage", () => {
 	message(errorMessage);
-})
+});
 
 
+
+// #################################################################################
+// ########################## CONTEXT MENU LISTENERS ###############################
+// #################################################################################
 
 $(document).on("contextmenu", function (e) {
 
@@ -359,20 +446,8 @@ $(document).on("contextmenu", function (e) {
     $("#contextMenu").prepend("<li onclick='showWindow(\"file\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Add file </li>");
 	$("#contextMenu").prepend("<li onclick='showWindow(\"directory\")' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Add directory </li>");
 		
-
-    $("#context").css("left", e.pageX);   
-    $("#context").css("top", e.pageY);    
-    $("#context").fadeIn(500, startFocusOut()); 
+	contextMenuPosition(e.pageX, e.pageY)
 });
-
-function startFocusOut() {
-    
-    $(document).on("click", function () {   
-        $("#context").hide(00);              
-        $(document).off("click"); 
-    
-    });
- }
 
 function setFileListener() {
 
@@ -395,10 +470,7 @@ function setFileListener() {
 
 		$("#contextMenu").append("<li class='contextLi shC'><i class='fas fa-plus cMenuIcon'></i> Add to category<ul id='category'><li class='categoryLi' onclick='addFileToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addFileToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addFileToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addFileToCategory(\"Music\"," + nameOfElement + ")'>Music</li><li class='categoryLi' onclick='addFileToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
 
-	    
-	    $("#context").css("left", e.pageX);  
-	    $("#context").css("top", e.pageY);    
-	    $("#context").fadeIn(500, startFocusOut()); 
+	    contextMenuPosition(e.pageX,e.pageY);
 	});
 }
 
@@ -421,10 +493,24 @@ function setDirectoriesListener(){
 
 		$("#contextMenu").append("<li onclick='' class='contextLi shC'><i class='fas fa-plus cMenuIcon'></i> Add to category<ul id='category'><li class='categoryLi' onclick='addDirToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addDirToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addDirToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addDirToCategory(\"Music\"," + nameOfElement + ")'>Music</li>	<li class='categoryLi' onclick='addDirToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
 
-    	$("#context").css("left", e.pageX);   
-	    $("#context").css("top", e.pageY);    
-	    $("#context").fadeIn(500, startFocusOut()); 
+    	contextMenuPosition(e.pageX,e.pageY);
 	});
+}
+
+function startFocusOut() {
+    
+    $(document).on("click", function () {   
+        $("#context").hide(00);              
+        $(document).off("click"); 
+    
+    });
+ }
+
+ function contextMenuPosition(left, top){
+
+	$("#context").css("left", left);   
+    $("#context").css("top", top);    
+    $("#context").fadeIn(500, startFocusOut());	
 }
 </script>
 

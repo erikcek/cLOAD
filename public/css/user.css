@@ -12,6 +12,37 @@ h5{
 	color: #818181;
 }
 
+#drag{
+	position: fixed;
+	top: 50px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	text-align: center;
+	background: rgba(68, 187, 238,0.5);
+	color: #fff;
+	display: none;
+}
+
+#dragOver{
+	border: dashed 3px #4BE;
+	padding: 50px;
+	background: rgba(68, 187, 238,0.5);
+	width: 50%;
+	margin: 20vh 25%;
+	height: 40vh;
+	pointer-events: none;
+}
+
+::selection{
+	background: none;
+}
+
+::-moz-selection{
+	background: none;
+}
+
 /* -------------------  MENU  ------------------- */
 nav{
 	padding: 0;
@@ -139,8 +170,11 @@ input{
     vertical-align: middle;
 }
 
-.img .fas{
-	margin-top: 35px;
+img{
+	height: 112px;
+	width: auto;
+	top: 7px;
+	margin: 28px;
 }
 
 .name{
@@ -183,9 +217,16 @@ input{
     transition: 0.3s;
 }
 
-.sidenav a:hover {
-    color: #353535;
-}
+.a:hover{color: #423;}
+.d:hover{color: #D83;}
+.p:hover{color: #c34;}
+.mo:hover{color: #4be;}
+.mu:hover{color: #435;}
+.o:hover{color: #444;}
+
+
+
+
 
 /* --- POZNAMKY --- */
 
@@ -476,23 +517,25 @@ input[type=file]:active + label {
     bottom: 0;
     width: 30%;
     margin-left: 65%;
+    display: none;
 }
 
 #panel{
-	height: 30px;
+	height: auto;
 	background-color:  #333;
-	width: 100%;
+	width: auto;
 	margin: 0;
 	color: white;
+	padding: 10px;
 }
 
-#minimalize{
+#panelText{
 	text-decoration: none;
 	color: white;
-	padding: 5px;
+	padding: 10px;
 }
 
-#minimalite:visited{
+#panelText:visited{
 	color: white;
 }
 
@@ -507,7 +550,7 @@ input[type=file]:active + label {
 	text-overflow: ellipsis;
 }
 
-.img .fas {
+.img img {
 	pointer-events: none
 }
 

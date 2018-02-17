@@ -142,7 +142,7 @@ a{
   height: auto;
   display: inline-block;
   float: left;
-  padding: 60px 0 0 55px;
+  padding: 60px 120px;
 }
 
 .aboutBG{
@@ -152,12 +152,13 @@ a{
   width: 56%;
   background: no-repeat url(../images/devices.png);
   background-size: cover;
+  background-size: 986px;
 }
 
 #func{
   background: no-repeat url(../images/colorbg.png);
   background-size: cover;
-  height: 600px;
+  height: auto;
   padding-top: 1%;
 } 
 

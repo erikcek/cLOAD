@@ -27,7 +27,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.2028042"
      inkscape:cx="526.1811"
-     inkscape:cy="305.536"
+     inkscape:cy="372.04724"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -67,7 +67,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -78,7 +78,10 @@
      transform="translate(0,-308.26772)">
     <g
        id="g4562"
-       transform="matrix(0.84373366,0,0,0.84373366,397.69437,290.79706)">
+       transform="matrix(0.84373366,0,0,0.84373366,397.69437,290.79706)"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#dd8833;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,82.189076,395.52412)"
@@ -104,7 +107,10 @@
     </g>
     <g
        id="g4539"
-       transform="matrix(0.84373366,0,0,0.84373366,265.47375,101.34064)">
+       transform="matrix(0.84373366,0,0,0.84373366,265.47375,101.34064)"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <path
          inkscape:connector-curvature="0"
          id="rect4136-5"
@@ -125,7 +131,10 @@
     </g>
     <g
        id="g4568"
-       transform="matrix(0.84373366,0,0,0.84373366,-112.95186,290.79706)">
+       transform="matrix(0.84373366,0,0,0.84373366,-112.95186,290.79706)"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#443355;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,230.25253,395.52412)"
@@ -151,7 +160,10 @@
     </g>
     <g
        id="g4556"
-       transform="matrix(0.84373366,0,0,0.84373366,779.76726,104.98789)">
+       transform="matrix(0.84373366,0,0,0.84373366,779.76726,104.98789)"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#eedd77;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,-65.874389,395.52412)"
@@ -177,7 +189,10 @@
     </g>
     <g
        id="g4550"
-       transform="matrix(0.84373366,0,0,0.84373366,144.19489,287.14981)">
+       transform="matrix(0.84373366,0,0,0.84373366,144.19489,287.14981)"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#44bbee;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,230.25253,179.62433)"
@@ -203,7 +218,10 @@
     </g>
     <g
        id="g4544"
-       transform="matrix(0.84373366,0,0,0.84373366,654.84114,101.34064)">
+       transform="matrix(0.84373366,0,0,0.84373366,654.84114,101.34064)"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#112244;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,82.189076,179.62433)"
@@ -238,13 +256,19 @@
            height="52.912067"
            x="124.63731"
            y="284.54935" /></flowRegion><flowPara
-         id="flowPara4375"></flowPara></flowRoot>    <g
+         id="flowPara4375" /></flowRoot>    <g
        transform="matrix(0.84373366,0,0,0.84373366,526.26775,290.79706)"
-       id="g4562-2">
+       id="g4562-2"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#dd8833;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,82.189076,395.52412)"
-         id="g4171-61">
+         id="g4171-61"
+         inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/rar.png"
+         inkscape:export-xdpi="95"
+         inkscape:export-ydpi="95">
         <path
            style="opacity:0.92699998;fill:#dd8833;fill-opacity:1;stroke:none;stroke-width:28.60899925;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            d="m 164.94727,276.48438 c -6.76881,0 -12.21875,5.44994 -12.21875,12.21874 l 0,108.22071 c 0,0.57133 0.0537,1.12964 0.1289,1.67969 l 0,256.83398 c 0,4.33204 3.48632,7.82031 7.81836,7.82031 l 243.04297,0 c 4.33204,0 7.82031,-3.48827 7.82031,-7.82031 l 0,-291.34375 c 0,-4.33204 -3.48827,-7.81836 -7.82031,-7.81836 l -70.45508,0 0,-67.57227 c 0,-6.7688 -5.44799,-12.21874 -12.21679,-12.21874 l -156.09961,0 z"
@@ -266,7 +290,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,136.90038,101.34064)"
-       id="g4539-4">
+       id="g4539-4"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <path
          inkscape:connector-curvature="0"
          id="rect4136-5-9"
@@ -287,7 +314,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,15.621505,290.79706)"
-       id="g4568-1">
+       id="g4568-1"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#443355;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,230.25253,395.52412)"
@@ -313,7 +343,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,651.19389,104.98789)"
-       id="g4556-5">
+       id="g4556-5"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#eedd77;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,-65.874389,395.52412)"
@@ -339,7 +372,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,-112.95186,287.14981)"
-       id="g4550-7">
+       id="g4550-7"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#44bbee;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,230.25253,179.62433)"
@@ -365,7 +401,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,526.26775,101.34064)"
-       id="g4544-9">
+       id="g4544-9"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#112244;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,82.189076,179.62433)"
@@ -391,7 +430,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,654.84114,290.79706)"
-       id="g4562-9">
+       id="g4562-9"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#dd8833;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,82.189076,395.52412)"
@@ -417,7 +459,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,394.04713,101.34064)"
-       id="g4539-8">
+       id="g4539-8"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <path
          inkscape:connector-curvature="0"
          id="rect4136-5-5"
@@ -438,7 +483,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,144.19489,290.79706)"
-       id="g4568-3">
+       id="g4568-3"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#443355;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,230.25253,395.52412)"
@@ -464,7 +512,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,522.62051,104.98789)"
-       id="g4556-59">
+       id="g4556-59"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#eedd77;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,-65.874389,395.52412)"
@@ -490,7 +541,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,15.621505,287.14981)"
-       id="g4550-0">
+       id="g4550-0"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#44bbee;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,230.25253,179.62433)"
@@ -516,7 +570,10 @@
     </g>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,397.69437,101.34064)"
-       id="g4544-4">
+       id="g4544-4"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#112244;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,82.189076,179.62433)"
@@ -552,13 +609,16 @@
            x="104.64831"
            y="191.45735"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-family:'Nimbus Sans L';-inkscape-font-specification:'Nimbus Sans L Condensed';fill:#ffffff" /></flowRegion><flowPara
-         id="flowPara4741"></flowPara></flowRoot>    <text
+         id="flowPara4741" /></flowRoot>    <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:33.74934769px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#454837;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="177.81441"
        y="532.8963"
        id="text4743"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745"
          x="177.81441"
@@ -570,7 +630,10 @@
        x="295.86484"
        y="532.9422"
        id="text4743-1"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-9"
          x="295.86484"
@@ -582,7 +645,10 @@
        x="441.56342"
        y="533.37769"
        id="text4743-1-0"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-9-9"
          x="441.56342"
@@ -594,7 +660,10 @@
        x="171.14212"
        y="718.61218"
        id="text4743-8"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-8"
          x="171.14212"
@@ -606,7 +675,10 @@
        x="299.17014"
        y="718.68634"
        id="text4743-5"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-84"
          x="299.17014"
@@ -618,7 +690,10 @@
        x="439.56058"
        y="718.73962"
        id="text4743-3"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-7"
          x="439.56058"
@@ -626,7 +701,10 @@
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1">.ICO</tspan></text>
     <g
        transform="matrix(0.84373366,0,0,0.84373366,4.977472,101.28305)"
-       id="g4539-4-1">
+       id="g4539-4-1"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <path
          inkscape:connector-curvature="0"
          id="rect4136-5-9-3"
@@ -651,7 +729,10 @@
        x="55.458427"
        y="533.40485"
        id="text4743-9"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-79"
          x="55.458427"
@@ -659,7 +740,10 @@
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1">IMG</tspan></text>
     <g
        id="g4544-93"
-       transform="matrix(0.84373366,0,0,0.84373366,778.63715,101.15981)">
+       transform="matrix(0.84373366,0,0,0.84373366,-117.60182,472.79137)"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <g
          style="fill:#112244;fill-opacity:1"
          transform="matrix(0.53060148,0,0,0.53060148,82.189076,179.62433)"
@@ -689,7 +773,10 @@
        x="545.90594"
        y="528.91284"
        id="text4743-9-2"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-79-0"
          x="545.90594"
@@ -701,7 +788,10 @@
        x="700.45563"
        y="532.70343"
        id="text4743-9-21"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-79-7"
          x="700.45563"
@@ -713,7 +803,10 @@
        x="809.02112"
        y="532.6864"
        id="text4743-9-5"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-79-1"
          x="809.02112"
@@ -722,14 +815,17 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:33.74934769px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#454837;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="917.4671"
-       y="532.43671"
+       x="21.22813"
+       y="904.06824"
        id="text4743-9-7"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-79-4"
-         x="917.4671"
-         y="532.43671"
+         x="21.22813"
+         y="904.06824"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1">.WMV</tspan></text>
     <text
        xml:space="preserve"
@@ -749,7 +845,10 @@
        x="554.89587"
        y="718.20416"
        id="text4743-5-1"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-84-1"
          x="554.89587"
@@ -761,7 +860,10 @@
        x="685.67078"
        y="718.3338"
        id="text4743-5-7"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-84-0"
          x="685.67078"
@@ -773,7 +875,10 @@
        x="809.3172"
        y="717.94495"
        id="text4743-5-4"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-84-08"
          x="809.3172"
@@ -785,7 +890,10 @@
        x="153.4827"
        y="902.56427"
        id="text4743-8-1"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-8-6"
          x="153.4827"
@@ -797,7 +905,10 @@
        x="295.45319"
        y="904.76312"
        id="text4743-8-6"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-8-2"
          x="295.45319"
@@ -809,7 +920,10 @@
        x="421.61273"
        y="905.02991"
        id="text4743-8-19"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-8-64"
          x="421.61273"
@@ -821,19 +935,25 @@
        x="566.67108"
        y="904.67847"
        id="text4743-8-8"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-8-0"
          x="566.67108"
          y="904.67847"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1">.ZIP</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;fill-opacity:1">APP</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:33.74934769px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#454837;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="683.6626"
        y="904.96674"
        id="text4743-8-81"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-8-02"
          x="683.6626"
@@ -845,7 +965,10 @@
        x="796.71228"
        y="897.79523"
        id="text4743-8-2"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-8-9"
          x="796.71228"
@@ -854,7 +977,10 @@
     <g
        id="g4171-3-5"
        transform="matrix(0.44768633,0,0,0.44768633,-51.50801,437.12017)"
-       style="fill:#6e6e6e;fill-opacity:1">
+       style="fill:#6e6e6e;fill-opacity:1"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95">
       <path
          inkscape:connector-curvature="0"
          id="rect4136-9-6"
@@ -866,20 +992,29 @@
        d="m 132.78383,597.2885 -37.394052,0.0516 0,-35.4627 z"
        id="path4145-0-4"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccc" />
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95" />
     <path
        style="fill:#656565;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 95.337576,597.08894 37.394044,-0.0539 0,37.0419 z"
        id="path4145-3-8-6"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccc" />
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:33.74934769px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#454837;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="81.40712"
        y="717.12622"
        id="text4743-8-3"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/katka/rop/cLOAD/public/images/fileIcon/fullfamily.png"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95"><tspan
          sodipodi:role="line"
          id="tspan4745-8-7"
          x="81.40712"
