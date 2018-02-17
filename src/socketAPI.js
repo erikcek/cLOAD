@@ -208,6 +208,9 @@ module.exports = function(io) {
 				},
 				function(directory, done) {
 					var myStream = fs.createReadStream(directory.path + file.name)
+					myStream.on("finish", function() {
+						doneUploading(socket.request.session.workingDirectory, file.name);
+					})
 					myStream.pipe(stream);
 				}
 			])
@@ -742,16 +745,31 @@ function repairFileSystem(workingDirectory) {
 }
 
 
+function doneUploading(id, name) {
+	async.watterfall([
+		function(done) {
+			Directory.findOne({"_id": id}, function(err, directory) {
+				if (directory) {
+					return done(false, directory);
+				}
+				else {
+					return done(true, err);
+				}
+			});
+		},
 
-function getWorkingDirectoryPath(workingDirectory) {
-	console.log(workingDirectory);
-	Directory.findOne( {"_id": workingDirectory }, function(err,directory) {
-		//console.log("ddd");
-		if (directory) {
-			//console.log(directory.path);
-			return directory;
+		function(directory, done) {
+			for(var i=0; i<directory.files; i++) {
+				if (directory.files[i] == name) {
+					return done(false, directory, i);
+				}
+			}
+			return done(true, "No such file in directory");
+		},
+
+		function(directory, index, done) {
+			directory.files[i].notFullyUploaded = false;
 		}
-	})
+	])
 }
-
 
