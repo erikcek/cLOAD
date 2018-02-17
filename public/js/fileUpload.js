@@ -41,6 +41,7 @@ socket.on("sendData", function(data) {
 
             var position = 0;
            // var difference = file.size / 10;
+           console.log(data.position);
             ss(socket).emit('uploadData', stream, {name: file.name, size: file.size, start: data.position});
             var blobStream = ss.createBlobReadStream(file.slice(data.position));
             
@@ -53,7 +54,7 @@ socket.on("sendData", function(data) {
                 childrenElements.each(function( index ) {
                     if ($(this).children()[1].innerHTML == file.name) {
                         $(this).children()[0].innerHTML =  percenta + "% ";
-                        console.log($(this).children().last())
+                        // console.log($(this).children().last())
                         $(this).children().last().css("width",percenta + "%");
                     }
 
