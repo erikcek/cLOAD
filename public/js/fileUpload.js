@@ -43,7 +43,7 @@ socket.on("sendData", function(data) {
             ss(socket).emit('uploadData', stream, {name: file.name, size: file.size, start: data.position});
             var blobStream = ss.createBlobReadStream(file.slice(data.position));
             
-            var size = 0
+            var size = data.position;
             blobStream.on("data", function(chunk) {
                 size += chunk.length;
                 var percenta = Math.round(size / file.size * 100);

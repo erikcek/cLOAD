@@ -126,6 +126,8 @@
 		
 	</div>
 
+
+<!-- Drag and drop -->
 <div id="drag">
 	<div id="dragOver">
 		<i class="fas fa-10x fa-upload"></i>
@@ -337,7 +339,7 @@ function addFile(){
 function deleteFile(name){
 	socket.emit("deleteFile",{ name : name });
 
-	message("Súbor " + name + "bol odstránený.");
+	message("Súbor " + name + " bol <b>odstránený</b>.");
 	socket.emit("lsFiles");
 }
 
@@ -406,6 +408,11 @@ function minimalize(){
 	else{
 		$(".indicatorArea").css("display","none");
 	}
+}
+
+function close(){
+	$("#indicator").css("display","none");
+	$("#filesContainer").html("");
 }
 
 
@@ -526,7 +533,7 @@ function startFocusOut() {
 
 	$("#context").css("left", left);   
     $("#context").css("top", top);    
-    $("#context").fadeIn(500, startFocusOut());	
+    $("#context").fadeIn(500 /*startFocusOut()*/);	
 }
 </script>
 
