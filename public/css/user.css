@@ -1,3 +1,42 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,table, caption,article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
 /*#0e2547 - darkBlue*/
 body{
 	margin: 0;
@@ -98,7 +137,7 @@ nav{
 
 li{
 	display: inline-block;
-	padding: 0 5px;
+	padding: 15px;
 }
 
 .right li:hover{
@@ -180,7 +219,7 @@ img{
 }
 
 .name{
-	padding: 5px 0;
+	padding: 10px 0;
 	padding-left: 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -280,7 +319,7 @@ textarea{
 	top: 40px;
 	position: fixed;
 	background-color: white;
-	height: 40px;
+	padding: 10px;
 	border: 1px solid #808080;
 	box-shadow: 4px 5px 2px -2px #80808085;
 	text-align: center;
@@ -384,25 +423,6 @@ textarea{
 	position: absolute;
 }
 
-
-/*
-input[type=file] {
-	display:none;
-	margin:10px;
-}
-
-input[type=file] + label {
-	display:inline-block;
-	background-color: #FFFFFF;
-	color:#666F77;
-}
-
-input[type=file]:active + label {
-	background-image: none;
-	background-color:#2D6C7A;
-	color:#FFFFFF;
-}
-*/
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
@@ -478,9 +498,9 @@ input[type=file]:active + label {
 		padding: 3.5%;
 	}
 
-	.name{
-		padding: 3% 1.5%;
-	}
+	/*.name{
+		padding: 4% 1.5%;
+	}*/
 
 	#advice{
 		width: 80%;
@@ -570,6 +590,8 @@ input[type=file]:active + label {
 .close{
 	float: right;
 	cursor: pointer;
+	z-index: 200;
+	padding: 5px;
 }
 
 

@@ -289,7 +289,7 @@ module.exports = function(io) {
 					})
 				}
 			], function(err, message) {
-				scoket.emit("errorLog", "Pri vymazávaní súboru nastala chyba");
+				socket.emit("errorLog", "Pri vymazávaní súboru nastala chyba");
 				console.log(err);
 				console.log(message);
 			})

@@ -116,8 +116,10 @@
 
 <!-- Upload a download indikátor -->
 	<div id="indicator">
-		<div id="panel" onclick="minimalize()">
-			<a href="#" id="panelText"> <!--<i class="fas  fa-spinner fa-pulse"></i>-->Uploading or downloading files </a> <i onclick="close()" class="fas close fa-times"></i>
+		<div id="panel">
+			<a href="#" id="panelText">Uploading or downloading files </a>
+			<i onclick="closeI()" class="fas close fa-times"></i>
+			<i onclick="minimalize()" class="fas close fa-minus"></i> 
 		</div>
 
 		<div id="filesContainer">
@@ -293,12 +295,10 @@ function openDirectory(e) {
 
 	var name = e.innerHTML;
 	socket.emit("openDirectory", {"name": name});
-
 }
 
 function openDirectoryByMenu(name) {
 	
-	console.log("open dir in menu ok");
 	socket.emit("openDirectory", {"name": name});
 }
 
@@ -314,10 +314,9 @@ function message(text){
 }
 
 function createDrectory() {
-	console.log("in function");
 
 	var name = $("#vklad").val();
-	console.log(name);
+	
 	socket.emit("createNewDirectory", {
 		name : name
 	});
@@ -326,9 +325,6 @@ function createDrectory() {
 	message("Priečinok bol pridaný!");
 
 	socket.emit("lsDirectories");
-	socket.on("lsDirectoriesReturn", (pole) => {
-		loadDirectoryContent($("#directories"),pole)
-	});
 }
 /*
 function addFile(){
@@ -347,20 +343,13 @@ function deleteFile(name){
 // #################### UPLOAD A DOWNLOAD ###################################
 // ##########################################################################
 
-
-
-// ##########################################################################
-// ###################PRIDAVANIE DO KATEGORII ###############################
-// ##########################################################################
-
 function addFileToCategory(category, name){
-	socket.emit( "addFileToCategory", { "name" : name, "category" : category});
-	console.log("file ok");
+
+	socket.emit( "addFileToCategory", { "name" : name , "category" : category});
 }
 
 function addDirToCategory(category, name){
 	socket.emit( "addDirectoryToCategory", { "name" : name, "category" : category});
-	console.log("dir ok");
 }
 
 // ##########################################################################
@@ -382,8 +371,6 @@ function myFunction(x) {
 }
 
 function showWindow(type){
-
-	console.log(type);
 
 	if (type == "directory") {
 		$("#createDirectory").css("display","block");
@@ -410,7 +397,7 @@ function minimalize(){
 	}
 }
 
-function close(){
+function closeI(){
 	$("#indicator").css("display","none");
 	$("#filesContainer").html("");
 }
@@ -448,7 +435,7 @@ socket.on("siteRefresh", () => {
 	socket.emit("lsFiles");
 });
 
-socket.on("errorMessage", () => {
+socket.on("errorLog", (errorMessage) => {
 	message(errorMessage);
 });
 
@@ -491,7 +478,7 @@ function setFileListener() {
 		$("#contextMenu").append("<li onclick='deleteFile(\"" + nameOfElement + "\")' class='contextLi'><i class='fas fa-minus cMenuIcon'></i>  Delete file </li>");
 
 		// Pridanie do kategorie subor
-		$("#contextMenu").append("<li class='contextLi shC'><i class='fas fa-plus-square cMenuIcon'></i>  Add to category<ul id='category'><li class='categoryLi' onclick='addFileToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addFileToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addFileToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addFileToCategory(\"Music\"," + nameOfElement + ")'>Music</li><li class='categoryLi' onclick='addFileToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
+		$("#contextMenu").append("<li class='contextLi shC'><i class='fas fa-plus-square cMenuIcon'></i>  Add to category<ul id='category'><li class='categoryLi' onclick='addFileToCategory(\"Documents\", \"" + nameOfElement + "\")'>Documents</li><li class='categoryLi' onclick='addFileToCategory(\"Pictures\",\"" + nameOfElement + "\")' >Pictures</li><li class='categoryLi' onclick='addFileToCategory(\"Movies\",\"" + nameOfElement + "\")'>Movies</li><li class='categoryLi' onclick='addFileToCategory(\"Music\",\"" + nameOfElement + "\")'>Music</li><li class='categoryLi' onclick='addFileToCategory(\"Others\",\"" + nameOfElement + "\")'>Others</li></ul></li>");
 
 	    contextMenuPosition(e.pageX,e.pageY);
 	});
@@ -514,7 +501,7 @@ function setDirectoriesListener(){
 		// wop 
 		// $("#contextMenu").append("<li onclick='' class='contextLi'><i class='fas fa-plus cMenuIcon'></i> Delete directory </li>");
 
-		$("#contextMenu").append("<li onclick='' class='contextLi shC'><i class='fas fa-plus-square cMenuIcon'></i>  Add to category<ul id='category'><li class='categoryLi' onclick='addDirToCategory(\"Dokuments\"," + nameOfElement + ")'>Documents</li><li class='categoryLi' onclick='addDirToCategory(\"Pictures\"," + nameOfElement + ")' >Pictures</li><li class='categoryLi' onclick='addDirToCategory(\"Movies\"," + nameOfElement + ")'>Movies</li><li class='categoryLi' onclick='addDirToCategory(\"Music\"," + nameOfElement + ")'>Music</li>	<li class='categoryLi' onclick='addDirToCategory(\"Others\"," + nameOfElement + ")'>Others</li></ul></li>");
+		$("#contextMenu").append("<li onclick='' class='contextLi shC'><i class='fas fa-plus-square cMenuIcon'></i>  Add to category<ul id='category'><li class='categoryLi' onclick='addDirToCategory(\"Dokuments\",\"" + nameOfElement + "\")'>Documents</li><li class='categoryLi' onclick='addDirToCategory(\"Pictures\",\"" + nameOfElement + "\")' >Pictures</li><li class='categoryLi' onclick='addDirToCategory(\"Movies\",\"" + nameOfElement + "\")'>Movies</li><li class='categoryLi' onclick='addDirToCategory(\"Music\",\"" + nameOfElement + "\")'>Music</li>	<li class='categoryLi' onclick='addDirToCategory(\"Others\",\"" + nameOfElement + "\")'>Others</li></ul></li>");
 
     	contextMenuPosition(e.pageX,e.pageY);
 	});

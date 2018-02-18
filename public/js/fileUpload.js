@@ -23,7 +23,8 @@ body.addEventListener("drop", function(event) {
     }
 }, false);
 
-document.addEventListener("dragexit", function(event) {
+body.addEventListener("dragexit", function(event) {
+    console.log("dragexit");
     event.preventDefault();
     $("#drag").css("display","none");
 }, false);
@@ -105,6 +106,7 @@ socket.on("sendData", function(data) {
 });
 
 function download(name) {
+    console.log("dd");
     var stream = ss.createStream();
     var buffer = [];
     var length = 0;
