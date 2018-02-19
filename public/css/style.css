@@ -145,6 +145,14 @@ a{
   padding: 60px 120px;
 }
 
+.team{
+      padding-right: 60px;
+}
+
+.about p a{
+  color: #0e2547;
+}
+
 .aboutBG{
   display:block;
   float: right;
@@ -152,7 +160,12 @@ a{
   width: 49%;
   background: no-repeat url(../images/devices.png);
   background-size: cover;
-  background-size: 986px;
+}
+
+.teamBG{
+  width: 54%;
+  background-size: contain;
+  background: no-repeat center url(../images/katrik.png);
 }
 
 #func{
@@ -191,17 +204,33 @@ a{
 
 footer{
   background-color: black;
-  
-  height: 400px;
-  width: 100%;
+  color: white;
+  padding: 50px;
+  /*width: 100%;*/
 }
 
-.fText{
-  position: fixed;
+footer ul{
+  display: inline-block;
+}
+
+#posRight{
+  float: right;
+  list-style: none;
+  text-align: right;
 }
 
 #ul{
   display: inline-block;
+}
+
+@media only screen and (max-width: 1140px){
+  .about{
+   padding: 30px 60px;
+  }
+
+  .aboutBG{
+    width: 58%;
+  }
 }
 
 @media only screen and (max-width: 1030px){
@@ -210,7 +239,7 @@ footer{
     margin-left: 20%;
   }
   .about{
-    width: 46%;
+    width: 39%;
   }
 
   .aboutBG{
@@ -224,6 +253,14 @@ footer{
     margin-left: 15%;
   }
 
+  .about{
+    padding: 15px 30px;
+  }
+
+  .aboutBG{
+      width: 38%;
+  }
+
   #funcUL li {
     display: block;
     width: 80%;
@@ -232,6 +269,10 @@ footer{
   #func {
     height: auto;
     padding: 1%;
+}
+
+footer ul:nth-child(2){
+  display: none;
 }
 }
 
@@ -247,34 +288,10 @@ footer{
     display: block;
     width: 100%;
     height: 56%;
-    background: no-repeat center url(../images/devices.png);
-    background-size: 80%;
+   background-size: 80%;
   }
-}
 
-#indicator{
-  width: 35%;
-  max-height: 70vh;
-  margin-left: 60%;
-  position: absolute;
-  
-}
-
-#panel{
-  background-color: #555;
-  height: 40px;
-}
-
-#indicatorArea{
-  height: 70px;
-  background-color: white;
-}
-
-#indc{
-  width: 90%;
-  margin-left: 5%;
-  height: 10px;
-  background-color: red;
+  .teamBG{display: none;}
 }
 
 
