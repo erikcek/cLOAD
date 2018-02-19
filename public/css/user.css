@@ -5,7 +5,7 @@
 
 html, body, div, span, applet, object, iframe, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,
+small, strike, strong, sub, sup, tt, var, u, i, center,dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,table, caption,article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
@@ -69,9 +69,13 @@ h5{
 	padding: 50px;
 	background: rgba(68, 187, 238,0.5);
 	width: 50%;
-	margin: 20vh 25%;
+	margin: 20vh 20%;
 	height: 40vh;
 	pointer-events: none;
+}
+
+#dragOver i{
+	font-size: 10em;
 }
 
 ::selection{
@@ -266,34 +270,6 @@ img{
 .mu:hover{color: #435;}
 .o:hover{color: #444;}
 
-
-
-
-
-/* --- POZNAMKY --- */
-
-#poznamky{
-	display: none;
-}
-.myNote{
-	display: inline-block;
-}
-
-.noteI{
-	display: inline-block;
-}
-
-.poznamky input{
-	width: 90%;
-	margin-left: 3%;
-}
-
-textarea{
-	margin-left: 3%;
-	width: 89%;
-
-}
-
 ::-webkit-scrollbar {
     width: 5px;
 }
@@ -423,6 +399,76 @@ textarea{
 	position: absolute;
 }
 
+/* ------- NAHRAVANIE SUBOROV A PRIECINKOV */
+
+#indicator{
+	background-color: white;
+    position: fixed;
+    bottom: 0;
+    width: 30%;
+    margin-left: 65%;
+    display: none;
+    max-height: 70vh;
+    overflow: scroll;
+}
+
+#panel{
+	background-color:  #333;
+	margin: 0;
+	color: white;
+	position: fixed;
+	width: 28%;
+	padding: 1%;
+}
+
+#panelText{
+	text-decoration: none;
+	cursor: default;
+}
+
+#panelText:visited{
+	color: white;
+}
+
+.indicatorArea{
+	background-color: white;
+	padding: 10px;
+}
+
+.indicatorArea:first-child{
+	margin-top: 60px;
+}
+
+#fileName p{
+	display: inline-block;
+	padding: 5px;
+}
+
+#fileName p{
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.img img {
+	pointer-events: none
+}
+
+#indc{
+	height: 10px;
+	width: 100%;
+	background-color: #0e2547;
+	margin-bottom: 15px;
+}
+
+.close{
+	float: right;
+	cursor: pointer;
+	z-index: 200;
+	padding: 0 9px;
+}
+
+
+
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
@@ -474,18 +520,23 @@ textarea{
 		padding: 15px 1%;
 	}
 }
-/*
-@media only screen and (max-width: 1180px){
-	.dir,.file{
-		margin: 30px 1.5%;
-		width: 21%;
+
+@media only screen and (max-width: 1155px){
+	#indicator{
+    	width: 50%;
+	    margin-left: 45%;
 	}
 
-	.dir{
-		width: 19%;
-		padding: 15px 1%;
+	#panel{
+		width: 48%;
+		padding: 1%;
 	}
-}*/
+
+	#fileName{
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
 
 @media only screen and (max-width: 880px){
 	.dir,.file{
@@ -504,6 +555,10 @@ textarea{
 
 	#advice{
 		width: 80%;
+	}
+
+	#dragOver i{
+		font-size: 4em;
 	}
 
 }
@@ -534,66 +589,6 @@ textarea{
 		padding: 15px 8%;
 	}
 }
-
-#indicator{
-	background-color: pink;
-    position: fixed;
-    bottom: 0;
-    width: 30%;
-    margin-left: 65%;
-    display: none;
-
-}
-
-#panel{
-	height: auto;
-	background-color:  #333;
-	width: auto;
-	margin: 0;
-	color: white;
-	padding: 10px;
-}
-
-#panelText{
-	text-decoration: none;
-	color: white;
-	padding: 10px;
-	cursor: default;
-}
-
-#panelText:visited{
-	color: white;
-}
-
-.indicatorArea{
-	background-color: white;
-	padding: 10px;
-	
-}
-
-#fileName{
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.img img {
-	pointer-events: none
-}
-
-#indc{
-	height: 10px;
-	width: 100%;
-	background-color: blue;
-	margin-bottom: 15px;
-}
-
-.close{
-	float: right;
-	cursor: pointer;
-	z-index: 200;
-	padding: 5px;
-}
-
 
 
 

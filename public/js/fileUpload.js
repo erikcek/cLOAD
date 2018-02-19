@@ -1,6 +1,6 @@
 var socket = io();
+var drag = document.getElementById("drag");
 var body = document.getElementById("test");
-
 var fileArray = [];
 
 
@@ -24,15 +24,18 @@ body.addEventListener("drop", function(event) {
 }, false);
 
 body.addEventListener("dragexit", function(event) {
-    console.log("dragexit");
     event.preventDefault();
     $("#drag").css("display","none");
 }, false);
 
+// window.addEventListener("dragleave", function(event) {
+//     event.preventDefault();
+//     $("#drag").css("display","none");
+// }, false);
 
 socket.on("sendData", function(data) {
-    console.log("position " + data.position);
-     $("#filesContainer").append("<div class=\"indicatorArea\"><p id=\"fileName\"><b></b><p>" + data.name + "</p></p><div id=\"indc\"></div></div>");
+    //console.log("position " + data.position);
+     $("#filesContainer").append("<div class=\"indicatorArea\"><span id=\"fileName\"><p></p><p id=\"dataName\">" + data.name + "</p></span><div id=\"indc\"></div></div>");
     var stream = ss.createStream();
     for (var i=0; i<fileArray.length; i++) {
         if (fileArray[i].name == data.name) {
@@ -40,7 +43,8 @@ socket.on("sendData", function(data) {
 
             var position = 0;
            // var difference = file.size / 10;
-           console.log(data.position);
+           
+
             ss(socket).emit('uploadData', stream, {name: file.name, size: file.size, start: data.position});
             var blobStream = ss.createBlobReadStream(file.slice(data.position));
             
@@ -50,17 +54,16 @@ socket.on("sendData", function(data) {
                 var percenta = Math.round(size / file.size * 100);
                 var childrenElements = $("#filesContainer").children();
 
-                childrenElements.each(function( index ) {
-                    if ($(this).children()[1].innerHTML == file.name) {
-                        $(this).children()[0].innerHTML =  percenta + "% ";
-                        // console.log($(this).children().last())
-                        $(this).children().last().css("width",percenta + "%");
-                    }
+                
 
+                childrenElements.each(function( index ) {
+         
+                    if ($(this).children().first().children()[1].innerHTML == file.name) {
+            
+                        $(this).children().first().children()[0].innerHTML =  percenta + "% ";
+                        $(this).children().last().css("width",percenta + "%");
+                    }   
                 });
-                // for (var i=0; i<childrenElements.length; i++) {
-                //     console.log(childrenElements[i].children());
-                // }
                 
 
                 if (size == file.size) {
@@ -106,7 +109,7 @@ socket.on("sendData", function(data) {
 });
 
 function download(name) {
-    console.log("dd");
+  //  console.log("dd");
     var stream = ss.createStream();
     var buffer = [];
     var length = 0;
