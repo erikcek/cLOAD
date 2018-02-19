@@ -704,37 +704,36 @@ module.exports = function(io) {
     });
   });
 
-// update file state in db to fully uploaded
-function doneUploading(id, name) {
-  async.waterfall([
-    function(done) {
-      Directory.findOne({ _id: id }, function(err, directory) {
-        if (directory) {
-          return done(false, directory);
-        } else {
-          return done(true, err);
-        }
-      });
-    },
+  // update file state in db to fully uploaded
+  function doneUploading(id, name) {
+    async.waterfall([
+      function(done) {
+        Directory.findOne({ _id: id }, function(err, directory) {
+          if (directory) {
+            return done(false, directory);
+          } else {
+            return done(true, err);
+          }
+        });
+      },
 
-    function(directory, done) {
-      for (var i = 0; i < directory.files.length; i++) {
-        if (directory.files[i].name == name) {
-          return done(false, directory, i);
+      function(directory, done) {
+        for (var i = 0; i < directory.files.length; i++) {
+          if (directory.files[i].name == name) {
+            return done(false, directory, i);
+          }
         }
+        return done(true, "No such file in directory");
+      },
+
+      function(directory, index, done) {
+        directory.files[index].notFullyUploaded = false;
+        return done(false, directory);
+      },
+
+      function(directory, done) {
+        directory.save(function(err) {});
       }
-      return done(true, "No such file in directory");
-    },
-
-    function(directory, index, done) {
-      directory.files[index].notFullyUploaded = false;
-      return done(false, directory);
-    },
-
-    function(directory, done) {
-      directory.save(function(err) {});
-    }
-  ])
-}
-}
-
+    ]);
+  }
+};

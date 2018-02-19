@@ -19,6 +19,7 @@
     "email-validator": "^1.1.1",
     "express": "^4.15.4",
     "express-session": "^1.15.5",
+    "forever": "^0.15.3",
     "hbs": "^4.0.1",
     "method-override": "^2.3.9",
     "mime-types": "^2.1.17",

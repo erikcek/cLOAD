@@ -51,7 +51,6 @@ module.exports = function(passport) {
 
                     if (checkedUserName.isValidated) {
                       req.flash("username", username);
-                      req.flash("email", req.body.email);
                       return async_done(false);
                     } else {
                       req.flash("signUpMessage", checkedUserName.message);
