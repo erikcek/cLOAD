@@ -1,6 +1,7 @@
 var socket = io();
 var drag = document.getElementById("drag");
 var body = document.getElementById("test");
+var fileInput = document.getElementById("vklad_file");
 var fileArray = [];
 
 body.addEventListener(
@@ -19,9 +20,9 @@ body.addEventListener(
     $("#drag").css("display", "none");
     $("#indicator").css("display", "block");
     files = event.dataTransfer.files;
-    //fileArray = [];
-
+    fileArray = [];
     for (var i = 0; i < files.length; i++) {
+
       fileArray.push({ name: files[i].name, data: files[i] });
       socket.emit("startUpload", { name: files[i].name });
     }
@@ -37,6 +38,12 @@ body.addEventListener(
   },
   false
 );
+
+// fileInput.addEventListener("change", function(e) {
+//   files = document.getElementById("vklad_file").files;
+  
+// })
+
 
 // window.addEventListener("dragleave", function(event) {
 //     event.preventDefault();
@@ -161,5 +168,16 @@ function onStart(position, name, data, initiate, upload) {
     initiate(name, data);
   } else {
     upload(name, data);
+  }
+}
+
+function addFile() {
+  files = fileInput.files
+  fileArray = [];
+  $("#addFile").css("display", "none");
+  $("#indicator").css("display", "block");
+  for (var i=0; i<files.length; i++) {
+    fileArray.push({ name: files[i].name, data: files[i] });
+    socket.emit("startUpload", { name: files[i].name });
   }
 }
