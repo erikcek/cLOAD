@@ -37,6 +37,10 @@ q:before, q:after {
 	content: none;
 }
 
+a, a:hover, a:visited, a:active {
+	color: #fff;
+}
+
 /*#0e2547 - darkBlue*/
 body{
 	margin: 0;
