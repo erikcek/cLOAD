@@ -183,6 +183,7 @@ a{
 
 #funcUL{
   margin-top: 0;
+  margin-bottom: 0;
 }
 
 #funcUL li{
@@ -195,6 +196,13 @@ a{
 #funcUL li h2{
   font-family: 'Roboto Mono', monospace;
   text-align: center; 
+}
+
+#try{
+  background-color: #0e2547;
+  color: white;
+  padding: 50px;
+  text-align: center;
 }
 
 .ico{
